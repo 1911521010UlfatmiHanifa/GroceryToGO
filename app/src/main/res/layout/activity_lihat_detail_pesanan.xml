@@ -40,7 +40,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView28">
 
         <Button
-            android:id="@+id/btn_daftar2"
+            android:id="@+id/detail_produk2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="#8BC34A"

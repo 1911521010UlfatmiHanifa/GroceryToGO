@@ -89,7 +89,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView46" />
 
         <Button
-            android:id="@+id/btn_daftar3"
+            android:id="@+id/btn_batal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="35dp"
@@ -103,6 +103,8 @@
             android:textAllCaps="true"
             android:textColor="#F60909"
             app:cornerRadius="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView43" />
 
@@ -217,7 +219,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/btn_daftar2"
+            android:id="@+id/detail_produk2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="35dp"
