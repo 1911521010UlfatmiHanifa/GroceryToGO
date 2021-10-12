@@ -44,11 +44,11 @@
                 android:id="@+id/pw_konfir"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="35dp"
                 android:layout_marginTop="28dp"
                 android:background="@drawable/edit_text"
                 android:drawableStart="@drawable/lock"
                 android:drawablePadding="30px"
-                android:layout_marginHorizontal="35dp"
                 android:ems="10"
                 android:fontFamily="@font/poppins_light"
                 android:hint="Konfirmasi Password Baru"
@@ -58,7 +58,8 @@
                 android:password="true"
                 android:scrollbarAlwaysDrawHorizontalTrack="false"
                 android:textColorHint="#615151"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                tools:ignore="SpeakableTextPresentCheck" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -75,13 +76,13 @@
                 android:id="@+id/pw_lama"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="35dp"
                 android:layout_marginTop="28dp"
                 android:background="@drawable/edit_text"
                 android:drawableStart="@drawable/lock"
                 android:drawablePadding="30px"
                 android:ems="10"
                 android:fontFamily="@font/poppins_light"
-                android:layout_marginHorizontal="35dp"
                 android:hint="Password Lama"
                 android:inputType="textPassword"
                 android:paddingStart="70px"
@@ -89,7 +90,8 @@
                 android:password="true"
                 android:scrollbarAlwaysDrawHorizontalTrack="false"
                 android:textColorHint="#615151"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                tools:ignore="SpeakableTextPresentCheck" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -108,13 +110,13 @@
                 android:id="@+id/pw_baru"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="35dp"
                 android:layout_marginTop="28dp"
                 android:background="@drawable/edit_text"
                 android:drawableStart="@drawable/lock"
                 android:drawablePadding="30px"
                 android:ems="10"
                 android:fontFamily="@font/poppins_light"
-                android:layout_marginHorizontal="35dp"
                 android:hint="Password Baru"
                 android:inputType="textPassword"
                 android:paddingStart="70px"
@@ -122,7 +124,8 @@
                 android:password="true"
                 android:scrollbarAlwaysDrawHorizontalTrack="false"
                 android:textColorHint="#615151"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                tools:ignore="SpeakableTextPresentCheck" />
         </com.google.android.material.textfield.TextInputLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -24,7 +24,8 @@ public class Daftar extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                finish();
+                Intent i = new Intent(Daftar.this, MainActivity.class);
+                startActivity(i);
             }
         });
 

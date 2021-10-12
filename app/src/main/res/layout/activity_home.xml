@@ -16,7 +16,8 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="116dp"
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -43,7 +44,7 @@
                     app:srcCompat="@drawable/belanja" />
 
                 <ImageView
-                    android:id="@+id/imageView43"
+                    android:id="@+id/settingImage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -195,6 +196,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_light"
         android:text="Buah dan Sayuran"
+        android:textColor="#090909"
         app:layout_constraintBottom_toBottomOf="@+id/imageView14"
         app:layout_constraintEnd_toEndOf="@+id/imageView14"
         app:layout_constraintHorizontal_bias="0.472"
@@ -206,6 +208,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_light"
         android:text="Daging dan Buah"
+        android:textColor="#090909"
         app:layout_constraintBottom_toBottomOf="@+id/imageView18"
         app:layout_constraintEnd_toEndOf="@+id/imageView18"
         app:layout_constraintHorizontal_bias="0.465"
@@ -217,6 +220,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_light"
         android:text="Minuman"
+        android:textColor="#090909"
         app:layout_constraintBottom_toBottomOf="@+id/imageView17"
         app:layout_constraintEnd_toEndOf="@+id/imageView17"
         app:layout_constraintHorizontal_bias="0.556"
@@ -228,6 +232,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_light"
         android:text="Sarapan"
+        android:textColor="#090909"
         app:layout_constraintBottom_toBottomOf="@+id/imageView16"
         app:layout_constraintEnd_toEndOf="@+id/imageView16"
         app:layout_constraintHorizontal_bias="0.533"

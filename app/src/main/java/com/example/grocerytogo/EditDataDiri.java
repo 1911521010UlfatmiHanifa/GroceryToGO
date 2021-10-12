@@ -37,7 +37,6 @@ public class EditDataDiri extends AppCompatActivity {
         simpan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
                 Intent in = new Intent(EditDataDiri.this, Pengaturan.class);
                 startActivity(in);
             }
@@ -46,7 +45,6 @@ public class EditDataDiri extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
                 Intent in = new Intent(EditDataDiri.this, LihatDataDiri.class);
                 startActivity(in);
             }

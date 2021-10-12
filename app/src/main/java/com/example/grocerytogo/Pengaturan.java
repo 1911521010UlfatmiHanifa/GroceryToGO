@@ -13,7 +13,7 @@ import android.widget.ImageView;
 public class Pengaturan extends AppCompatActivity {
 
     private CardView lihatDataDiri, ubahKataSandi, pesananSaya, keluar;
-    private ImageView home;
+    private ImageView home, keranjang;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +25,15 @@ public class Pengaturan extends AppCompatActivity {
         pesananSaya = findViewById(R.id.PesananSaya);
         keluar = findViewById(R.id.Keluar);
         home = findViewById(R.id.imageView41);
+        keranjang = findViewById(R.id.imageVie42);
+
+        keranjang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(Pengaturan.this, KeranjangSaya.class);
+                startActivity(i);
+            }
+        });
 
         lihatDataDiri.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -42,14 +51,14 @@ public class Pengaturan extends AppCompatActivity {
             }
         });
 
-//        pesananSaya.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent i = new Intent(Pengaturan.this, PesananSaya.class);
-//                startActivity(i);
-//            }
-//        });
-//
+        pesananSaya.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(Pengaturan.this, PesananSaya.class);
+                startActivity(i);
+            }
+        });
+
         keluar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

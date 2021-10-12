@@ -7,21 +7,21 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
-public class LihatDetailPesanan extends AppCompatActivity {
+public class Notifikasi extends AppCompatActivity {
 
     private ImageView back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lihat_detail_pesanan);
+        setContentView(R.layout.activity_notifikasi);
 
-        back = findViewById(R.id.imageView24);
-
+        back = findViewById(R.id.imageView13);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed();
+                Intent i = new Intent(Notifikasi.this, Home.class);
+                startActivity(i);
             }
         });
     }
