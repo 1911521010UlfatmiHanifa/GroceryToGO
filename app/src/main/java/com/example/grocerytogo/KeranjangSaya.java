@@ -43,7 +43,7 @@ public class KeranjangSaya extends AppCompatActivity {
         produkpesan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(KeranjangSaya.this, ProdukPesanan.class);
+                Intent i = new Intent(KeranjangSaya.this, Home.class);
                 startActivity(i);
             }
         });
