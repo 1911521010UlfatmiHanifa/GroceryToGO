@@ -42,7 +42,8 @@
             android:inputType="textPersonName"
             android:paddingStart="20dp"
             android:textColorHint="#615151"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            tools:ignore="SpeakableTextPresentCheck" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

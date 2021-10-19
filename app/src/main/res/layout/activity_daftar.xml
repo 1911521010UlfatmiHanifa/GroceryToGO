@@ -26,71 +26,6 @@
         app:layout_constraintStart_toStartOf="@+id/TextInputPasswordd"
         app:layout_constraintTop_toBottomOf="@+id/TextInputPasswordd" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/TextInputPasswordd"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/TextInputDaftarNoHP"
-        app:layout_constraintTop_toBottomOf="@+id/TextInputDaftarNoHP"
-        app:passwordToggleEnabled="true">
-
-        <EditText
-            android:id="@+id/daftar_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="35dp"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/edit_text"
-            android:drawableStart="@drawable/lock"
-            android:drawablePadding="30px"
-            android:ems="10"
-            android:fontFamily="@font/poppins_light"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:paddingStart="70px"
-            android:paddingEnd="70px"
-            android:password="true"
-            android:scrollbarAlwaysDrawHorizontalTrack="true"
-            android:scrollbarAlwaysDrawVerticalTrack="true"
-            android:textColorHint="#615151"
-            android:textSize="16sp"
-            tools:ignore="SpeakableTextPresentCheck" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/TextInputDaftarNoHP"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        app:layout_constraintEnd_toEndOf="@+id/TextInputDaftarUsername"
-        app:layout_constraintStart_toStartOf="@+id/TextInputDaftarUsername"
-        app:layout_constraintTop_toBottomOf="@+id/TextInputDaftarUsername">
-
-        <EditText
-            android:id="@+id/daftar_nohp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="35dp"
-            android:layout_marginTop="24dp"
-            android:background="@drawable/edit_text"
-            android:drawableStart="@drawable/nohp"
-            android:drawablePadding="30px"
-            android:ems="10"
-            android:fontFamily="@font/poppins_light"
-            android:hint="Nomor HP"
-            android:inputType="phone"
-            android:paddingStart="70px"
-            android:paddingEnd="70px"
-            android:textSize="16sp"
-            tools:ignore="SpeakableTextPresentCheck" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
     <ImageView
         android:id="@+id/imageView4"
         android:layout_width="wrap_content"
@@ -153,6 +88,71 @@
             android:textColorHint="#615151"
             android:textSize="16sp"
             tools:ignore="SpeakableTextPresentCheck" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/TextInputDaftarNoHP"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="@+id/TextInputDaftarUsername"
+        app:layout_constraintStart_toStartOf="@+id/TextInputDaftarUsername"
+        app:layout_constraintTop_toBottomOf="@+id/TextInputDaftarUsername">
+
+        <EditText
+            android:id="@+id/daftar_nohp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="35dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/edit_text"
+            android:drawableStart="@drawable/nohp"
+            android:drawablePadding="30px"
+            android:ems="10"
+            android:fontFamily="@font/poppins_light"
+            android:hint="Nomor HP"
+            android:inputType="phone"
+            android:paddingStart="70px"
+            android:paddingEnd="70px"
+            android:textSize="16sp"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/TextInputPasswordd"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/TextInputDaftarNoHP"
+        app:layout_constraintTop_toBottomOf="@+id/TextInputDaftarNoHP"
+        app:passwordToggleEnabled="true">
+
+        <EditText
+            android:id="@+id/daftar_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="35dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/edit_text"
+            android:drawableStart="@drawable/lock"
+            android:drawablePadding="30px"
+            android:ems="10"
+            android:fontFamily="@font/poppins_light"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:paddingStart="70px"
+            android:paddingEnd="70px"
+            android:password="true"
+            android:scrollbarAlwaysDrawHorizontalTrack="true"
+            android:scrollbarAlwaysDrawVerticalTrack="true"
+            android:textColorHint="#615151"
+            android:textSize="16sp"
+            tools:ignore="SpeakableTextPresentCheck" />
+
     </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
