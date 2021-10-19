@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".KeranjangSaya">
+    android:background="@drawable/bg_image"
+    tools:context=".KeranjangSayaFragment">
 
+    <!-- TODO: Update blank fragment layout -->
     <ScrollView
         android:id="@+id/scrollView2"
-        android:layout_width="401dp"
-        android:layout_height="535dp"
-        app:layout_constraintBottom_toTopOf="@+id/cardView5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView58">
@@ -67,7 +68,7 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <Button
-                    android:id="@+id/btn_produkpesan"
+                    android:id="@+id/btn_rambahproduk"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="35dp"
@@ -82,9 +83,10 @@
                     android:textColor="#79C324"
                     android:textSize="12sp"
                     app:cornerRadius="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/cardView3"
-                    tools:ignore="DuplicateClickableBoundsCheck"
-                    tools:layout_editor_absoluteX="33dp" />
+                    tools:ignore="DuplicateClickableBoundsCheck" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/constraintLayout8"
@@ -176,7 +178,7 @@
                     android:layout_marginTop="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/btn_produkpesan">
+                    app:layout_constraintTop_toBottomOf="@+id/btn_rambahproduk">
 
                     <TextView
                         android:id="@+id/textView39"
@@ -202,7 +204,7 @@
                         android:text="Floor 4, Wakil Tower, Ta 131 Gulshan Badda Link Road"
                         android:textColor="#000000"
                         android:textSize="14sp"
-                        app:layout_constraintEnd_toEndOf="@+id/textView65"
+                        app:layout_constraintEnd_toEndOf="@+id/ubah_lokasi"
                         app:layout_constraintStart_toStartOf="@+id/textView39"
                         app:layout_constraintTop_toBottomOf="@+id/textView39" />
 
@@ -217,7 +219,7 @@
                         app:srcCompat="@drawable/line" />
 
                     <TextView
-                        android:id="@+id/textView65"
+                        android:id="@+id/ubah_lokasi"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="18dp"
@@ -233,8 +235,8 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardView3"
-                    android:layout_width="410dp"
-                    android:layout_height="84dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginHorizontal="35dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -313,79 +315,9 @@
 
                 </androidx.cardview.widget.CardView>
 
-                <Button
-                    android:id="@+id/btn_pesan"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="35dp"
-                    android:backgroundTint="#5EC401"
-                    android:fontFamily="@font/poppins_bold"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:scrollbarAlwaysDrawVerticalTrack="true"
-                    android:text="M E M E S A N"
-                    android:textAllCaps="true"
-                    app:cornerRadius="20dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout8" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     </ScrollView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView5"
-        android:layout_width="match_parent"
-        android:layout_height="112dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/imageView41"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/imageView42"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/home" />
-
-            <ImageView
-                android:id="@+id/imageView42"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/belanja" />
-
-            <ImageView
-                android:id="@+id/atur"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageView42"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/setting" />
-
-            <ImageView
-                android:id="@+id/imageView44"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:srcCompat="@drawable/linee" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/textView58"
@@ -399,6 +331,24 @@
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView57" />
+
+    <Button
+        android:id="@+id/btn_pesan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="35dp"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="#5EC401"
+        android:fontFamily="@font/poppins_bold"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:text="M E M E S A N"
+        android:textAllCaps="true"
+        app:cornerRadius="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView57"

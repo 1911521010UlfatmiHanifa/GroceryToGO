@@ -3,6 +3,8 @@ package com.example.grocerytogo;
 import androidx.fragment.app.FragmentActivity;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -39,6 +41,9 @@ public class Lokasi extends FragmentActivity implements OnMapReadyCallback {
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
+
+    private Button lokasi;
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -47,5 +52,15 @@ public class Lokasi extends FragmentActivity implements OnMapReadyCallback {
         LatLng sydney = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+
+        lokasi = findViewById(R.id.simpan_lokasi);
+
+        lokasi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+
     }
 }

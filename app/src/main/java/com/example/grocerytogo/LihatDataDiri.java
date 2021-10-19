@@ -108,7 +108,6 @@ public class LihatDataDiri extends AppCompatActivity {
         editData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
                 Intent in = new Intent(LihatDataDiri.this, EditDataDiri.class);
                 startActivity(in);
             }
@@ -117,9 +116,7 @@ public class LihatDataDiri extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
-                Intent in = new Intent(LihatDataDiri.this, Pengaturan.class);
-                startActivity(in);
+                onBackPressed();
             }
         });
     }

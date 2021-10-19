@@ -17,39 +17,11 @@ public class BarangKategori extends AppCompatActivity {
         setContentView(R.layout.activity_barang_kategori);
 
         back = findViewById(R.id.imageView25);
-        home = findViewById(R.id.imageView41);
-        keranjang = findViewById(R.id.imageView42);
-        setting = findViewById(R.id.pengat);
-
-        home.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(BarangKategori.this, Home.class);
-                startActivity(i);
-            }
-        });
-
-        keranjang.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(BarangKategori.this, KeranjangSaya.class);
-                startActivity(i);
-            }
-        });
-
-        setting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(BarangKategori.this, Pengaturan.class);
-                startActivity(i);
-                finish();
-            }
-        });
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(BarangKategori.this, Home.class);
+                Intent i = new Intent(BarangKategori.this, HomeFragment.class);
                 startActivity(i);
             }
         });

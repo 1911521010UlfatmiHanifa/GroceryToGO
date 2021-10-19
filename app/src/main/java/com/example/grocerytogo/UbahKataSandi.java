@@ -26,18 +26,14 @@ public class UbahKataSandi extends AppCompatActivity {
         simpan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent in = new Intent(UbahKataSandi.this, Pengaturan.class);
-                startActivity(in);
-                finish();
+                onBackPressed();
             }
         });
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent in = new Intent(UbahKataSandi.this, Pengaturan.class);
-                startActivity(in);
-                finish();
+                onBackPressed();
             }
         });
     }

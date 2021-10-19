@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,142 +8,151 @@
     android:orientation="vertical"
     tools:context=".Daftar">
 
+    <Button
+        android:id="@+id/btn_daftar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="35dp"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="#5EC401"
+        android:drawableRight="@drawable/next"
+        android:fontFamily="@font/poppins_bold"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:text="             S E L A N J U T N Y A                   "
+        android:textAllCaps="true"
+        app:cornerRadius="40dp"
+        app:layout_constraintEnd_toEndOf="@+id/TextInputPasswordd"
+        app:layout_constraintStart_toStartOf="@+id/TextInputPasswordd"
+        app:layout_constraintTop_toBottomOf="@+id/TextInputPasswordd" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/TextInputPasswordd"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/TextInputDaftarNoHP"
+        app:layout_constraintTop_toBottomOf="@+id/TextInputDaftarNoHP"
+        app:passwordToggleEnabled="true">
+
+        <EditText
+            android:id="@+id/daftar_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="35dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/edit_text"
+            android:drawableStart="@drawable/lock"
+            android:drawablePadding="30px"
+            android:ems="10"
+            android:fontFamily="@font/poppins_light"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:paddingStart="70px"
+            android:paddingEnd="70px"
+            android:password="true"
+            android:scrollbarAlwaysDrawHorizontalTrack="true"
+            android:scrollbarAlwaysDrawVerticalTrack="true"
+            android:textColorHint="#615151"
+            android:textSize="16sp"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/TextInputDaftarNoHP"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="@+id/TextInputDaftarUsername"
+        app:layout_constraintStart_toStartOf="@+id/TextInputDaftarUsername"
+        app:layout_constraintTop_toBottomOf="@+id/TextInputDaftarUsername">
+
+        <EditText
+            android:id="@+id/daftar_nohp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="35dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/edit_text"
+            android:drawableStart="@drawable/nohp"
+            android:drawablePadding="30px"
+            android:ems="10"
+            android:fontFamily="@font/poppins_light"
+            android:hint="Nomor HP"
+            android:inputType="phone"
+            android:paddingStart="70px"
+            android:paddingEnd="70px"
+            android:textSize="16sp"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
     <ImageView
         android:id="@+id/imageView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="18dp"
         android:layout_marginTop="28dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/back" />
 
-    <ScrollView
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4"
+        app:srcCompat="@drawable/logo_login" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Daftar Akun"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="26sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/TextInputDaftarUsername"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="@+id/imageView3"
+        app:layout_constraintStart_toStartOf="@+id/imageView3"
+        app:layout_constraintTop_toBottomOf="@+id/textView4">
 
-        <LinearLayout
+        <EditText
+            android:id="@+id/daftar_user"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="35dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/edit_text"
+            android:drawableStart="@drawable/user"
+            android:drawablePadding="30px"
+            android:ems="10"
+            android:fontFamily="@font/poppins_light"
+            android:hint="Nama Pengguna"
+            android:inputType="textPersonName"
+            android:paddingLeft="70px"
+            android:paddingEnd="70px"
+            android:textColorHint="#615151"
+            android:textSize="16sp"
+            tools:ignore="SpeakableTextPresentCheck" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-            <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="30dp"
-                app:srcCompat="@drawable/logo_login" />
-
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_bold"
-                android:text="Daftar Akun"
-                android:textAlignment="center"
-                android:textColor="#000000"
-                android:textSize="26sp" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/TextInputDaftarUsername"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
-
-                <EditText
-                    android:id="@+id/daftar_user"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginHorizontal="35dp"
-                    android:layout_marginTop="12dp"
-                    android:background="@drawable/edit_text"
-                    android:drawableStart="@drawable/user"
-                    android:drawablePadding="30px"
-                    android:ems="10"
-                    android:fontFamily="@font/poppins_light"
-                    android:hint="Nama Pengguna"
-                    android:inputType="textPersonName"
-                    android:paddingLeft="70px"
-                    android:paddingEnd="70px"
-                    android:textColorHint="#615151"
-                    android:textSize="16sp"
-                    tools:ignore="SpeakableTextPresentCheck" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/TextInputDaftarNoHP"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
-
-                <EditText
-                    android:id="@+id/daftar_nohp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="35dp"
-                    android:layout_marginTop="24dp"
-                    android:background="@drawable/edit_text"
-                    android:drawableStart="@drawable/nohp"
-                    android:drawablePadding="30px"
-                    android:ems="10"
-                    android:fontFamily="@font/poppins_light"
-                    android:hint="Nomor HP"
-                    android:inputType="phone"
-                    android:paddingStart="70px"
-                    android:paddingEnd="70px"
-                    android:textSize="16sp"
-                    tools:ignore="SpeakableTextPresentCheck" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                app:passwordToggleEnabled="true">
-
-                <EditText
-                    android:id="@+id/daftar_password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="35dp"
-                    android:layout_marginTop="16dp"
-                    android:background="@drawable/edit_text"
-                    android:drawableStart="@drawable/lock"
-                    android:drawablePadding="30px"
-                    android:ems="10"
-                    android:fontFamily="@font/poppins_light"
-                    android:hint="Password"
-                    android:inputType="textPassword"
-                    android:paddingStart="70px"
-                    android:paddingEnd="70px"
-                    android:password="true"
-                    android:scrollbarAlwaysDrawHorizontalTrack="true"
-                    android:scrollbarAlwaysDrawVerticalTrack="true"
-                    android:textColorHint="#615151"
-                    android:textSize="16sp"
-                    tools:ignore="SpeakableTextPresentCheck" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <Button
-                android:id="@+id/btn_daftar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="35dp"
-                android:layout_marginTop="20dp"
-                android:backgroundTint="#5EC401"
-                android:drawableRight="@drawable/next"
-                android:fontFamily="@font/poppins_bold"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:text="             S E L A N J U T N Y A                   "
-                android:textAllCaps="true"
-                app:cornerRadius="40dp" />
-
-        </LinearLayout>
-    </ScrollView>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

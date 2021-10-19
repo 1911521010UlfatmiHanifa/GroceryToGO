@@ -21,8 +21,7 @@ public class PesananSaya extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(PesananSaya.this, Home.class);
-                startActivity(i);
+                onBackPressed();
             }
         });
     }

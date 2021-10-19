@@ -20,8 +20,7 @@ public class Notifikasi extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(Notifikasi.this, Home.class);
-                startActivity(i);
+                onBackPressed();
             }
         });
     }
