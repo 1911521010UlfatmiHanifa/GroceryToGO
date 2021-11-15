@@ -1,39 +1,41 @@
 package com.example.grocerytogo;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-public class Login extends AppCompatActivity {
+import androidx.appcompat.app.AppCompatActivity;
+
+public class DaftarActvity extends AppCompatActivity {
 
     private ImageView back;
-    private Button loginn;
+    private Button daftar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_daftar);
 
-        back = findViewById(R.id.back);
-        loginn = findViewById(R.id.btn_login);
+        back = findViewById(R.id.image_backDaftar);
+        daftar = findViewById(R.id.btn_daftar);
 
+        //Image Back
         back.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                finish();
+                Intent i = new Intent(DaftarActvity.this, MainActivity.class);
+                startActivity(i);
             }
         });
 
-        loginn.setOnClickListener(new View.OnClickListener(){
+        //Button Selanjutnya
+        daftar.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Login.this, TemplateActivity.class);
+                Intent i = new Intent(DaftarActvity.this, LoginActivity.class);
                 startActivity(i);
-                finish();
             }
         });
     }

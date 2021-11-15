@@ -8,6 +8,7 @@
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
@@ -32,44 +33,44 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".Lokasi"
+            android:name=".LokasiActivity"
             android:exported="true"
             android:label="@string/title_activity_lokasi" />
         <activity
-            android:name=".Notifikasi"
+            android:name=".NotifikasiActivity"
             android:exported="true" />
         <activity
-            android:name=".PesananSaya"
+            android:name=".PesananSayaActivity"
             android:exported="true" />
         <activity
-            android:name=".SedangMemesan"
+            android:name=".SedangMemesanActivity"
             android:exported="true" />
         <activity
-            android:name=".ProdukPesanan"
+            android:name=".ProdukPesananActivity"
             android:exported="true" />
         <activity
-            android:name=".BarangKategori"
+            android:name=".BarangKategoriActivity"
             android:exported="true" />
         <activity
-            android:name=".LihatDetailPesanan"
+            android:name=".LihatDetailPesananActivity"
             android:exported="true" />
         <activity
-            android:name=".DetailBarang"
+            android:name=".DetailBarangActivity"
             android:exported="true" />
         <activity
-            android:name=".UbahKataSandi"
+            android:name=".UbahKataSandiActivity"
             android:exported="true" />
         <activity
-            android:name=".EditDataDiri"
+            android:name=".EditDataDiriActivity"
             android:exported="true" />
         <activity
-            android:name=".LihatDataDiri"
+            android:name=".LihatDataDiriActivity"
             android:exported="true" />
         <activity
-            android:name=".Daftar"
+            android:name=".DaftarActivity"
             android:exported="true" />
         <activity
-            android:name=".Login"
+            android:name=".LoginActivity"
             android:exported="true" />
         <activity
             android:name=".MainActivity"

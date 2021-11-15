@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_image"
-    tools:context=".EditDataDiri">
+    tools:context=".EditDataDiriActivity">
 
     <ImageView
         android:id="@+id/imageView5"
@@ -19,31 +19,32 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/TextInputEditJenkel"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="match_parent"
-        android:layout_height="66dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:hint="Jenis Kelamin"
         app:layout_constraintEnd_toEndOf="@+id/TextInputEditTgl"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/TextInputEditTgl"
         app:layout_constraintTop_toBottomOf="@+id/TextInputEditTgl">
 
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/ubah_jenkel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="35dp"
             android:background="@drawable/edit_text"
             android:drawableStart="@drawable/jenkel"
-            android:drawablePadding="30dp"
+            android:drawablePadding="30px"
             android:ems="10"
             android:fontFamily="@font/poppins_light"
-            android:hint="Jenis Kelamin"
             android:inputType="textPersonName"
+            android:padding="20dp"
             android:paddingStart="20dp"
             android:textColorHint="#615151"
             android:textSize="16sp"
-            tools:ignore="SpeakableTextPresentCheck" />
+            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

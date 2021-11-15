@@ -1,16 +1,13 @@
 package com.example.grocerytogo;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import java.security.PrivateKey;
+import androidx.appcompat.app.AppCompatActivity;
 
-public class UbahKataSandi extends AppCompatActivity {
+public class UbahKataSandiActivity extends AppCompatActivity {
 
     private Button simpan;
     private ImageView back;
@@ -23,6 +20,7 @@ public class UbahKataSandi extends AppCompatActivity {
         simpan = findViewById(R.id.btn_ubah_sandi);
         back = findViewById(R.id.imageView7);
 
+        //Button Simpan
         simpan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -30,6 +28,7 @@ public class UbahKataSandi extends AppCompatActivity {
             }
         });
 
+        //Image Back
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

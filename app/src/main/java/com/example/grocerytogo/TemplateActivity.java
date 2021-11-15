@@ -1,11 +1,11 @@
 package com.example.grocerytogo;
 
+import android.os.Bundle;
+import android.view.MenuItem;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-
-import android.os.Bundle;
-import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -21,6 +21,7 @@ public class TemplateActivity extends AppCompatActivity {
 
         navigasi = findViewById(R.id.navigasi);
 
+        //Default fragmen yang ditampilkan
         getSupportFragmentManager().beginTransaction().replace(R.id.frame, new HomeFragment()).commit();
 
         navigasi.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -40,6 +41,8 @@ public class TemplateActivity extends AppCompatActivity {
                         pilihan = new SettingFragment();
                         break;
                 }
+
+                //Set Fragment Yang Akan Ditampilkan
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame, pilihan).commit();
                 return true;
             }

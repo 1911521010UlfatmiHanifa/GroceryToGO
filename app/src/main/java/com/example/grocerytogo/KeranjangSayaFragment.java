@@ -2,14 +2,20 @@ package com.example.grocerytogo;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.grocerytogo.adapter.BarangKeranjangSayaAdapter;
+import com.example.grocerytogo.model.BarangKeranjangSaya;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,6 +66,8 @@ public class KeranjangSayaFragment extends Fragment {
 
     private Button tambah, pesan;
     private TextView ubah_lokasi;
+    private RecyclerView DataBarangKeranjangSaya;
+    private BarangKeranjangSayaAdapter barangKeranjangSayaAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,20 +78,43 @@ public class KeranjangSayaFragment extends Fragment {
         tambah = view.findViewById(R.id.btn_rambahproduk);
         pesan = view.findViewById(R.id.btn_pesan);
         ubah_lokasi = view.findViewById(R.id.ubah_lokasi);
+        DataBarangKeranjangSaya = view.findViewById(R.id.ListKeranjangSaya);
 
+        //Set Adapter dan Recycler View
+        barangKeranjangSayaAdapter = new BarangKeranjangSayaAdapter();
+        barangKeranjangSayaAdapter.setListBarangKeranjangSaya(getDataBarangKeranjangSaya());
+        DataBarangKeranjangSaya.setAdapter(barangKeranjangSayaAdapter);
+        LinearLayoutManager layout = new LinearLayoutManager(getActivity());
+        DataBarangKeranjangSaya.setLayoutManager(layout);
+
+        //Button Tambah Produk Pesanan, Fragment ke Fragment
         tambah.setOnClickListener(view2 -> {
             getFragmentManager().beginTransaction().replace(R.id.frame, new HomeFragment()).commit();
         });
 
+        //Button Pesan
         pesan.setOnClickListener(view2 -> {
-            Intent in = new Intent(getActivity(), PesananSaya.class);
+            Intent in = new Intent(getActivity(), PesananSayaActivity.class);
             startActivity(in);
         });
 
+        //Text View Ubah Lokasi
         ubah_lokasi.setOnClickListener(view2 -> {
-            Intent in = new Intent(getActivity(), Lokasi.class);
+            Intent in = new Intent(getActivity(), LokasiActivity.class);
             startActivity(in);
         });
         return view;
+    }
+
+    //Inisialisasi Data
+    public ArrayList<BarangKeranjangSaya> getDataBarangKeranjangSaya() {
+        ArrayList<BarangKeranjangSaya> list = new ArrayList<>();
+        list.add(new BarangKeranjangSaya("Daging", "80.000", R.drawable.contoh4));
+        list.add(new BarangKeranjangSaya("Jus", "50.000", R.drawable.contoh3));
+        list.add(new BarangKeranjangSaya("Bah", "20.000", R.drawable.contoh1));
+        list.add(new BarangKeranjangSaya("Daging", "80.000", R.drawable.contoh4));
+        list.add(new BarangKeranjangSaya("Jus", "50.000", R.drawable.contoh3));
+        list.add(new BarangKeranjangSaya("Bah", "20.000", R.drawable.contoh1));
+        return list;
     }
 }

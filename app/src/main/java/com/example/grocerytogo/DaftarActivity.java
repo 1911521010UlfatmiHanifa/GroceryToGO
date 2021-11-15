@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-public class Daftar extends AppCompatActivity {
+public class DaftarActivity extends AppCompatActivity {
 
     private ImageView back;
     private Button daftar;
@@ -18,13 +18,13 @@ public class Daftar extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_daftar);
 
-        back = findViewById(R.id.imageView4);
+        back = findViewById(R.id.image_backDaftar);
         daftar = findViewById(R.id.btn_daftar);
 
         back.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent i = new Intent(Daftar.this, MainActivity.class);
+                Intent i = new Intent(DaftarActivity.this, MainActivity.class);
                 startActivity(i);
             }
         });
@@ -32,7 +32,7 @@ public class Daftar extends AppCompatActivity {
         daftar.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Daftar.this, Login.class);
+                Intent i = new Intent(DaftarActivity.this, LoginActivity.class);
                 startActivity(i);
             }
         });
