@@ -84,7 +84,8 @@ public class PesananSayaActivity extends AppCompatActivity implements PesananSay
         list.add(new PesananSaya("Pesanan #123", "Proses", "120000", "Oktober 20, 2021"));
         list.add(new PesananSaya("Pesanan #124", "Proses", "24000", "Oktober 21, 2021"));
         list.add(new PesananSaya("Pesanan #123", "Proses", "120000", "Oktober 20, 2021"));
-        list.add(new PesananSaya("Pesanan #124", "Proses", "24000", "Oktober 21, 2021"));list.add(new PesananSaya("Pesanan #123", "Diterima", "Rp.120000", "Oktober 20, 2021"));
+        list.add(new PesananSaya("Pesanan #124", "Proses", "24000", "Oktober 21, 2021"));
+        list.add(new PesananSaya("Pesanan #123", "Proses", "120000", "Oktober 20, 2021"));
         list.add(new PesananSaya("Pesanan #124", "Proses", "24000", "Oktober 21, 2021"));
         return list;
     }
@@ -101,14 +102,15 @@ public class PesananSayaActivity extends AppCompatActivity implements PesananSay
         list.add(new PesananSaya("Pesanan #123", "Diterima", "120000", "Oktober 20, 2021"));
         list.add(new PesananSaya("Pesanan #124", "Diterima", "24000", "Oktober 21, 2021"));
         list.add(new PesananSaya("Pesanan #123", "Diterima", "120000", "Oktober 20, 2021"));
-        list.add(new PesananSaya("Pesanan #124", "Diterima", "24000", "Oktober 21, 2021"));list.add(new PesananSaya("Pesanan #123", "Diterima", "Rp.120000", "Oktober 20, 2021"));
+        list.add(new PesananSaya("Pesanan #124", "Diterima", "24000", "Oktober 21, 2021"));
+        list.add(new PesananSaya("Pesanan #123", "Diterima", "120000", "Oktober 20, 2021"));
         list.add(new PesananSaya("Pesanan #124", "Diterima", "24000", "Oktober 21, 2021"));
         return list;
     }
 
     @Override
     public void onClick(View view, PesananSaya pesananSaya) {
-        Intent a = new Intent(PesananSayaActivity.this, LihatDetailPesananActivity.class);
+        Intent a = new Intent(PesananSayaActivity.this, SedangMemesanActivity.class);
         String nomorPesanan = pesananSaya.idPesanan;
         a.putExtra("id", nomorPesanan);
         startActivity(a);
