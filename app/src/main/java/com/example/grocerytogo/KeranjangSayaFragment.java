@@ -111,10 +111,10 @@ public class KeranjangSayaFragment extends Fragment {
         ArrayList<BarangKeranjangSaya> list = new ArrayList<>();
         list.add(new BarangKeranjangSaya("Daging", "80.000", R.drawable.contoh4));
         list.add(new BarangKeranjangSaya("Jus", "50.000", R.drawable.contoh3));
-        list.add(new BarangKeranjangSaya("Bah", "20.000", R.drawable.contoh1));
+        list.add(new BarangKeranjangSaya("Buah", "20.000", R.drawable.contoh1));
         list.add(new BarangKeranjangSaya("Daging", "80.000", R.drawable.contoh4));
         list.add(new BarangKeranjangSaya("Jus", "50.000", R.drawable.contoh3));
-        list.add(new BarangKeranjangSaya("Bah", "20.000", R.drawable.contoh1));
+        list.add(new BarangKeranjangSaya("Buah", "20.000", R.drawable.contoh1));
         return list;
     }
 }
