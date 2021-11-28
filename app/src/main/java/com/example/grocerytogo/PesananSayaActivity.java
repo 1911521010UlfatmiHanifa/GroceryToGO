@@ -110,9 +110,17 @@ public class PesananSayaActivity extends AppCompatActivity implements PesananSay
 
     @Override
     public void onClick(View view, PesananSaya pesananSaya) {
-        Intent a = new Intent(PesananSayaActivity.this, SedangMemesanActivity.class);
-        String nomorPesanan = pesananSaya.idPesanan;
-        a.putExtra("id", nomorPesanan);
-        startActivity(a);
+        String statusa = pesananSaya.statusPesanan;
+        if(statusa == "Diterima"){
+            Intent a = new Intent(PesananSayaActivity.this, LihatDetailPesananActivity.class);
+            String nomorPesanan = pesananSaya.idPesanan;
+            a.putExtra("id", nomorPesanan);
+            startActivity(a);
+        }else if(statusa == "Proses"){
+            Intent a = new Intent(PesananSayaActivity.this, SedangMemesanActivity.class);
+            String nomorPesanan = pesananSaya.idPesanan;
+            a.putExtra("id", nomorPesanan);
+            startActivity(a);
+        }
     }
 }
