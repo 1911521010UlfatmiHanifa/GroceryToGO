@@ -43,7 +43,7 @@ public class NotifikasiActivity extends AppCompatActivity {
         });
     }
 
-    //Inisialisasi Data Recycler View
+    //Inisialisasi AuthData Recycler View
     public ArrayList<Notifikasi> getDataNotifikasi(){
         ArrayList<Notifikasi> list = new ArrayList<>();
         list.add(new Notifikasi("Pesanan #123", "Pesanan Sudah Sampai Dan Sudah Diterima dan Aku Sayang kamu", "12:20 WIB", R.drawable.notif));

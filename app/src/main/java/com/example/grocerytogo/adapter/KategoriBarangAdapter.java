@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.grocerytogo.HomeFragment;
 import com.example.grocerytogo.R;
 import com.example.grocerytogo.model.KategoriBarang;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -66,7 +67,7 @@ public class KategoriBarangAdapter
     public void onBindViewHolder(@NonNull KategoriBarangViewHolder viewHolder, int position) {
         KategoriBarang kategoriBarang = listKategori.get(position);
         viewHolder.textKategori.setText(kategoriBarang.kategori.toString());
-        viewHolder.imageKategori.setImageResource(kategoriBarang.gambar.intValue());
+        Picasso.get().load(kategoriBarang.gambar).into(viewHolder.imageKategori);
     }
 
     @Override

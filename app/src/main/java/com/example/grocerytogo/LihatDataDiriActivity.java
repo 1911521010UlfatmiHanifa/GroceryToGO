@@ -81,7 +81,7 @@ public class LihatDataDiriActivity extends AppCompatActivity {
             }
         });
 
-        //Button Edit Data Diri
+        //Button Edit AuthData Diri
         editData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

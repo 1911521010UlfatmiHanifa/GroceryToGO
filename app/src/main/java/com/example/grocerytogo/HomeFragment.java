@@ -1,6 +1,9 @@
 package com.example.grocerytogo;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -17,12 +21,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.grocerytogo.adapter.BarangBerdasarkanKategoriAdapter;
 import com.example.grocerytogo.adapter.KategoriBarangAdapter;
+import com.example.grocerytogo.model.AuthClass;
+import com.example.grocerytogo.model.AuthData;
 import com.example.grocerytogo.model.BarangBerdasarKategori;
 import com.example.grocerytogo.model.KategoriBarang;
+import com.example.grocerytogo.model.KategoriItem;
+import com.example.grocerytogo.model.ListKategori;
+import com.example.grocerytogo.retrofit.GtgClient;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -142,11 +158,50 @@ public class HomeFragment extends Fragment implements KategoriBarangAdapter.Klik
 
         //Set Adapter Kategori dan Recycler View
         kategoriBarangAdapter = new KategoriBarangAdapter();
-        kategoriBarangAdapter.setListKategori(getDataKategoriBarang());
+
+        SharedPreferences preferences = getContext().getSharedPreferences("com.example.grocerytogo",MODE_PRIVATE);
+        String token = preferences.getString("TOKEN","");
+
+        String API_BASE_URL = "https://groceriestogo1208.herokuapp.com/";
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(API_BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        GtgClient gtgClient = retrofit.create(GtgClient.class);
+        //        Toast.makeText(this,token,Toast.LENGTH_SHORT).show();
+
+        Call<ListKategori> call = gtgClient.getKategori(token);
+        call.enqueue(new Callback<ListKategori>() {
+            @Override
+            public void onResponse(Call<ListKategori> call, Response<ListKategori> response) {
+                ListKategori listKategori = response.body();
+                ArrayList<KategoriBarang> kategoriBarangs = new ArrayList<>();
+                if(listKategori != null){
+                    List<KategoriItem> kategoriItems = listKategori.getKategori();
+                    for (KategoriItem item: kategoriItems){
+                        KategoriBarang kategoriBarang = new KategoriBarang(
+                                item.getId(),
+                                item.getNamaKategori(),
+                                item.getFoto()
+                        );
+                        kategoriBarangs.add(kategoriBarang);
+                    }
+                }
+                kategoriBarangAdapter.setListKategori(kategoriBarangs);
+            }
+
+            @Override
+            public void onFailure(Call<ListKategori> call, Throwable t) {
+
+            }
+        });
+
         kategoriBarangAdapter.setListener(this);
         DataKategoriBarang.setAdapter(kategoriBarangAdapter);
         GridLayoutManager layout = new GridLayoutManager(getActivity(), 2,GridLayoutManager.VERTICAL, false);
         DataKategoriBarang.setLayoutManager(layout);
+
         return view;
     }
 
@@ -168,35 +223,31 @@ public class HomeFragment extends Fragment implements KategoriBarangAdapter.Klik
         barangBerdasarkanKategoriAdapter.setListener(this);
     }
 
-    //Inisialisasi Data
-    public ArrayList<KategoriBarang> getDataKategoriBarang(){
-        ArrayList<KategoriBarang> list = new ArrayList<>();
-        list.add(new KategoriBarang(R.drawable.contoh1, "Buah-Buahan"));
-        list.add(new KategoriBarang(R.drawable.contoh2, "Sarapan"));
-        list.add(new KategoriBarang(R.drawable.contoh3, "Minuman"));
-        list.add(new KategoriBarang(R.drawable.contoh4, "Daging"));
-        list.add(new KategoriBarang(R.drawable.contoh5, "Makanan Ringan"));
-        list.add(new KategoriBarang(R.drawable.contoh1, "Buah-Buahan"));
-        list.add(new KategoriBarang(R.drawable.contoh2, "Sarapan"));
-        list.add(new KategoriBarang(R.drawable.contoh3, "Minuman"));
-        list.add(new KategoriBarang(R.drawable.contoh4, "Daging"));
-        list.add(new KategoriBarang(R.drawable.contoh5, "Makanan Ringan"));
-        return list;
-    }
+    //Inisialisasi AuthData
+//    public ArrayList<KategoriBarang> getDataKategoriBarang(){
+////        ArrayList<KategoriBarang> list = new ArrayList<>();
+////        list.add(new KategoriBarang(R.drawable.contoh1, "Buah-Buahan"));
+////        list.add(new KategoriBarang(R.drawable.contoh2, "Sarapan"));
+////        list.add(new KategoriBarang(R.drawable.contoh3, "Minuman"));
+////        list.add(new KategoriBarang(R.drawable.contoh4, "Daging"));
+////        list.add(new KategoriBarang(R.drawable.contoh5, "Makanan Ringan"));
+////        list.add(new KategoriBarang(R.drawable.contoh1, "Buah-Buahan"));
+////        list.add(new KategoriBarang(R.drawable.contoh2, "Sarapan"));
+////        list.add(new KategoriBarang(R.drawable.contoh3, "Minuman"));
+////        list.add(new KategoriBarang(R.drawable.contoh4, "Daging"));
+////        list.add(new KategoriBarang(R.drawable.contoh5, "Makanan Ringan"));
+//        return list;
+//    }
 
     public ArrayList<BarangBerdasarKategori> getDataPencarian(){
-        listw.add(new BarangBerdasarKategori("Daging", "200000", R.drawable.contoh4));
-        listw.add(new BarangBerdasarKategori("Ciki", "6000", R.drawable.contoh5));
-        listw.add(new BarangBerdasarKategori("Buah", "40000", R.drawable.contoh1));
-        listw.add(new BarangBerdasarKategori("Jus", "20000", R.drawable.contoh3));
-        listw.add(new BarangBerdasarKategori("Daging Ayam", "200000", R.drawable.contoh4));
-        listw.add(new BarangBerdasarKategori("Ciki", "6000", R.drawable.contoh5));
-        listw.add(new BarangBerdasarKategori("Buah", "40000", R.drawable.contoh1));
-        listw.add(new BarangBerdasarKategori("Jus", "20000", R.drawable.contoh3));
-        listw.add(new BarangBerdasarKategori("Daging", "200000", R.drawable.contoh4));
-        listw.add(new BarangBerdasarKategori("Ciki", "6000", R.drawable.contoh5));
-        listw.add(new BarangBerdasarKategori("Buah", "40000", R.drawable.contoh1));
-        listw.add(new BarangBerdasarKategori("Jus", "20000", R.drawable.contoh3));
+        listw.add(new BarangBerdasarKategori(1, "Daging", "kg", "Dagi", R.drawable.contoh4, 2, 30000, 1));
+        listw.add(new BarangBerdasarKategori(2, "Ciki", "pcs", "Dagi", R.drawable.contoh5, 2, 30000, 1));
+        listw.add(new BarangBerdasarKategori(3, "Buah", "kg", "Dagi", R.drawable.contoh1, 2, 30000, 1));
+        listw.add(new BarangBerdasarKategori(4, "Jus", "botol", "Dagi", R.drawable.contoh3, 2, 30000, 1));
+        listw.add(new BarangBerdasarKategori(1, "Daging", "kg", "Dagi", R.drawable.contoh4, 2, 30000, 1));
+        listw.add(new BarangBerdasarKategori(2, "Ciki", "pcs", "Dagi", R.drawable.contoh5, 2, 30000, 1));
+        listw.add(new BarangBerdasarKategori(3, "Buah", "kg", "Dagi", R.drawable.contoh1, 2, 30000, 1));
+        listw.add(new BarangBerdasarKategori(4, "Jus", "botol", "Dagi", R.drawable.contoh3, 2, 30000, 1));
         return listw;
     }
 
@@ -205,6 +256,8 @@ public class HomeFragment extends Fragment implements KategoriBarangAdapter.Klik
         Intent a = new Intent(getActivity(), BarangKategoriActivity.class);
         String namaKategori = kategoriBarang.kategori;
         a.putExtra("nama", namaKategori);
+        String idKategori = kategoriBarang.idKategori.toString();
+        a.putExtra("id", idKategori);
         startActivity(a);
     }
 
@@ -213,9 +266,9 @@ public class HomeFragment extends Fragment implements KategoriBarangAdapter.Klik
         Intent a = new Intent(getActivity(), DetailBarangActivity.class);
         String namaBarang = barangBerdasarKategori.namaProduk;
         a.putExtra("nama", namaBarang);
-        int gambarBarang = barangBerdasarKategori.logoProduk;
-        a.putExtra("gambar", gambarBarang);
-        String harga = barangBerdasarKategori.hargaProduk;
+//        String gambarBarang = barangBerdasarKategori.gambar;
+//        a.putExtra("gambar", gambarBarang);
+        int harga = barangBerdasarKategori.hargaProduk;
         a.putExtra("harga", harga);
         startActivity(a);
     }

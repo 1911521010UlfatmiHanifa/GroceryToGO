@@ -72,7 +72,7 @@ public class PesananSayaActivity extends AppCompatActivity implements PesananSay
         });
     }
 
-    //Inisialisasi Data Pesanan Dproses
+    //Inisialisasi AuthData Pesanan Dproses
     public ArrayList<PesananSaya> getDataPesananSayaProses(){
         ArrayList<PesananSaya> list = new ArrayList<>();
         list.add(new PesananSaya("Pesanan #123", "Proses", "120000", "Oktober 20, 2021"));
@@ -89,7 +89,7 @@ public class PesananSayaActivity extends AppCompatActivity implements PesananSay
         return list;
     }
 
-    //Inisialisasi Data Riwayat Pesanan
+    //Inisialisasi AuthData Riwayat Pesanan
     public ArrayList<PesananSaya> getDataPesananSayaSelesai(){
         ArrayList<PesananSaya> list = new ArrayList<>();
         list.add(new PesananSaya("Pesanan #123", "Diterima", "120000", "Oktober 20, 2021"));
@@ -108,9 +108,17 @@ public class PesananSayaActivity extends AppCompatActivity implements PesananSay
 
     @Override
     public void onClick(View view, PesananSaya pesananSaya) {
-        Intent a = new Intent(PesananSayaActivity.this, LihatDetailPesananActivity.class);
-        String nomorPesanan = pesananSaya.idPesanan;
-        a.putExtra("id", nomorPesanan);
-        startActivity(a);
+        String statusa = pesananSaya.statusPesanan;
+        if(statusa == "Diterima"){
+            Intent a = new Intent(PesananSayaActivity.this, LihatDetailPesananActivity.class);
+            String nomorPesanan = pesananSaya.idPesanan;
+            a.putExtra("id", nomorPesanan);
+            startActivity(a);
+        }else if(statusa == "Proses"){
+            Intent a = new Intent(PesananSayaActivity.this, SedangMemesanActivity.class);
+            String nomorPesanan = pesananSaya.idPesanan;
+            a.putExtra("id", nomorPesanan);
+            startActivity(a);
+        }
     }
 }

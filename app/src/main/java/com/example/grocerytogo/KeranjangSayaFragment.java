@@ -106,7 +106,7 @@ public class KeranjangSayaFragment extends Fragment {
         return view;
     }
 
-    //Inisialisasi Data
+    //Inisialisasi AuthData
     public ArrayList<BarangKeranjangSaya> getDataBarangKeranjangSaya() {
         ArrayList<BarangKeranjangSaya> list = new ArrayList<>();
         list.add(new BarangKeranjangSaya("Daging", "80.000", R.drawable.contoh4));

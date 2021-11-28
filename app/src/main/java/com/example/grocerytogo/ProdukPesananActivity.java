@@ -43,7 +43,7 @@ public class ProdukPesananActivity extends AppCompatActivity {
         });
     }
 
-    //Inisiasi Data Recycler View
+    //Inisiasi AuthData Recycler View
     public ArrayList<DetailBarangPesanan> getDataDetailBarangPesanan() {
         ArrayList<DetailBarangPesanan> list = new ArrayList<>();
         list.add(new DetailBarangPesanan("Ciki-Ciki", "12000", R.drawable.contoh5, "2"));

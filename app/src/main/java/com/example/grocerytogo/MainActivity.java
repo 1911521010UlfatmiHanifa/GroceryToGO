@@ -34,8 +34,8 @@ public class MainActivity extends AppCompatActivity {
         daftar2.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent i = new Intent(MainActivity.this, DaftarActvity.class);
-                startActivity(i);
+                Intent a = new Intent(MainActivity.this, DaftarActvity.class);
+                startActivity(a);
             }
         });
 
@@ -43,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent i = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(i);
+                Intent j = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(j);
             }
         });
 

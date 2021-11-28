@@ -1,7 +1,9 @@
 package com.example.grocerytogo;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +25,11 @@ public class TemplateActivity extends AppCompatActivity {
 
         //Default fragmen yang ditampilkan
         getSupportFragmentManager().beginTransaction().replace(R.id.frame, new HomeFragment()).commit();
+
+        //Token
+        SharedPreferences preferences = getSharedPreferences("com.example.grocerytogo",MODE_PRIVATE);
+        String token = preferences.getString("TOKEN","");
+        Toast.makeText(getApplicationContext(), token, Toast.LENGTH_SHORT).show();
 
         navigasi.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override

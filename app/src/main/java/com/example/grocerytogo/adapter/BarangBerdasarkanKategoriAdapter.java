@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.grocerytogo.R;
 import com.example.grocerytogo.model.BarangBerdasarKategori;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -23,6 +24,34 @@ public class BarangBerdasarkanKategoriAdapter
     ArrayList<BarangBerdasarKategori> listBarang = new ArrayList<>();
     public BarangBerdasarkanKategoriAdapter(ArrayList<BarangBerdasarKategori> listBarang) {
         this.listBarang = listBarang;
+    }
+
+    public class BarangBersarkanKategoriViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+
+        TextView namaBarang, hargaBarang, jumlah;
+        ImageView gambarBarang;
+        ConstraintLayout layoutBarang;
+        Button tambah, kurang, sebelumTambah;
+
+        public BarangBersarkanKategoriViewHolder(@NonNull View itemView) {
+            super(itemView);
+            namaBarang = itemView.findViewById(R.id.textBarang);
+            hargaBarang = itemView.findViewById(R.id.textHargaBarang);
+            gambarBarang = itemView.findViewById(R.id.imageBarang);
+            layoutBarang = itemView.findViewById(R.id.layoutBarang);
+            jumlah = itemView.findViewById(R.id.textJumlah);
+            tambah = itemView.findViewById(R.id.btn_tambah1);
+            kurang = itemView.findViewById(R.id.btn_kurang1);
+            sebelumTambah = itemView.findViewById(R.id.btn_tambahProduk);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            if(listener != null){
+                listener.onClick(view, listBarang.get(getAdapterPosition()));
+            }
+        }
     }
 
     public interface KlikBarang{
@@ -51,9 +80,10 @@ public class BarangBerdasarkanKategoriAdapter
     @Override
     public void onBindViewHolder(@NonNull BarangBersarkanKategoriViewHolder viewHolder, int position) {
         BarangBerdasarKategori barang = listBarang.get(position);
-        viewHolder.namaBarang.setText(barang.namaProduk.toString());
+        viewHolder.namaBarang.setText(barang.namaProduk);
         viewHolder.hargaBarang.setText(barang.hargaProduk.toString());
-        viewHolder.gambarBarang.setImageResource(barang.logoProduk.intValue());
+//        Picasso.get().load(barang.gambar).into(viewHolder.gambarBarang);
+        viewHolder.gambarBarang.setImageResource(barang.gambar.intValue());
 
         viewHolder.tambah.setVisibility(View.GONE);
         viewHolder.kurang.setVisibility(View.GONE);
@@ -95,33 +125,5 @@ public class BarangBerdasarkanKategoriAdapter
     @Override
     public int getItemCount() {
         return listBarang.size();
-    }
-
-    public class BarangBersarkanKategoriViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-
-        TextView namaBarang, hargaBarang, jumlah;
-        ImageView gambarBarang;
-        ConstraintLayout layoutBarang;
-        Button tambah, kurang, sebelumTambah;
-
-        public BarangBersarkanKategoriViewHolder(@NonNull View itemView) {
-            super(itemView);
-            namaBarang = itemView.findViewById(R.id.textBarang);
-            hargaBarang = itemView.findViewById(R.id.textHargaBarang);
-            gambarBarang = itemView.findViewById(R.id.imageBarang);
-            layoutBarang = itemView.findViewById(R.id.layoutBarang);
-            jumlah = itemView.findViewById(R.id.textJumlah);
-            tambah = itemView.findViewById(R.id.btn_tambah1);
-            kurang = itemView.findViewById(R.id.btn_kurang1);
-            sebelumTambah = itemView.findViewById(R.id.btn_tambahProduk);
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            if(listener != null){
-                listener.onClick(view, listBarang.get(getAdapterPosition()));
-            }
-        }
     }
 }

@@ -2,13 +2,14 @@ package com.example.grocerytogo.model;
 
 public class KategoriBarang {
 
-    public String kategori;
-    public Integer gambar;
+    public String kategori, gambar;
+    public Integer idKategori;
 
     public KategoriBarang() {}
 
-    public KategoriBarang(Integer gambar, String kategori) {
-        this.gambar = gambar;
+    public KategoriBarang(Integer idKategori, String kategori, String gambar) {
+        this.idKategori = idKategori;
         this.kategori = kategori;
+        this.gambar = gambar;
     }
 }

@@ -71,7 +71,7 @@ public class SettingFragment extends Fragment {
         pesananSaya = view.findViewById(R.id.PesananSaya);
         keluar = view.findViewById(R.id.Keluar);
 
-        //Card View Lihat Data Diri
+        //Card View Lihat AuthData Diri
         lihatDataDiri.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -109,6 +109,7 @@ public class SettingFragment extends Fragment {
                         ((AlertDialog.Builder) a).setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
+                                
                                 Intent in = new Intent(getActivity(), MainActivity.class);
                                 startActivity(in);
                             }
