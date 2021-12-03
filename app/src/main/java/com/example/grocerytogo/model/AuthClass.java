@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class AuthClass{
 
-    @SerializedName("data")
+    @SerializedName("AuthData")
     private AuthData authData;
 
     public void setAuthData(AuthData authData){

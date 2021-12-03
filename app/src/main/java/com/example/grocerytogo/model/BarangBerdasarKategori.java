@@ -3,7 +3,7 @@ package com.example.grocerytogo.model;
 public class BarangBerdasarKategori {
 
     public String namaProduk, satuanProduk, keterangan;
-    public Integer gambar;
+    public String gambar;
     public Integer idProduk;
     public Integer id_kategori;
     public Integer hargaProduk;
@@ -11,7 +11,7 @@ public class BarangBerdasarKategori {
 
     public BarangBerdasarKategori(){}
 
-    public BarangBerdasarKategori(Integer idProduk, String namaProduk, String satuanProduk, String keterangan, Integer gambar, Integer id_kategori, Integer hargaProduk, Integer ukuranProduk) {
+    public BarangBerdasarKategori(Integer idProduk, String namaProduk, String satuanProduk, String keterangan, String gambar, Integer id_kategori, Integer hargaProduk, Integer ukuranProduk) {
         this.idProduk = idProduk;
         this.namaProduk = namaProduk;
         this.satuanProduk = satuanProduk;

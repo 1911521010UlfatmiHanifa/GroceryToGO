@@ -47,7 +47,7 @@ public class LokasiActivity extends FragmentActivity implements OnMapReadyCallba
 
         initMap();
 
-        checkMyPermission();
+//        checkMyPermission();
 
         mLocationClient = new FusedLocationProviderClient(this);
         fab = findViewById(R.id.fab);
@@ -62,6 +62,15 @@ public class LokasiActivity extends FragmentActivity implements OnMapReadyCallba
                         mMap.moveCamera(CameraUpdateFactory.newLatLng(LatLng));
                     }
                 });
+            }
+        });
+
+        lokasi = findViewById(R.id.simpan);
+
+        lokasi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
             }
         });
     }
@@ -122,15 +131,6 @@ public class LokasiActivity extends FragmentActivity implements OnMapReadyCallba
 //        LatLng sydney = new LatLng(-34, 151);
 //        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
 //        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-
-        lokasi = findViewById(R.id.simpan);
-
-        lokasi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
 
     }
 

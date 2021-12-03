@@ -29,7 +29,8 @@ public class TemplateActivity extends AppCompatActivity {
         //Token
         SharedPreferences preferences = getSharedPreferences("com.example.grocerytogo",MODE_PRIVATE);
         String token = preferences.getString("TOKEN","");
-        Toast.makeText(getApplicationContext(), token, Toast.LENGTH_SHORT).show();
+        String id = preferences.getString("ID","");
+//        Toast.makeText(getApplicationContext(), token, Toast.LENGTH_SHORT).show();
 
         navigasi.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override

@@ -77,11 +77,14 @@ public class LoginActivity extends AppCompatActivity {
                 if (authClass != null){
                     AuthData authData = authClass.getAuthData();
                     String accesToken = authData.getToken();
+                    Integer id = authData.getId();
+
 //                    Toast.makeText(getApplicationContext(), accesToken, Toast.LENGTH_SHORT).show();
 
                     SharedPreferences preferences = getSharedPreferences("com.example.grocerytogo",MODE_PRIVATE);
                     SharedPreferences.Editor editor = preferences.edit();
                     editor.putString("TOKEN", accesToken);
+                    editor.putString("id", id.toString());
                     editor.apply();
 
                     Intent i = new Intent(LoginActivity.this, TemplateActivity.class);

@@ -1,6 +1,5 @@
 package com.example.grocerytogo.adapter;
 
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.grocerytogo.BarangKategoriActivity;
+import com.example.grocerytogo.HomeFragment;
 import com.example.grocerytogo.R;
 import com.example.grocerytogo.model.BarangBerdasarKategori;
 import com.squareup.picasso.Picasso;
@@ -22,7 +23,11 @@ public class BarangBerdasarkanKategoriAdapter
         extends RecyclerView.Adapter<BarangBerdasarkanKategoriAdapter.BarangBersarkanKategoriViewHolder> {
 
     ArrayList<BarangBerdasarKategori> listBarang = new ArrayList<>();
-    public BarangBerdasarkanKategoriAdapter(ArrayList<BarangBerdasarKategori> listBarang) {
+//    public BarangBerdasarkanKategoriAdapter(ArrayList<BarangBerdasarKategori> listBarang) {
+//        this.listBarang = listBarang;
+//    }
+
+    public void setListBarang(ArrayList<BarangBerdasarKategori> listBarang){
         this.listBarang = listBarang;
     }
 
@@ -30,7 +35,6 @@ public class BarangBerdasarkanKategoriAdapter
 
         TextView namaBarang, hargaBarang, jumlah;
         ImageView gambarBarang;
-        ConstraintLayout layoutBarang;
         Button tambah, kurang, sebelumTambah;
 
         public BarangBersarkanKategoriViewHolder(@NonNull View itemView) {
@@ -38,7 +42,6 @@ public class BarangBerdasarkanKategoriAdapter
             namaBarang = itemView.findViewById(R.id.textBarang);
             hargaBarang = itemView.findViewById(R.id.textHargaBarang);
             gambarBarang = itemView.findViewById(R.id.imageBarang);
-            layoutBarang = itemView.findViewById(R.id.layoutBarang);
             jumlah = itemView.findViewById(R.id.textJumlah);
             tambah = itemView.findViewById(R.id.btn_tambah1);
             kurang = itemView.findViewById(R.id.btn_kurang1);
@@ -64,9 +67,6 @@ public class BarangBerdasarkanKategoriAdapter
         this.listener = listener;
     }
 
-    public void setListBarang(ArrayList<BarangBerdasarKategori> listBarang){
-        this.listBarang = listBarang;
-    }
 
     @NonNull
     @Override
@@ -82,8 +82,8 @@ public class BarangBerdasarkanKategoriAdapter
         BarangBerdasarKategori barang = listBarang.get(position);
         viewHolder.namaBarang.setText(barang.namaProduk);
         viewHolder.hargaBarang.setText(barang.hargaProduk.toString());
-//        Picasso.get().load(barang.gambar).into(viewHolder.gambarBarang);
-        viewHolder.gambarBarang.setImageResource(barang.gambar.intValue());
+        Picasso.get().load(barang.gambar).into(viewHolder.gambarBarang);
+//        viewHolder.gambarBarang.setImageResource(barang.gambar.intValue());
 
         viewHolder.tambah.setVisibility(View.GONE);
         viewHolder.kurang.setVisibility(View.GONE);

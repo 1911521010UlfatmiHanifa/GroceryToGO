@@ -1,15 +1,30 @@
 package com.example.grocerytogo;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+
+import com.example.grocerytogo.model.AuthClass;
+import com.example.grocerytogo.model.AuthData;
+import com.example.grocerytogo.model.Pesan;
+import com.example.grocerytogo.retrofit.GtgClient;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 ///**
 // * A simple {@link Fragment} subclass.
@@ -109,9 +124,7 @@ public class SettingFragment extends Fragment {
                         ((AlertDialog.Builder) a).setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                
-                                Intent in = new Intent(getActivity(), MainActivity.class);
-                                startActivity(in);
+                                logout();
                             }
                         });
                         ((AlertDialog.Builder) a).setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
@@ -125,5 +138,37 @@ public class SettingFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    private void logout(){
+
+        String API_BASE_URL = "https://groceriestogo1208.herokuapp.com/";
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(API_BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        SharedPreferences preferences = getContext().getSharedPreferences("com.example.grocerytogo",MODE_PRIVATE);
+        String token = preferences.getString("TOKEN","");
+
+        GtgClient gtgClient = retrofit.create(GtgClient.class);
+        Call<Pesan> call = gtgClient.logout(token);
+        call.enqueue(new Callback<Pesan>() {
+            @Override
+            public void onResponse(Call<Pesan> call, Response<Pesan> response) {
+                Pesan pesan = response.body();
+                if(pesan != null) {
+                    Intent in = new Intent(getActivity(), MainActivity.class);
+                    startActivity(in);
+                }else {
+                    Toast.makeText(getContext(), "Logout Gagal", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Pesan> call, Throwable t) {
+                Toast.makeText(getContext(), "Gagal Mengakses Server", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

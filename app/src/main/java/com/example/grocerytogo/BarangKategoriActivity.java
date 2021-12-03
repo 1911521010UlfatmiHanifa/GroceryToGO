@@ -5,11 +5,13 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.grocerytogo.adapter.BarangBerdasarkanKategoriAdapter;
@@ -36,7 +38,7 @@ public class BarangKategoriActivity extends AppCompatActivity implements BarangB
     private RecyclerView DataBarang;
     private TextView namaKategori;
     private BarangBerdasarkanKategoriAdapter barangBerdasarkanKategoriAdapter;
-    public  ArrayList<BarangBerdasarKategori> barangBerdasarKategoris = new ArrayList<>();
+//    public  ArrayList<BarangBerdasarKategori> barangBerdasarKategoris = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,58 +53,67 @@ public class BarangKategoriActivity extends AppCompatActivity implements BarangB
         namaKategori.setText(Kategori);
 
         //Set Adapter dan Recycler View
-        barangBerdasarkanKategoriAdapter = new BarangBerdasarkanKategoriAdapter(barangBerdasarKategoris);
-//        SharedPreferences preferences = getSharedPreferences("com.example.grocerytogo",MODE_PRIVATE);
-//        String token = preferences.getString("TOKEN","");
-////        Toast.makeText(getApplicationContext(), token, Toast.LENGTH_SHORT).show();
-//
-//        String API_BASE_URL = "https://groceriestogo1208.herokuapp.com/";
-//        Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl(API_BASE_URL)
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .build();
-//
-//        GtgClient gtgClient = retrofit.create(GtgClient.class);
-//
-//        String idKategori = getIntent().getStringExtra("id").toString();
-////        Toast.makeText(getApplicationContext(), idKategori, Toast.LENGTH_SHORT).show();
-//
-//        Call<ListBarang> call = gtgClient.getBarang(token, idKategori);
-//        call.enqueue(new Callback<ListBarang>() {
-//             @Override
-//             public void onResponse(Call<ListBarang> call, Response<ListBarang> response) {
-//                 ListBarang listBarang = response.body();
-//                 ArrayList<BarangBerdasarKategori> barangBerdasarKategoris = new ArrayList<>();
-//                 if (listBarang != null) {
-//                     List<BarangItem> barangItems = listBarang.getBarang();
-//                     for (BarangItem item : barangItems) {
-//                         BarangBerdasarKategori barangBerdasarKategori = new BarangBerdasarKategori(
-//                                 item.getId(),
-//                                 item.getNamaBarang(),
-//                                 item.getSatuanBarang(),
-//                                 item.getKeterangan(),
-//                                 item.getGambar(),
-//                                 item.getIdKategori(),
-//                                 item.getHargaBarang(),
-//                                 item.getUkuranBarang()
-//                         );
-//                         barangBerdasarKategoris.add(barangBerdasarKategori);
-//                         Toast.makeText(getApplicationContext(), barangBerdasarKategori.namaProduk, Toast.LENGTH_SHORT).show();
-//                     }
-//                 }
-//                 barangBerdasarkanKategoriAdapter.setListBarang(barangBerdasarKategoris);
-//             }
-//
-//            @Override
-//            public void onFailure(Call<ListBarang> call, Throwable t) {
-//
-//            }
-//        });
+        barangBerdasarkanKategoriAdapter = new BarangBerdasarkanKategoriAdapter();
 
-        barangBerdasarkanKategoriAdapter.setListBarang(getDataBarangBerdasarkanKategori());
+        SharedPreferences preferences = getSharedPreferences("com.example.grocerytogo",MODE_PRIVATE);
+        String token = preferences.getString("TOKEN","");
+//        Toast.makeText(getApplicationContext(), token, Toast.LENGTH_SHORT).show();
+
+        String API_BASE_URL = "https://groceriestogo1208.herokuapp.com/";
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(API_BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        GtgClient gtgClient = retrofit.create(GtgClient.class);
+
+        Integer idKategori = getIntent().getIntExtra("id", 0);
+        Toast.makeText(getApplicationContext(), idKategori.toString(), Toast.LENGTH_SHORT).show();
+
+        Call<ListBarang> call = gtgClient.getBarangKategori(token, idKategori);
+        call.enqueue(new Callback<ListBarang>() {
+             @Override
+             public void onResponse(Call<ListBarang> call, Response<ListBarang> response) {
+                 ListBarang listBarang = response.body();
+                 ArrayList<BarangBerdasarKategori> barangBerdasarKategoris = new ArrayList<>();
+                 if (listBarang != null) {
+                     List<BarangItem> barangItems = listBarang.getBarang();
+                     for (BarangItem item: barangItems) {
+                         BarangBerdasarKategori barangBerdasarKategori = new BarangBerdasarKategori(
+                                 item.getId(),
+                                 item.getNamaBarang(),
+                                 item.getSatuanBarang(),
+                                 item.getKeterangan(),
+                                 item.getGambar(),
+                                 item.getIdKategori(),
+                                 item.getHargaBarang(),
+                                 item.getUkuranBarang()
+                         );
+                         barangBerdasarKategoris.add(barangBerdasarKategori);
+                         Toast.makeText(getApplicationContext(), barangBerdasarKategori.namaProduk, Toast.LENGTH_SHORT).show();
+//////                         Toast.makeText(getApplicationContext(), barangBerdasarKategori.id_kategori.intValue(), Toast.LENGTH_SHORT).show();
+//////                         Toast.makeText(getApplicationContext(), barangBerdasarKategori.idProduk.intValue(), Toast.LENGTH_SHORT).show();
+////                         Toast.makeText(getApplicationContext(), barangBerdasarKategori.satuanProduk, Toast.LENGTH_SHORT).show();
+////                         Toast.makeText(getApplicationContext(), barangBerdasarKategori.keterangan, Toast.LENGTH_SHORT).show();
+////                         Toast.makeText(getApplicationContext(), barangBerdasarKategori.gambar, Toast.LENGTH_SHORT).show();
+////                         Toast.makeText(getApplicationContext(), barangBerdasarKategori.namaProduk, Toast.LENGTH_SHORT).show();
+//////                         Toast.makeText(getApplicationContext(), barangBerdasarKategori.ukuranProduk.intValue(), Toast.LENGTH_SHORT).show();
+                     }
+                 }
+                 barangBerdasarkanKategoriAdapter.setListBarang(barangBerdasarKategoris);
+             }
+
+            @Override
+            public void onFailure(Call<ListBarang> call, Throwable t) {
+
+            }
+        });
+
+//        barangBerdasarkanKategoriAdapter.setListBarang(getDataBarangBerdasarkanKategori());
         barangBerdasarkanKategoriAdapter.setListener(this);
         DataBarang.setAdapter(barangBerdasarkanKategoriAdapter);
-        GridLayoutManager layout = new GridLayoutManager(this, 2,GridLayoutManager.VERTICAL, false);
+        LinearLayoutManager layout = new LinearLayoutManager(this);
+//        GridLayoutManager layout = new GridLayoutManager(this, 2,GridLayoutManager.VERTICAL, false);
         DataBarang.setLayoutManager(layout);
 
         //Image Back
@@ -114,24 +125,24 @@ public class BarangKategoriActivity extends AppCompatActivity implements BarangB
         });
     }
 
-    private ArrayList<BarangBerdasarKategori> getDataBarangBerdasarkanKategori() {
-        barangBerdasarKategoris.add(new BarangBerdasarKategori(1, "Daging Ayam", "kg", "1", R.drawable.contoh5,1,20000,1));
-        barangBerdasarKategoris.add(new BarangBerdasarKategori(2, "Daging Ikan", "kg", "1", R.drawable.contoh4,1,40000,1));
-        barangBerdasarKategoris.add(new BarangBerdasarKategori(3, "Daging Sapi", "kg", "1", R.drawable.contoh3,1,50000,1));
-        barangBerdasarKategoris.add(new BarangBerdasarKategori(4, "Daging Kikil", "kg", "1", R.drawable.contoh2,1,20000,1));
-        barangBerdasarKategoris.add(new BarangBerdasarKategori(1, "Daging Ayam", "kg", "1", R.drawable.contoh5,1,20000,1));
-        barangBerdasarKategoris.add(new BarangBerdasarKategori(2, "Daging Ikan", "kg", "1", R.drawable.contoh4,1,40000,1));
-        barangBerdasarKategoris.add(new BarangBerdasarKategori(3, "Daging Sapi", "kg", "1", R.drawable.contoh3,1,50000,1));
-        barangBerdasarKategoris.add(new BarangBerdasarKategori(4, "Daging Kikil", "kg", "1", R.drawable.contoh2,1,20000,1));
-        return barangBerdasarKategoris;
-    }
+//    private ArrayList<BarangBerdasarKategori> getDataBarangBerdasarkanKategori() {
+//        barangBerdasarKategoris.add(new BarangBerdasarKategori(1, "Daging Ayam", "kg", "sdsds1", "dsdsds1",1,20000,1));
+//        barangBerdasarKategoris.add(new BarangBerdasarKategori(2, "Daging Ikan", "kg", "1", R.drawable.contoh4,1,40000,1));
+//        barangBerdasarKategoris.add(new BarangBerdasarKategori(3, "Daging Sapi", "kg", "1", R.drawable.contoh3,1,50000,1));
+//        barangBerdasarKategoris.add(new BarangBerdasarKategori(4, "Daging Kikil", "kg", "1", R.drawable.contoh2,1,20000,1));
+//        barangBerdasarKategoris.add(new BarangBerdasarKategori(1, "Daging Ayam", "kg", "1", R.drawable.contoh5,1,20000,1));
+//        barangBerdasarKategoris.add(new BarangBerdasarKategori(2, "Daging Ikan", "kg", "1", R.drawable.contoh4,1,40000,1));
+//        barangBerdasarKategoris.add(new BarangBerdasarKategori(3, "Daging Sapi", "kg", "1", R.drawable.contoh3,1,50000,1));
+//        barangBerdasarKategoris.add(new BarangBerdasarKategori(4, "Daging Kikil", "kg", "1", R.drawable.contoh2,1,20000,1));
+//        return barangBerdasarKategoris;
+//    }
 
     @Override
     public void onClick(View view, BarangBerdasarKategori barangBerdasarKategori) {
         Intent a = new Intent(BarangKategoriActivity.this, DetailBarangActivity.class);
         String namaBarang = barangBerdasarKategori.namaProduk;
         a.putExtra("nama", namaBarang);
-        int gambarBarang = barangBerdasarKategori.gambar;
+        String gambarBarang = barangBerdasarKategori.gambar;
         a.putExtra("gambar", gambarBarang);
         String harga = barangBerdasarKategori.hargaProduk.toString();
         a.putExtra("harga", harga);

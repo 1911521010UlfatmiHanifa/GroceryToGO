@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -110,50 +111,12 @@ public class HomeFragment extends Fragment implements KategoriBarangAdapter.Klik
         pesan = view.findViewById(R.id.pesan);
         DataKategoriBarang = view.findViewById(R.id.ListKategoriBarang);
         DataBarang = view.findViewById(R.id.ListBarang);
+        ProgressBar progressBar = view.findViewById(R.id.progressBar2);
 
         //Image Notifikasi
         notifikasi.setOnClickListener(view2 -> {
             Intent in = new Intent(getActivity(), NotifikasiActivity.class);
             startActivity(in);
-        });
-
-        //Set Adapter Barang dan Recycler View
-        barangBerdasarkanKategoriAdapter = new BarangBerdasarkanKategoriAdapter(listw);
-        barangBerdasarkanKategoriAdapter.setListBarang(getDataPencarian());
-        DataBarang.setAdapter(barangBerdasarkanKategoriAdapter);
-        barangBerdasarkanKategoriAdapter.setListener(this);
-        GridLayoutManager layout2 = new GridLayoutManager(getActivity(), 2,GridLayoutManager.VERTICAL, false);
-        DataBarang.setLayoutManager(layout2);
-
-        //Pencarian
-        pencarian.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                listFilter.clear();
-                if(editable.toString().isEmpty()){
-                    DataBarang.setAdapter(new BarangBerdasarkanKategoriAdapter(listw));
-                    barangBerdasarkanKategoriAdapter.notifyDataSetChanged();
-                    DataBarang.setVisibility(View.GONE);
-                    DataKategoriBarang.setVisibility(View.VISIBLE);
-                    notFound.setVisibility(View.INVISIBLE);
-                    pesan.setVisibility(View.INVISIBLE);
-                }
-                else{
-                    Filter(editable.toString());
-                    DataBarang.setVisibility(View.VISIBLE);
-                    DataKategoriBarang.setVisibility(View.GONE);
-                }
-            }
         });
 
         //Set Adapter Kategori dan Recycler View
@@ -172,12 +135,22 @@ public class HomeFragment extends Fragment implements KategoriBarangAdapter.Klik
         //        Toast.makeText(this,token,Toast.LENGTH_SHORT).show();
 
         Call<ListKategori> call = gtgClient.getKategori(token);
+        notifikasi.setEnabled(false);
+        pencarian.setEnabled(false);
+        DataBarang.setVisibility(View.GONE);
+        DataKategoriBarang.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
         call.enqueue(new Callback<ListKategori>() {
             @Override
             public void onResponse(Call<ListKategori> call, Response<ListKategori> response) {
                 ListKategori listKategori = response.body();
                 ArrayList<KategoriBarang> kategoriBarangs = new ArrayList<>();
                 if(listKategori != null){
+                    notifikasi.setEnabled(true);
+                    pencarian.setEnabled(true);
+                    DataKategoriBarang.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
+
                     List<KategoriItem> kategoriItems = listKategori.getKategori();
                     for (KategoriItem item: kategoriItems){
                         KategoriBarang kategoriBarang = new KategoriBarang(
@@ -186,6 +159,7 @@ public class HomeFragment extends Fragment implements KategoriBarangAdapter.Klik
                                 item.getFoto()
                         );
                         kategoriBarangs.add(kategoriBarang);
+//                        Toast.makeText(getContext(), kategoriBarang.idKategori.toString(), Toast.LENGTH_SHORT).show();
                     }
                 }
                 kategoriBarangAdapter.setListKategori(kategoriBarangs);
@@ -193,35 +167,74 @@ public class HomeFragment extends Fragment implements KategoriBarangAdapter.Klik
 
             @Override
             public void onFailure(Call<ListKategori> call, Throwable t) {
-
+                Toast.makeText(getContext(), "Gagal Mengakses Server", Toast.LENGTH_SHORT).show();
             }
-        });
 
+        });
         kategoriBarangAdapter.setListener(this);
         DataKategoriBarang.setAdapter(kategoriBarangAdapter);
         GridLayoutManager layout = new GridLayoutManager(getActivity(), 2,GridLayoutManager.VERTICAL, false);
         DataKategoriBarang.setLayoutManager(layout);
 
+        //Set Adapter Barang dan Recycler View
+        barangBerdasarkanKategoriAdapter = new BarangBerdasarkanKategoriAdapter();
+//        barangBerdasarkanKategoriAdapter.setListBarang(getDataPencarian());
+        DataBarang.setAdapter(barangBerdasarkanKategoriAdapter);
+        barangBerdasarkanKategoriAdapter.setListener(this);
+        GridLayoutManager layout2 = new GridLayoutManager(getActivity(), 2,GridLayoutManager.VERTICAL, false);
+        DataBarang.setLayoutManager(layout2);
+
+//        //Pencarian
+//        pencarian.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable editable) {
+//                listFilter.clear();
+//                if(editable.toString().isEmpty()){
+//                    DataBarang.setAdapter(new BarangBerdasarkanKategoriAdapter(listw));
+//                    barangBerdasarkanKategoriAdapter.notifyDataSetChanged();
+//                    DataBarang.setVisibility(View.GONE);
+//                    DataKategoriBarang.setVisibility(View.VISIBLE);
+//                    notFound.setVisibility(View.INVISIBLE);
+//                    pesan.setVisibility(View.INVISIBLE);
+//                }
+//                else{
+//                    Filter(editable.toString());
+//                    DataBarang.setVisibility(View.VISIBLE);
+//                    DataKategoriBarang.setVisibility(View.GONE);
+//                }
+//            }
+//        });
+
         return view;
     }
 
-    private void Filter(String ak) {
-        for (BarangBerdasarKategori lis:listw){
-            if(lis.namaProduk.toString().toLowerCase().contains(ak.toString().toLowerCase(Locale.ROOT))){
-                listFilter.add(lis);
-                notFound.setVisibility(View.INVISIBLE);
-                pesan.setVisibility(View.INVISIBLE);
-            }
-            barangBerdasarkanKategoriAdapter.setListener(this);
-        }
-        if(listFilter.isEmpty()){
-            notFound.setVisibility(View.VISIBLE);
-            pesan.setVisibility(View.VISIBLE);
-        }
-        DataBarang.setAdapter(new BarangBerdasarkanKategoriAdapter(listFilter));
-        barangBerdasarkanKategoriAdapter.notifyDataSetChanged();
-        barangBerdasarkanKategoriAdapter.setListener(this);
-    }
+//    private void Filter(String ak) {
+//        for (BarangBerdasarKategori lis:listw){
+//            if(lis.namaProduk.toString().toLowerCase().contains(ak.toString().toLowerCase(Locale.ROOT))){
+//                listFilter.add(lis);
+//                notFound.setVisibility(View.INVISIBLE);
+//                pesan.setVisibility(View.INVISIBLE);
+//            }
+//            barangBerdasarkanKategoriAdapter.setListener(this);
+//        }
+//        if(listFilter.isEmpty()){
+//            notFound.setVisibility(View.VISIBLE);
+//            pesan.setVisibility(View.VISIBLE);
+//        }
+//        DataBarang.setAdapter(new BarangBerdasarkanKategoriAdapter(listFilter));
+//        barangBerdasarkanKategoriAdapter.notifyDataSetChanged();
+//        barangBerdasarkanKategoriAdapter.setListener(this);
+//    }
 
     //Inisialisasi AuthData
 //    public ArrayList<KategoriBarang> getDataKategoriBarang(){
@@ -240,14 +253,14 @@ public class HomeFragment extends Fragment implements KategoriBarangAdapter.Klik
 //    }
 
     public ArrayList<BarangBerdasarKategori> getDataPencarian(){
-        listw.add(new BarangBerdasarKategori(1, "Daging", "kg", "Dagi", R.drawable.contoh4, 2, 30000, 1));
-        listw.add(new BarangBerdasarKategori(2, "Ciki", "pcs", "Dagi", R.drawable.contoh5, 2, 30000, 1));
-        listw.add(new BarangBerdasarKategori(3, "Buah", "kg", "Dagi", R.drawable.contoh1, 2, 30000, 1));
-        listw.add(new BarangBerdasarKategori(4, "Jus", "botol", "Dagi", R.drawable.contoh3, 2, 30000, 1));
-        listw.add(new BarangBerdasarKategori(1, "Daging", "kg", "Dagi", R.drawable.contoh4, 2, 30000, 1));
-        listw.add(new BarangBerdasarKategori(2, "Ciki", "pcs", "Dagi", R.drawable.contoh5, 2, 30000, 1));
-        listw.add(new BarangBerdasarKategori(3, "Buah", "kg", "Dagi", R.drawable.contoh1, 2, 30000, 1));
-        listw.add(new BarangBerdasarKategori(4, "Jus", "botol", "Dagi", R.drawable.contoh3, 2, 30000, 1));
+//        listw.add(new BarangBerdasarKategori(1, "Daging", "kg", "Dagi", R.drawable.contoh4, 2, 30000, 1));
+//        listw.add(new BarangBerdasarKategori(2, "Ciki", "pcs", "Dagi", R.drawable.contoh5, 2, 30000, 1));
+//        listw.add(new BarangBerdasarKategori(3, "Buah", "kg", "Dagi", R.drawable.contoh1, 2, 30000, 1));
+//        listw.add(new BarangBerdasarKategori(4, "Jus", "botol", "Dagi", R.drawable.contoh3, 2, 30000, 1));
+//        listw.add(new BarangBerdasarKategori(1, "Daging", "kg", "Dagi", R.drawable.contoh4, 2, 30000, 1));
+//        listw.add(new BarangBerdasarKategori(2, "Ciki", "pcs", "Dagi", R.drawable.contoh5, 2, 30000, 1));
+//        listw.add(new BarangBerdasarKategori(3, "Buah", "kg", "Dagi", R.drawable.contoh1, 2, 30000, 1));
+//        listw.add(new BarangBerdasarKategori(4, "Jus", "botol", "Dagi", R.drawable.contoh3, 2, 30000, 1));
         return listw;
     }
 
@@ -256,8 +269,7 @@ public class HomeFragment extends Fragment implements KategoriBarangAdapter.Klik
         Intent a = new Intent(getActivity(), BarangKategoriActivity.class);
         String namaKategori = kategoriBarang.kategori;
         a.putExtra("nama", namaKategori);
-        String idKategori = kategoriBarang.idKategori.toString();
-        a.putExtra("id", idKategori);
+        a.putExtra("id", kategoriBarang.idKategori);
         startActivity(a);
     }
 

@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.grocerytogo.model.AuthClass;
+import com.example.grocerytogo.model.Pesan;
 import com.example.grocerytogo.retrofit.GtgClient;
 
 import retrofit2.Call;
@@ -46,14 +47,12 @@ public class DaftarActvity extends AppCompatActivity {
         daftar.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-//              register();
-                Intent i = new Intent(DaftarActvity.this, LoginActivity.class);
-                startActivity(i);
+                registert();
             }
         });
     }
 
-    private void register(){
+    private void registert(){
 
         textUsername = findViewById(R.id.daftar_user);
         textPassword = findViewById(R.id.daftar_password);
@@ -70,26 +69,21 @@ public class DaftarActvity extends AppCompatActivity {
                 .build();
 
         GtgClient gtgClient = retrofit.create(GtgClient.class);
-        Call<AuthClass> call = gtgClient.register(username, no_hp, password);
-        call.enqueue(new Callback<AuthClass>() {
+        Call<Pesan> call = gtgClient.register(username, password, no_hp);
+        call.enqueue(new Callback<Pesan>() {
             @Override
-            public void onResponse(Call<AuthClass> call, Response<AuthClass> response) {
-                AuthClass authClass = response.body();
-                if (authClass != null){
-//                    AuthData authData = authClass.getData();
-//                    String accesToken = authData.getToken();
-                    Toast.makeText(getApplicationContext(), "Bisa", Toast.LENGTH_SHORT).show();
-//                    Intent i = new Intent(DaftarActvity.this, LoginActivity.class);
-//                    startActivity(i);
-                }
-                else{
-                    Toast.makeText(getApplicationContext(), "Field Masih Kosong", Toast.LENGTH_SHORT).show();
+            public void onResponse(Call<Pesan> call, Response<Pesan> response) {
+                Pesan p = response.body();
+                if(p != null) {
+                    Toast.makeText(getApplicationContext(), "Pendaftaran Berhasil", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getApplicationContext(), "Pendaftaran Gagal", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<AuthClass> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Gagal Akses Server", Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<Pesan> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Gagal Akses", Toast.LENGTH_SHORT).show();
             }
         });
     }
