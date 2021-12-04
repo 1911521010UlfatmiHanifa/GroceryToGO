@@ -66,7 +66,7 @@ public class KategoriBarangAdapter
     @Override
     public void onBindViewHolder(@NonNull KategoriBarangViewHolder viewHolder, int position) {
         KategoriBarang kategoriBarang = listKategori.get(position);
-        viewHolder.textKategori.setText(kategoriBarang.kategori.toString());
+        viewHolder.textKategori.setText(kategoriBarang.kategori);
         Picasso.get().load(kategoriBarang.gambar).into(viewHolder.imageKategori);
     }
 

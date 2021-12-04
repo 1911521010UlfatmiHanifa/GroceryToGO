@@ -17,12 +17,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.grocerytogo.model.KategoriBarang;
-import com.example.grocerytogo.model.KategoriItem;
 import com.example.grocerytogo.model.User;
 import com.example.grocerytogo.model.UserClass;
 import com.example.grocerytogo.model.UserItem;
 import com.example.grocerytogo.retrofit.GtgClient;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +36,7 @@ public class LihatDataDiriActivity extends AppCompatActivity {
 
     private TextView nope, username,tglLahir, jenkel;
     private Button editData;
-    private ImageView back;
+    private ImageView back, foto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +98,7 @@ public class LihatDataDiriActivity extends AppCompatActivity {
             }
         });
 
-        //Button Edit AuthData Diri
+        //Button Edit Data Diri
         editData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -118,57 +117,63 @@ public class LihatDataDiriActivity extends AppCompatActivity {
     }
 
     private void getData(){
+        nope = findViewById(R.id.lihat_nope);
+        username = findViewById(R.id.lihat_nama);
+        jenkel = findViewById(R.id.lihat_jenkel);
+        tglLahir = findViewById(R.id.lihat_tgllahir);
+        foto = findViewById(R.id.profil);
 
-//        nope = findViewById(R.id.lihat_nope);
-//        username = findViewById(R.id.lihat_nama);
-//        jenkel = findViewById(R.id.lihat_jenkel);
-//        tglLahir = findViewById(R.id.lihat_tgllahir);
-//
-//        String API_BASE_URL = "https://groceriestogo1208.herokuapp.com/";
-//        Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl(API_BASE_URL)
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .build();
-//
-//        SharedPreferences preferences = getSharedPreferences("com.example.grocerytogo",MODE_PRIVATE);
-//        String token = preferences.getString("TOKEN","");
-//        Integer id = Integer.valueOf(preferences.getString("id", ""));
-//
-//        GtgClient gtgClient = retrofit.create(GtgClient.class);
-//        Call<UserClass> call = gtgClient.getUser(token, id);
-//
-//        call.enqueue(new Callback<UserClass>() {
-//            @Override
-//            public void onResponse(Call<UserClass> call, Response<UserClass> response) {
+        String API_BASE_URL = "https://groceriestogo1208.herokuapp.com/";
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(API_BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        SharedPreferences preferences = getSharedPreferences("com.example.grocerytogo",MODE_PRIVATE);
+        String token = preferences.getString("TOKEN","");
+        Integer id = Integer.valueOf(preferences.getString("id", ""));
+//        Toast.makeText(getApplicationContext(), id.toString(), Toast.LENGTH_SHORT).show();
+
+        GtgClient gtgClient = retrofit.create(GtgClient.class);
+        Call<UserClass> call = gtgClient.getUser(token, id);
+
+        call.enqueue(new Callback<UserClass>() {
+            @Override
+            public void onResponse(Call<UserClass> call, Response<UserClass> response) {
 //                Toast.makeText(getApplicationContext(), "B", Toast.LENGTH_SHORT).show();
-//                ArrayList<User> users = new ArrayList<>();
-//                UserClass userClass = response.body();
-////                if(userClass != null){
-//                    ArrayList<UserItem> userItems = userClass.getUserData();
-//                    for (UserItem item: userItems){
-//                        User useria = new User(
-//                                item.getPassword(),
-//                                item.getUpdatedAt(),
-//                                item.getFoto(),
-//                                item.getNoHp(),
-//                                item.getCreatedAt(),
-//                                item.getId(),
-//                                item.getJenisKelamin(),
-//                                item.getTanggalLahir(),
-//                                item.getUsername(),
-//                                item.getToken()
-//                        );
-//                        users.add(useria);
-//                        Toast.makeText(getApplicationContext(), useria.username, Toast.LENGTH_SHORT).show();
-//                    }
-////                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<UserClass> call, Throwable t) {
-//                Toast.makeText(getApplicationContext(), "G", Toast.LENGTH_SHORT).show();
-//            }
-//        });
+                ArrayList<User> users = new ArrayList<>();
+                UserClass userClass = response.body();
+                if(userClass != null){
+
+                    List<UserItem> userItems = userClass.getUser();
+                    for (UserItem item: userItems) {
+                        User useria = new User(
+                                item.getPassword(),
+                                item.getUpdatedAt(),
+                                item.getFoto(),
+                                item.getNoHp(),
+                                item.getCreatedAt(),
+                                item.getId(),
+                                item.getJenisKelamin(),
+                                item.getTanggalLahir(),
+                                item.getUsername(),
+                                item.getToken()
+                        );
+                        users.add(useria);
+                        nope.setText(useria.noHp);
+                        username.setText(useria.username);
+                        jenkel.setText(useria.jenisKelamin);
+                        tglLahir.setText(useria.tanggalLahir);
+                        Picasso.get().load(useria.foto).into((ImageView) findViewById(R.id.profil));
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserClass> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Gagal Akses Server", Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 }

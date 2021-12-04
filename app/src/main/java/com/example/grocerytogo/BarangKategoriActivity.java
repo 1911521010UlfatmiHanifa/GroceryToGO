@@ -46,15 +46,12 @@ public class BarangKategoriActivity extends AppCompatActivity implements BarangB
         setContentView(R.layout.activity_barang_kategori);
 
         back = findViewById(R.id.image_back);
-        DataBarang = findViewById(R.id.ListBarangKategori);
         namaKategori = findViewById(R.id.textNamaKategori);
 
         String Kategori = getIntent().getStringExtra("nama");
         namaKategori.setText(Kategori);
 
-        //Set Adapter dan Recycler View
-        barangBerdasarkanKategoriAdapter = new BarangBerdasarkanKategoriAdapter();
-
+        //API BARANG
         SharedPreferences preferences = getSharedPreferences("com.example.grocerytogo",MODE_PRIVATE);
         String token = preferences.getString("TOKEN","");
 //        Toast.makeText(getApplicationContext(), token, Toast.LENGTH_SHORT).show();
@@ -90,17 +87,9 @@ public class BarangKategoriActivity extends AppCompatActivity implements BarangB
                                  item.getUkuranBarang()
                          );
                          barangBerdasarKategoris.add(barangBerdasarKategori);
-                         Toast.makeText(getApplicationContext(), barangBerdasarKategori.namaProduk, Toast.LENGTH_SHORT).show();
-//////                         Toast.makeText(getApplicationContext(), barangBerdasarKategori.id_kategori.intValue(), Toast.LENGTH_SHORT).show();
-//////                         Toast.makeText(getApplicationContext(), barangBerdasarKategori.idProduk.intValue(), Toast.LENGTH_SHORT).show();
-////                         Toast.makeText(getApplicationContext(), barangBerdasarKategori.satuanProduk, Toast.LENGTH_SHORT).show();
-////                         Toast.makeText(getApplicationContext(), barangBerdasarKategori.keterangan, Toast.LENGTH_SHORT).show();
-////                         Toast.makeText(getApplicationContext(), barangBerdasarKategori.gambar, Toast.LENGTH_SHORT).show();
-////                         Toast.makeText(getApplicationContext(), barangBerdasarKategori.namaProduk, Toast.LENGTH_SHORT).show();
-//////                         Toast.makeText(getApplicationContext(), barangBerdasarKategori.ukuranProduk.intValue(), Toast.LENGTH_SHORT).show();
                      }
+                     viewRecyclerView(barangBerdasarKategoris);
                  }
-                 barangBerdasarkanKategoriAdapter.setListBarang(barangBerdasarKategoris);
              }
 
             @Override
@@ -109,13 +98,6 @@ public class BarangKategoriActivity extends AppCompatActivity implements BarangB
             }
         });
 
-//        barangBerdasarkanKategoriAdapter.setListBarang(getDataBarangBerdasarkanKategori());
-        barangBerdasarkanKategoriAdapter.setListener(this);
-        DataBarang.setAdapter(barangBerdasarkanKategoriAdapter);
-        LinearLayoutManager layout = new LinearLayoutManager(this);
-//        GridLayoutManager layout = new GridLayoutManager(this, 2,GridLayoutManager.VERTICAL, false);
-        DataBarang.setLayoutManager(layout);
-
         //Image Back
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,6 +105,16 @@ public class BarangKategoriActivity extends AppCompatActivity implements BarangB
                 onBackPressed();
             }
         });
+    }
+
+    private void viewRecyclerView(ArrayList<BarangBerdasarKategori> listBarangKategori){
+        DataBarang = findViewById(R.id.ListBarangKategori);
+        barangBerdasarkanKategoriAdapter = new BarangBerdasarkanKategoriAdapter();
+        barangBerdasarkanKategoriAdapter.setListBarang(listBarangKategori);
+        barangBerdasarkanKategoriAdapter.setListener(this);
+        DataBarang.setAdapter(barangBerdasarkanKategoriAdapter);
+        GridLayoutManager layout = new GridLayoutManager(this, 2,GridLayoutManager.VERTICAL, false);
+        DataBarang.setLayoutManager(layout);
     }
 
 //    private ArrayList<BarangBerdasarKategori> getDataBarangBerdasarkanKategori() {

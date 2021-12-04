@@ -8,9 +8,9 @@ import com.google.gson.annotations.SerializedName;
 public class UserClass{
 
     @SerializedName("user")
-    private ArrayList<UserItem> user;
+    private List<UserItem> user;
 
-    public ArrayList<UserItem> getUserData(){
+    public List<UserItem> getUser(){
         return user;
     }
 }
