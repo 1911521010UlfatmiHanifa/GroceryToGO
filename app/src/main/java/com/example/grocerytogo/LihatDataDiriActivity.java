@@ -17,13 +17,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.grocerytogo.model.User;
 import com.example.grocerytogo.model.UserClass;
 import com.example.grocerytogo.model.UserItem;
 import com.example.grocerytogo.retrofit.GtgClient;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -141,30 +139,15 @@ public class LihatDataDiriActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<UserClass> call, Response<UserClass> response) {
 //                Toast.makeText(getApplicationContext(), "B", Toast.LENGTH_SHORT).show();
-                ArrayList<User> users = new ArrayList<>();
                 UserClass userClass = response.body();
                 if(userClass != null){
-
                     List<UserItem> userItems = userClass.getUser();
                     for (UserItem item: userItems) {
-                        User useria = new User(
-                                item.getPassword(),
-                                item.getUpdatedAt(),
-                                item.getFoto(),
-                                item.getNoHp(),
-                                item.getCreatedAt(),
-                                item.getId(),
-                                item.getJenisKelamin(),
-                                item.getTanggalLahir(),
-                                item.getUsername(),
-                                item.getToken()
-                        );
-                        users.add(useria);
-                        nope.setText(useria.noHp);
-                        username.setText(useria.username);
-                        jenkel.setText(useria.jenisKelamin);
-                        tglLahir.setText(useria.tanggalLahir);
-                        Picasso.get().load(useria.foto).into((ImageView) findViewById(R.id.profil));
+                        Picasso.get().load(item.getFoto()).into(foto);
+                        nope.setText(item.getNoHp());
+                        jenkel.setText(item.getJenisKelamin());
+                        tglLahir.setText(item.getTanggalLahir());
+                        username.setText(item.getUsername());
                     }
                 }
             }
