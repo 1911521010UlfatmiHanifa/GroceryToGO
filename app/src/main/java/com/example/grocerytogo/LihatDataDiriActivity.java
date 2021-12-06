@@ -11,11 +11,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.grocerytogo.model.UserClass;
 import com.example.grocerytogo.model.UserItem;
@@ -35,6 +39,9 @@ public class LihatDataDiriActivity extends AppCompatActivity {
     private TextView nope, username,tglLahir, jenkel;
     private Button editData;
     private ImageView back, foto;
+    private ScrollView sc;
+    private ConstraintLayout cl;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +51,17 @@ public class LihatDataDiriActivity extends AppCompatActivity {
         nope = findViewById(R.id.lihat_nope);
         editData = findViewById(R.id.btn_editdatadiri);
         back = findViewById(R.id.imageView5);
+        username = findViewById(R.id.lihat_nama);
+        jenkel = findViewById(R.id.lihat_jenkel);
+        tglLahir = findViewById(R.id.lihat_tgllahir);
+        foto = findViewById(R.id.profil);
+        sc =findViewById(R.id.sc);
+        cl =findViewById(R.id.cl);
+        progressBar = findViewById(R.id.progressBar5);
+
+        progressBar.setVisibility(View.VISIBLE);
+        sc.setVisibility(View.GONE);
+        cl.setVisibility(View.GONE);
 
         getData();
         
@@ -115,11 +133,6 @@ public class LihatDataDiriActivity extends AppCompatActivity {
     }
 
     private void getData(){
-        nope = findViewById(R.id.lihat_nope);
-        username = findViewById(R.id.lihat_nama);
-        jenkel = findViewById(R.id.lihat_jenkel);
-        tglLahir = findViewById(R.id.lihat_tgllahir);
-        foto = findViewById(R.id.profil);
 
         String API_BASE_URL = "https://groceriestogo1208.herokuapp.com/";
         Retrofit retrofit = new Retrofit.Builder()
@@ -141,6 +154,9 @@ public class LihatDataDiriActivity extends AppCompatActivity {
 //                Toast.makeText(getApplicationContext(), "B", Toast.LENGTH_SHORT).show();
                 UserClass userClass = response.body();
                 if(userClass != null){
+                    progressBar.setVisibility(View.GONE);
+                    sc.setVisibility(View.VISIBLE);
+                    cl.setVisibility(View.VISIBLE);
                     List<UserItem> userItems = userClass.getUser();
                     for (UserItem item: userItems) {
                         Picasso.get().load(item.getFoto()).into(foto);

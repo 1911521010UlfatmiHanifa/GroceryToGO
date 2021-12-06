@@ -37,4 +37,7 @@ public interface GtgClient {
 
     @GET("api/user/{id}")
     Call<UserClass> getUser(@Header("token") String token, @Path("id") Integer id);
+
+    @GET("api/detail_barang/{id_barang}")
+    Call<ListBarang> getDetailBarang(@Header("token") String token, @Path("id_barang") Integer id_barang);
 }

@@ -75,7 +75,8 @@ public class DaftarActvity extends AppCompatActivity {
             public void onResponse(Call<Pesan> call, Response<Pesan> response) {
                 Pesan p = response.body();
                 if(p != null) {
-                    Toast.makeText(getApplicationContext(), "Pendaftaran Berhasil", Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(DaftarActvity.this, HomeFragment.class);
+                    startActivity(i);
                 }else{
                     Toast.makeText(getApplicationContext(), "Pendaftaran Gagal", Toast.LENGTH_SHORT).show();
                 }
