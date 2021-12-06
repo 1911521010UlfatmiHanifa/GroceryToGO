@@ -268,18 +268,19 @@ public class HomeFragment extends Fragment implements KategoriBarangAdapter.Klik
     public void onClick(View view, KategoriBarang kategoriBarang) {
         Intent a = new Intent(getActivity(), BarangKategoriActivity.class);
         a.putExtra("id", kategoriBarang.idKategori);
+        a.putExtra("nama", kategoriBarang.kategori);
         startActivity(a);
     }
 
     @Override
     public void onClick(View view, BarangBerdasarKategori barangBerdasarKategori) {
         Intent a = new Intent(getActivity(), DetailBarangActivity.class);
-        String namaBarang = barangBerdasarKategori.namaProduk;
-        a.putExtra("nama", namaBarang);
-//        String gambarBarang = barangBerdasarKategori.gambar;
-//        a.putExtra("gambar", gambarBarang);
-        int harga = barangBerdasarKategori.hargaProduk;
-        a.putExtra("harga", harga);
+//        String namaBarang = barangBerdasarKategori.namaProduk;
+//        a.putExtra("nama", namaBarang);
+////        String gambarBarang = barangBerdasarKategori.gambar;
+////        a.putExtra("gambar", gambarBarang);
+//        int harga = barangBerdasarKategori.hargaProduk;
+//        a.putExtra("harga", harga);
         startActivity(a);
     }
 }

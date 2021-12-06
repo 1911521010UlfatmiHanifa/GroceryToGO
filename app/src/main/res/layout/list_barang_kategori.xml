@@ -12,7 +12,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layoutBarang"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="10dp">
 
         <Button
@@ -21,23 +21,19 @@
             android:layout_height="50dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
-            android:layout_marginBottom="10dp"
             android:backgroundTint="#F44336"
             android:text="-"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textHargaBarang" />
 
         <Button
             android:id="@+id/btn_tambah1"
             android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_height="56dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
             android:backgroundTint="#8BC34A"
             android:text="+"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textHargaBarang" />
 
@@ -56,6 +52,7 @@
             android:textAllCaps="false"
             app:cornerRadius="40dp"
             app:layout_constraintEnd_toEndOf="@+id/imageBarang"
+            app:layout_constraintHorizontal_bias="0.488"
             app:layout_constraintStart_toStartOf="@+id/imageBarang"
             app:layout_constraintTop_toBottomOf="@+id/textHargaBarang" />
 
@@ -113,10 +110,24 @@
             android:layout_height="wrap_content"
             android:padding="3dp"
             android:text="0"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_tambah1"
             app:layout_constraintEnd_toStartOf="@+id/btn_kurang1"
             app:layout_constraintStart_toEndOf="@+id/btn_tambah1"
-            app:layout_constraintTop_toBottomOf="@+id/textHargaBarang" />
+            app:layout_constraintTop_toTopOf="@+id/btn_tambah1" />
+
+        <Button
+            android:id="@+id/tambah_keranjang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="#009688"
+            android:drawableEnd="@drawable/pesanan"
+            android:padding="11dp"
+            android:text="Keranjang"
+            app:cornerRadius="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_tambah1" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

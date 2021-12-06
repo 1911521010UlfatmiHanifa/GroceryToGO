@@ -1,10 +1,12 @@
 package com.example.grocerytogo;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +27,7 @@ public class DaftarActvity extends AppCompatActivity {
     private ImageView back;
     private Button daftar;
     private TextView textUsername, textPassword, textNope;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,10 @@ public class DaftarActvity extends AppCompatActivity {
 
         back = findViewById(R.id.image_backDaftar);
         daftar = findViewById(R.id.btn_daftar);
+        progressBar = findViewById(R.id.progressBar7);
+
+        daftar.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
 
         //Image Back
         back.setOnClickListener(new View.OnClickListener(){
@@ -69,16 +76,23 @@ public class DaftarActvity extends AppCompatActivity {
                 .build();
 
         GtgClient gtgClient = retrofit.create(GtgClient.class);
+        daftar.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
         Call<Pesan> call = gtgClient.register(username, password, no_hp);
         call.enqueue(new Callback<Pesan>() {
             @Override
             public void onResponse(Call<Pesan> call, Response<Pesan> response) {
                 Pesan p = response.body();
                 if(p != null) {
-                    Intent i = new Intent(DaftarActvity.this, HomeFragment.class);
+                    String pesan = "Pendaftaran Berhasil Silahkan Login";
+                    Intent i = new Intent(DaftarActvity.this, LoginActivity.class);
+                    i.putExtra("pesan", pesan);
                     startActivity(i);
+                    finish();
                 }else{
                     Toast.makeText(getApplicationContext(), "Pendaftaran Gagal", Toast.LENGTH_SHORT).show();
+                    daftar.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
                 }
             }
 

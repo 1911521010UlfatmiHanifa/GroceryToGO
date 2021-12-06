@@ -36,6 +36,11 @@ public class LoginActivity extends AppCompatActivity {
         back = findViewById(R.id.back);
         loginn = findViewById(R.id.btn_login);
 
+        String pesan = getIntent().getStringExtra("pesan");
+        if(pesan != null) {
+            Toast.makeText(getApplicationContext(), pesan, Toast.LENGTH_SHORT).show();
+        }
+
         //Image Back
         back.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -51,6 +56,8 @@ public class LoginActivity extends AppCompatActivity {
                 checkLogin();
             }
         });
+
+
     }
 
     private void checkLogin(){

@@ -35,7 +35,7 @@ public class BarangBerdasarkanKategoriAdapter
 
         TextView namaBarang, hargaBarang, jumlah;
         ImageView gambarBarang;
-        Button tambah, kurang, sebelumTambah;
+        Button tambah, kurang, sebelumTambah, tambahKeranjang;
 
         public BarangBersarkanKategoriViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -46,6 +46,7 @@ public class BarangBerdasarkanKategoriAdapter
             tambah = itemView.findViewById(R.id.btn_tambah1);
             kurang = itemView.findViewById(R.id.btn_kurang1);
             sebelumTambah = itemView.findViewById(R.id.btn_tambahProduk);
+            tambahKeranjang = itemView.findViewById(R.id.tambah_keranjang);
             itemView.setOnClickListener(this);
         }
 
@@ -87,11 +88,15 @@ public class BarangBerdasarkanKategoriAdapter
 
         viewHolder.tambah.setVisibility(View.GONE);
         viewHolder.kurang.setVisibility(View.GONE);
+        viewHolder.jumlah.setVisibility(View.GONE);
+        viewHolder.tambahKeranjang.setVisibility(View.GONE);
         viewHolder.sebelumTambah.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 viewHolder.tambah.setVisibility(View.VISIBLE);
                 viewHolder.kurang.setVisibility(View.VISIBLE);
+                viewHolder.jumlah.setVisibility(View.VISIBLE);
+                viewHolder.tambahKeranjang.setVisibility(View.VISIBLE);
                 viewHolder.sebelumTambah.setVisibility(View.GONE);
                 viewHolder.jumlah.setText(String.valueOf(1));
             }
@@ -114,6 +119,8 @@ public class BarangBerdasarkanKategoriAdapter
                 if(a == 0) {
                     viewHolder.tambah.setVisibility(View.GONE);
                     viewHolder.kurang.setVisibility(View.GONE);
+                    viewHolder.tambahKeranjang.setVisibility(View.GONE);
+                    viewHolder.jumlah.setVisibility(View.GONE);
                     viewHolder.sebelumTambah.setVisibility(View.VISIBLE);
                 }else{
                     viewHolder.jumlah.setText(String.valueOf(a));

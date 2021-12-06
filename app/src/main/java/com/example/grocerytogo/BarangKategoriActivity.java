@@ -2,6 +2,7 @@ package com.example.grocerytogo;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.icu.lang.UCharacter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.example.grocerytogo.adapter.BarangBerdasarkanKategoriAdapter;
 import com.example.grocerytogo.model.BarangBerdasarKategori;
@@ -53,6 +55,8 @@ public class BarangKategoriActivity extends AppCompatActivity implements BarangB
 
         DataBarang.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.VISIBLE);
+
+        namaKategori.setText(getIntent().getStringExtra("nama"));
 
         //API BARANG
         SharedPreferences preferences = getSharedPreferences("com.example.grocerytogo",MODE_PRIVATE);
@@ -119,7 +123,8 @@ public class BarangKategoriActivity extends AppCompatActivity implements BarangB
         barangBerdasarkanKategoriAdapter.setListBarang(listBarangKategori);
         barangBerdasarkanKategoriAdapter.setListener(this);
         DataBarang.setAdapter(barangBerdasarkanKategoriAdapter);
-        GridLayoutManager layout = new GridLayoutManager(this, 2,GridLayoutManager.VERTICAL, false);
+        StaggeredGridLayoutManager layout = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+//        GridLayoutManager layout = new GridLayoutManager(this, 2,GridLayoutManager.VERTICAL, false);
         DataBarang.setLayoutManager(layout);
     }
 
