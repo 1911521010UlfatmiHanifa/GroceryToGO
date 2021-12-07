@@ -1,9 +1,14 @@
 package com.example.grocerytogo;
 
 import static android.content.Context.MODE_PRIVATE;
+import static android.content.Context.NOTIFICATION_SERVICE;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,6 +21,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -115,8 +121,23 @@ public class HomeFragment extends Fragment implements KategoriBarangAdapter.Klik
 
         //Image Notifikasi
         notifikasi.setOnClickListener(view2 -> {
-            Intent in = new Intent(getActivity(), NotifikasiActivity.class);
-            startActivity(in);
+//            Intent in = new Intent(getActivity(), NotifikasiActivity.class);
+//            startActivity(in);
+            NotificationManager notificationManager = (NotificationManager) getContext().getSystemService(NOTIFICATION_SERVICE);
+
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                NotificationChannel notificationChannel = new NotificationChannel("X123",
+                        "GTG CLIENT",
+                        NotificationManager.IMPORTANCE_DEFAULT);
+                notificationManager.createNotificationChannel(notificationChannel);
+            }
+            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getContext(), "X123")
+                    .setSmallIcon(R.drawable.ic_launcher_foreground)
+                    .setContentTitle("Coba Notifikasi")
+                    .setContentText("Holaa Bunda");
+            Notification notification = mBuilder.build();
+            notificationManager.notify(123, notification);
+//            Toast.makeText(getContext(), "Hi", Toast.LENGTH_SHORT).show();
         });
 
         //Set Adapter Kategori dan Recycler View
