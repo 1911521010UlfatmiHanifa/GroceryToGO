@@ -17,13 +17,13 @@
             android:id="@+id/textKuantitas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="10dp"
             android:fontFamily="@font/poppins_light"
             android:padding="3dp"
             android:text="2"
             android:textColor="#000000"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/textNamaProduk"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textNamaProduk" />
 
         <TextView
@@ -65,20 +65,19 @@
 
         <TextView
             android:id="@+id/textNamaProduk"
-            android:layout_width="280dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/poppins_bold"
             android:text="Radhuni Shemai - 200 gm"
             android:textColor="#121111"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageProduk"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/imageProduk"
-            android:layout_width="107dp"
+            android:layout_width="100dp"
             android:layout_height="116dp"
             android:layout_marginStart="18dp"
             app:layout_constraintBottom_toBottomOf="parent"

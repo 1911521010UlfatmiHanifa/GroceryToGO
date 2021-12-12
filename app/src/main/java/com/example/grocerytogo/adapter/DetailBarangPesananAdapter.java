@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.grocerytogo.R;
 import com.example.grocerytogo.model.DetailBarangPesanan;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -34,10 +35,12 @@ public class DetailBarangPesananAdapter
     @Override
     public void onBindViewHolder(@NonNull DetailBarangPesananViewHolder viewHolder, int position) {
         DetailBarangPesanan detailBarangPesanan = listDetailBarangPesanan.get(position);
-        viewHolder.textNamaProduk.setText(detailBarangPesanan.namaProduk.toString());
+        viewHolder.textNamaProduk.setText(detailBarangPesanan.namaProduk);
         viewHolder.textHargaProduk.setText(detailBarangPesanan.hargaProduk.toString());
         viewHolder.textKuantitas.setText(detailBarangPesanan.kuantitas.toString());
-        viewHolder.imageGambarProduk.setImageResource(detailBarangPesanan.gambarProduk.intValue());
+//        viewHolder.imageGambarProduk.setImageResource(detailBarangPesanan.gambarProduk.intValue());
+        Picasso.get().load(detailBarangPesanan.gambarProduk).into(viewHolder.imageGambarProduk);
+
     }
 
     @Override

@@ -69,13 +69,10 @@ public class DaftarActvity extends AppCompatActivity {
         String password = textPassword.getText().toString();
         String no_hp = textNope.getText().toString();
 
-        String API_BASE_URL = "https://groceriestogo1208.herokuapp.com/";
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(API_BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        String api = getString(R.string.apiGTG);
+        Koneksi koneksi = new Koneksi();
+        GtgClient gtgClient = koneksi.setGtgClient(api);
 
-        GtgClient gtgClient = retrofit.create(GtgClient.class);
         daftar.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
         Call<Pesan> call = gtgClient.register(username, password, no_hp);

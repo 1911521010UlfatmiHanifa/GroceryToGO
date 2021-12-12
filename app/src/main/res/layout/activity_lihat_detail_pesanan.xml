@@ -7,6 +7,25 @@
     android:background="@drawable/bg_image"
     tools:context=".LihatDetailPesananActivity">
 
+    <Button
+        android:id="@+id/btn_batal2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="35dp"
+        android:layout_marginBottom="30dp"
+        android:backgroundTint="#EDB9BB"
+        android:fontFamily="@font/poppins_light"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:text="Batalkan Pesanan"
+        android:textAllCaps="true"
+        android:textColor="#F60909"
+        app:cornerRadius="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <ImageView
         android:id="@+id/imageView24"
         android:layout_width="wrap_content"
@@ -44,7 +63,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textId" />
 
     <TextView
-        android:id="@+id/textNotif"
+        android:id="@+id/textWaktu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -112,7 +131,7 @@
         android:text="Floor 4, Wakil Tower, Ta 131 Gulshan Badda Link Road"
         android:textColor="#000000"
         android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/textNotif"
+        app:layout_constraintEnd_toEndOf="@+id/textWaktu"
         app:layout_constraintStart_toStartOf="@+id/textView39"
         app:layout_constraintTop_toBottomOf="@+id/textView39" />
 
@@ -142,13 +161,12 @@
         android:id="@+id/textView45"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:fontFamily="@font/poppins_light"
         android:text="Rp 40.000"
         android:textColor="#F37A20"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@+id/textView40"
-        app:layout_constraintTop_toBottomOf="@+id/imageView37" />
+        app:layout_constraintTop_toTopOf="@+id/textView41" />
 
     <TextView
         android:id="@+id/textView42"
@@ -221,5 +239,15 @@
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@+id/textView47"
         app:layout_constraintTop_toBottomOf="@+id/textView47" />
+
+    <ProgressBar
+        android:id="@+id/progressBar9"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

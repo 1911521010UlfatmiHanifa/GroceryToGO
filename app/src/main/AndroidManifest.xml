@@ -46,9 +46,6 @@
             android:name=".PesananSayaActivity"
             android:exported="true" />
         <activity
-            android:name=".SedangMemesanActivity"
-            android:exported="true" />
-        <activity
             android:name=".ProdukPesananActivity"
             android:exported="true" />
         <activity

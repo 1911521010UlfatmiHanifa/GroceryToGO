@@ -172,18 +172,15 @@ public class SettingFragment extends Fragment {
 
     private void getData(){
 
-        String API_BASE_URL = "https://groceriestogo1208.herokuapp.com/";
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(API_BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        String api = getString(R.string.apiGTG);
+        Koneksi koneksi = new Koneksi();
+        GtgClient gtgClient = koneksi.setGtgClient(api);
 
         SharedPreferences preferences = getContext().getSharedPreferences("com.example.grocerytogo",MODE_PRIVATE);
         String token = preferences.getString("TOKEN","");
         Integer id = Integer.valueOf(preferences.getString("id", ""));
 //        Toast.makeText(getApplicationContext(), id.toString(), Toast.LENGTH_SHORT).show();
 
-        GtgClient gtgClient = retrofit.create(GtgClient.class);
         Call<UserClass> call = gtgClient.getUser(token, id);
 
         call.enqueue(new Callback<UserClass>() {
@@ -204,7 +201,7 @@ public class SettingFragment extends Fragment {
 
                     List<UserItem> userItems = userClass.getUser();
                     for (UserItem item: userItems) {
-                        Picasso.get().load(item.getFoto()).into(foto);
+                        Picasso.get().load(api+item.getFoto()).into(foto);
                         nope.setText(item.getNoHp());
                         username.setText(item.getUsername());
                     }
@@ -220,17 +217,13 @@ public class SettingFragment extends Fragment {
     }
 
     private void logout(){
-
-        String API_BASE_URL = "https://groceriestogo1208.herokuapp.com/";
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(API_BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        String api = getString(R.string.apiGTG);
+        Koneksi koneksi = new Koneksi();
+        GtgClient gtgClient = koneksi.setGtgClient(api);
 
         SharedPreferences preferences = getContext().getSharedPreferences("com.example.grocerytogo",MODE_PRIVATE);
         String token = preferences.getString("TOKEN","");
 
-        GtgClient gtgClient = retrofit.create(GtgClient.class);
         Call<Pesan> call = gtgClient.logout(token);
         call.enqueue(new Callback<Pesan>() {
             @Override

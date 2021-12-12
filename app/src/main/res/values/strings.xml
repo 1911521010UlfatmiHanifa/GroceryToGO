@@ -98,4 +98,5 @@
         <item>Laki - Laki</item>
         <item>Perempuan</item>
     </string-array>
+    <string name="apiGTG">https://groceriestogo1208.herokuapp.com</string>
 </resources>

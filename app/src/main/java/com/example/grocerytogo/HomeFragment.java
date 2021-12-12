@@ -146,13 +146,9 @@ public class HomeFragment extends Fragment implements KategoriBarangAdapter.Klik
         SharedPreferences preferences = getContext().getSharedPreferences("com.example.grocerytogo",MODE_PRIVATE);
         String token = preferences.getString("TOKEN","");
 
-        String API_BASE_URL = "https://groceriestogo1208.herokuapp.com/";
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(API_BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        GtgClient gtgClient = retrofit.create(GtgClient.class);
+        String api = getString(R.string.apiGTG);
+        Koneksi koneksi = new Koneksi();
+        GtgClient gtgClient = koneksi.setGtgClient(api);
         //        Toast.makeText(this,token,Toast.LENGTH_SHORT).show();
 
         Call<ListKategori> call = gtgClient.getKategori(token);
@@ -177,7 +173,7 @@ public class HomeFragment extends Fragment implements KategoriBarangAdapter.Klik
                         KategoriBarang kategoriBarang = new KategoriBarang(
                                 item.getId(),
                                 item.getNamaKategori(),
-                                item.getFoto()
+                                api+item.getFoto()
                         );
                         kategoriBarangs.add(kategoriBarang);
 //                        Toast.makeText(getContext(), kategoriBarang.idKategori.toString(), Toast.LENGTH_SHORT).show();

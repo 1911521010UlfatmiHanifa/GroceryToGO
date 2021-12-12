@@ -64,6 +64,11 @@ public class LihatDataDiriActivity extends AppCompatActivity {
         cl.setVisibility(View.GONE);
 
         getData();
+
+        String pesan = getIntent().getStringExtra("pesan");
+        if(pesan != null) {
+            Toast.makeText(getApplicationContext(), pesan, Toast.LENGTH_SHORT).show();
+        }
         
         //Implisit Intent Nomor HP
         nope.setOnClickListener(new View.OnClickListener() {
@@ -134,18 +139,15 @@ public class LihatDataDiriActivity extends AppCompatActivity {
 
     private void getData(){
 
-        String API_BASE_URL = "https://groceriestogo1208.herokuapp.com/";
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(API_BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        String api = getString(R.string.apiGTG);
+        Koneksi koneksi = new Koneksi();
+        GtgClient gtgClient = koneksi.setGtgClient(api);
 
         SharedPreferences preferences = getSharedPreferences("com.example.grocerytogo",MODE_PRIVATE);
         String token = preferences.getString("TOKEN","");
         Integer id = Integer.valueOf(preferences.getString("id", ""));
 //        Toast.makeText(getApplicationContext(), id.toString(), Toast.LENGTH_SHORT).show();
 
-        GtgClient gtgClient = retrofit.create(GtgClient.class);
         Call<UserClass> call = gtgClient.getUser(token, id);
 
         call.enqueue(new Callback<UserClass>() {
@@ -159,7 +161,7 @@ public class LihatDataDiriActivity extends AppCompatActivity {
                     cl.setVisibility(View.VISIBLE);
                     List<UserItem> userItems = userClass.getUser();
                     for (UserItem item: userItems) {
-                        Picasso.get().load(item.getFoto()).into(foto);
+                        Picasso.get().load(api+item.getFoto()).into(foto);
                         nope.setText(item.getNoHp());
                         jenkel.setText(item.getJenisKelamin());
                         tglLahir.setText(item.getTanggalLahir());

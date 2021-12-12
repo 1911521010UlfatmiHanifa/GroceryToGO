@@ -23,7 +23,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textNotif"
+            android:id="@+id/textWaktu"
             android:layout_width="281dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_light"

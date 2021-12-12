@@ -76,13 +76,9 @@ public class DetailBarangActivity extends AppCompatActivity {
         String token = preferences.getString("TOKEN","");
 //        Toast.makeText(getApplicationContext(), token, Toast.LENGTH_SHORT).show();
 
-        String API_BASE_URL = "https://groceriestogo1208.herokuapp.com/";
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(API_BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        GtgClient gtgClient = retrofit.create(GtgClient.class);
+        String api = getString(R.string.apiGTG);
+        Koneksi koneksi = new Koneksi();
+        GtgClient gtgClient = koneksi.setGtgClient(api);
 
         Integer idbarang = getIntent().getIntExtra("id", 0);
 //        Toast.makeText(getApplicationContext(), idbarang.toString(), Toast.LENGTH_SHORT).show();
@@ -113,7 +109,7 @@ public class DetailBarangActivity extends AppCompatActivity {
                         namaBar.setText(item.getNamaBarang());
                         satuan.setText(item.getUkuranBarang() + " "+ item.getSatuanBarang());
                         ket.setText(item.getKeterangan());
-                        Picasso.get().load(item.getGambar()).into(gambar);
+                        Picasso.get().load(api+item.getGambar()).into(gambar);
                         harga.setText("Rp." +item.getHargaBarang());
                     }
                 }

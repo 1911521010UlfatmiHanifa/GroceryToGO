@@ -54,7 +54,7 @@ public class NotifikasiAdapter
 
             super(itemView);
             textId = itemView.findViewById(R.id.textId);
-            textNotif = itemView.findViewById(R.id.textNotif);
+            textNotif = itemView.findViewById(R.id.textWaktu);
             textWaktu = itemView.findViewById(R.id.textNamaKategori);
             imageLogo = itemView.findViewById(R.id.imageNotif);
 
