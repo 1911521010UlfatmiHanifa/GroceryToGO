@@ -143,7 +143,7 @@ public class SettingFragment extends Fragment {
             }
         });
 
-        //Card View Kelua
+        //Card View Keluar
         keluar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

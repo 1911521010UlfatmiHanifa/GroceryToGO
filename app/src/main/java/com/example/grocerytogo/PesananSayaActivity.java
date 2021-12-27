@@ -59,6 +59,10 @@ public class PesananSayaActivity extends AppCompatActivity implements PesananSay
         notFound = findViewById(R.id.notFounda);
 
         getPesananProses();
+        String pesan = getIntent().getStringExtra("pesan");
+        if(pesan != null) {
+            Toast.makeText(getApplicationContext(), pesan, Toast.LENGTH_SHORT).show();
+        }
         sedangProses.setCardBackgroundColor(0xFF8BC34A);
 
         //Card View Riwayat
@@ -198,6 +202,7 @@ public class PesananSayaActivity extends AppCompatActivity implements PesananSay
     public void onClick(View view, PesananSaya pesananSaya) {
         String statusa = pesananSaya.statusPesanan;
         String nomorPesanan = pesananSaya.idPesanan.toString();
+        finish();
         Intent a = new Intent(PesananSayaActivity.this, LihatDetailPesananActivity.class);
         a.putExtra("id", nomorPesanan);
         a.putExtra("status", statusa);

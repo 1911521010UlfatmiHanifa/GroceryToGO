@@ -1,11 +1,15 @@
 package com.example.grocerytogo.adapter;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -13,14 +17,25 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.grocerytogo.BarangKategoriActivity;
 import com.example.grocerytogo.HomeFragment;
+import com.example.grocerytogo.Koneksi;
+import com.example.grocerytogo.MainActivity;
 import com.example.grocerytogo.R;
 import com.example.grocerytogo.model.BarangBerdasarKategori;
+import com.example.grocerytogo.model.Pesan;
+import com.example.grocerytogo.retrofit.GtgClient;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class BarangBerdasarkanKategoriAdapter
         extends RecyclerView.Adapter<BarangBerdasarkanKategoriAdapter.BarangBersarkanKategoriViewHolder> {
+
+    Context context;
+    Integer a;
 
     ArrayList<BarangBerdasarKategori> listBarang = new ArrayList<>();
 //    public BarangBerdasarkanKategoriAdapter(ArrayList<BarangBerdasarKategori> listBarang) {
@@ -72,7 +87,8 @@ public class BarangBerdasarkanKategoriAdapter
     @NonNull
     @Override
     public BarangBersarkanKategoriViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        context = parent.getContext();
+        LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.list_barang_kategori, parent, false);
         BarangBersarkanKategoriViewHolder viewHolder = new BarangBersarkanKategoriViewHolder(view);
         return viewHolder;
@@ -105,7 +121,7 @@ public class BarangBerdasarkanKategoriAdapter
         viewHolder.tambah.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Integer a = Integer.parseInt(viewHolder.jumlah.getText().toString());
+                a = Integer.parseInt(viewHolder.jumlah.getText().toString());
                 a++;
                 viewHolder.jumlah.setText(String.valueOf(a));
             }
@@ -114,7 +130,7 @@ public class BarangBerdasarkanKategoriAdapter
         viewHolder.kurang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Integer a = Integer.parseInt(viewHolder.jumlah.getText().toString());
+                a = Integer.parseInt(viewHolder.jumlah.getText().toString());
                 a--;
                 if(a == 0) {
                     viewHolder.tambah.setVisibility(View.GONE);
@@ -125,6 +141,42 @@ public class BarangBerdasarkanKategoriAdapter
                 }else{
                     viewHolder.jumlah.setText(String.valueOf(a));
                 }
+            }
+        });
+
+        viewHolder.tambahKeranjang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String api = context.getString(R.string.apiGTG);
+                Koneksi koneksi = new Koneksi();
+                GtgClient gtgClient = koneksi.setGtgClient(api);
+
+                SharedPreferences preferences = context.getSharedPreferences("com.example.grocerytogo", Context.MODE_PRIVATE);
+                String token = preferences.getString("TOKEN","");
+                Integer id = Integer.valueOf(preferences.getString("id", ""));
+
+                Call<Pesan> call = gtgClient.tambahBarang(token, id, barang.idProduk,  a);
+                call.enqueue(new Callback<Pesan>() {
+                    @Override
+                    public void onResponse(Call<Pesan> call, Response<Pesan> response) {
+                        Pesan pesan = response.body();
+                        if(pesan != null) {
+                            Toast.makeText(context.getApplicationContext(), "Berhasil Tambah", Toast.LENGTH_SHORT).show();
+//                            listBarang.clear();
+                            listBarang.remove(position);
+                            notifyItemRemoved(position);
+                            notifyItemRangeChanged(position, listBarang.size());
+                            notifyDataSetChanged();
+                        }else {
+                            Toast.makeText(context.getApplicationContext(), "Gagal Tambah", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Pesan> call, Throwable t) {
+                        Toast.makeText(context.getApplicationContext(), "Gagal Mengakses Server", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
     }

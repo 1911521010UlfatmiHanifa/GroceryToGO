@@ -24,6 +24,7 @@ import com.example.grocerytogo.model.KategoriBarang;
 import com.example.grocerytogo.model.KategoriItem;
 import com.example.grocerytogo.model.ListBarang;
 import com.example.grocerytogo.model.ListKategori;
+import com.example.grocerytogo.model.Pesan;
 import com.example.grocerytogo.retrofit.GtgClient;
 
 import java.util.ArrayList;
@@ -61,6 +62,7 @@ public class BarangKategoriActivity extends AppCompatActivity implements BarangB
         //API BARANG
         SharedPreferences preferences = getSharedPreferences("com.example.grocerytogo",MODE_PRIVATE);
         String token = preferences.getString("TOKEN","");
+        Integer id = Integer.valueOf(preferences.getString("id", ""));
 //        Toast.makeText(getApplicationContext(), token, Toast.LENGTH_SHORT).show();
 
         String api = getString(R.string.apiGTG);
@@ -70,7 +72,7 @@ public class BarangKategoriActivity extends AppCompatActivity implements BarangB
         Integer idKategori = getIntent().getIntExtra("id", 0);
 //        Toast.makeText(getApplicationContext(), idKategori.toString(), Toast.LENGTH_SHORT).show();
 
-        Call<ListBarang> call = gtgClient.getBarangKategori(token, idKategori);
+        Call<ListBarang> call = gtgClient.getBarangKategori(token, idKategori, id);
         call.enqueue(new Callback<ListBarang>() {
              @Override
              public void onResponse(Call<ListBarang> call, Response<ListBarang> response) {
@@ -82,14 +84,14 @@ public class BarangKategoriActivity extends AppCompatActivity implements BarangB
                      List<BarangItem> barangItems = listBarang.getBarang();
                      for (BarangItem item: barangItems) {
                          BarangBerdasarKategori barangBerdasarKategori = new BarangBerdasarKategori(
-                                 item.getId(),
-                                 item.getNamaBarang(),
-                                 item.getSatuanBarang(),
-                                 item.getKeterangan(),
-                                 api+item.getGambar(),
-                                 item.getIdKategori(),
-                                 item.getHargaBarang(),
-                                 item.getUkuranBarang()
+                             item.getId(),
+                             item.getNamaBarang(),
+                             item.getSatuanBarang(),
+                             item.getKeterangan(),
+                             api+item.getGambar(),
+                             item.getIdKategori(),
+                             item.getHargaBarang(),
+                             item.getUkuranBarang()
                          );
                          barangBerdasarKategoris.add(barangBerdasarKategori);
                      }

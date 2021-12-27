@@ -99,7 +99,9 @@ public class LihatDetailPesananActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 batalkanPesanan();
                                 finish();
+                                String pesan = "Pesanan Berhasil Dibatalkan";
                                 Intent in = new Intent(LihatDetailPesananActivity.this, PesananSayaActivity.class);
+                                in.putExtra("pesan", pesan);
                                 startActivity(in);
                             }
                         })
@@ -182,7 +184,8 @@ public class LihatDetailPesananActivity extends AppCompatActivity {
             public void onResponse(Call<Pesan> call, Response<Pesan> response) {
                 Pesan pesan = response.body();
                 if(pesan != null) {
-                    Intent in = new Intent(LihatDetailPesananActivity.this, MainActivity.class);
+
+                    Intent in = new Intent(LihatDetailPesananActivity.this, PesananSayaActivity.class);
                     startActivity(in);
                 }else {
                     Toast.makeText(LihatDetailPesananActivity.this, "Gagal Membatalkan Pesanan", Toast.LENGTH_SHORT).show();

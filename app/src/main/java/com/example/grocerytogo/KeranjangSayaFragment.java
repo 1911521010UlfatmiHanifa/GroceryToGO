@@ -1,21 +1,42 @@
 package com.example.grocerytogo;
 
+import static android.content.Context.MODE_PRIVATE;
+import static android.view.View.GONE;
+
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.example.grocerytogo.adapter.BarangBerdasarkanKategoriAdapter;
 import com.example.grocerytogo.adapter.BarangKeranjangSayaAdapter;
+import com.example.grocerytogo.model.BarangBerdasarKategori;
 import com.example.grocerytogo.model.BarangKeranjangSaya;
+import com.example.grocerytogo.model.KeranjangItem;
+import com.example.grocerytogo.model.ListKeranjang;
+import com.example.grocerytogo.model.ListPesanan;
+import com.example.grocerytogo.model.Pesan;
+import com.example.grocerytogo.model.PesananItem;
+import com.example.grocerytogo.model.PesananSaya;
+import com.example.grocerytogo.retrofit.GtgClient;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -80,12 +101,7 @@ public class KeranjangSayaFragment extends Fragment {
         ubah_lokasi = view.findViewById(R.id.ubah_lokasi);
         DataBarangKeranjangSaya = view.findViewById(R.id.ListKeranjangSaya);
 
-        //Set Adapter dan Recycler View
-        barangKeranjangSayaAdapter = new BarangKeranjangSayaAdapter();
-        barangKeranjangSayaAdapter.setListBarangKeranjangSaya(getDataBarangKeranjangSaya());
-        DataBarangKeranjangSaya.setAdapter(barangKeranjangSayaAdapter);
-        LinearLayoutManager layout = new LinearLayoutManager(getActivity());
-        DataBarangKeranjangSaya.setLayoutManager(layout);
+        getKeranjangSaya();
 
         //Button Tambah Produk Pesanan, Fragment ke Fragment
         tambah.setOnClickListener(view2 -> {
@@ -106,15 +122,51 @@ public class KeranjangSayaFragment extends Fragment {
         return view;
     }
 
-    //Inisialisasi AuthData
-    public ArrayList<BarangKeranjangSaya> getDataBarangKeranjangSaya() {
-        ArrayList<BarangKeranjangSaya> list = new ArrayList<>();
-        list.add(new BarangKeranjangSaya("Daging", "80.000", R.drawable.contoh4));
-        list.add(new BarangKeranjangSaya("Jus", "50.000", R.drawable.contoh3));
-        list.add(new BarangKeranjangSaya("Buah", "20.000", R.drawable.contoh1));
-        list.add(new BarangKeranjangSaya("Daging", "80.000", R.drawable.contoh4));
-        list.add(new BarangKeranjangSaya("Jus", "50.000", R.drawable.contoh3));
-        list.add(new BarangKeranjangSaya("Buah", "20.000", R.drawable.contoh1));
-        return list;
+    private void getKeranjangSaya(){
+        SharedPreferences preferences = getContext().getSharedPreferences("com.example.grocerytogo",MODE_PRIVATE);
+        String token = preferences.getString("TOKEN","");
+        Integer id = Integer.valueOf(preferences.getString("id", ""));
+//        Toast.makeText(getApplicationContext(), token, Toast.LENGTH_SHORT).show();
+
+        String api = getString(R.string.apiGTG);
+        Koneksi koneksi = new Koneksi();
+        GtgClient gtgClient = koneksi.setGtgClient(api);
+
+        Call<ListKeranjang> call = gtgClient.getKeranjang(token, id);
+        call.enqueue(new Callback<ListKeranjang>() {
+            @Override
+            public void onResponse(Call<ListKeranjang> call, Response<ListKeranjang> response) {
+                ListKeranjang listKeranjang = response.body();
+                ArrayList<BarangKeranjangSaya> keranjangSayas = new ArrayList<>();
+                if(listKeranjang != null){
+                    List<KeranjangItem> keranjangItems = listKeranjang.getKeranjang();
+                    for(KeranjangItem item : keranjangItems){
+                        BarangKeranjangSaya barangKeranjangSaya = new BarangKeranjangSaya(
+                                item.getNamaBarang(),
+                                item.getHargaBarang(),
+                                api+item.getGambar(),
+                                item.getJumlah(),
+                                item.getIdBarang()
+                        );
+                        keranjangSayas.add(barangKeranjangSaya);
+                    }
+                    viewRecyclerView(keranjangSayas);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ListKeranjang> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void viewRecyclerView(ArrayList<BarangKeranjangSaya> listKeranjang){
+        //Set Adapter dan Recycler View
+        barangKeranjangSayaAdapter = new BarangKeranjangSayaAdapter();
+        barangKeranjangSayaAdapter.setListBarangKeranjangSaya(listKeranjang);
+        DataBarangKeranjangSaya.setAdapter(barangKeranjangSayaAdapter);
+        LinearLayoutManager layout = new LinearLayoutManager(getActivity());
+        DataBarangKeranjangSaya.setLayoutManager(layout);
     }
 }

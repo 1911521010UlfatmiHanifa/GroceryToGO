@@ -123,6 +123,7 @@ public class LihatDataDiriActivity extends AppCompatActivity {
         editData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                finish();
                 Intent in = new Intent(LihatDataDiriActivity.this, EditDataDiriActivity.class);
                 startActivity(in);
             }

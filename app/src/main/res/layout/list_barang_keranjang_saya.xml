@@ -18,6 +18,8 @@
             android:layout_width="107dp"
             android:layout_height="116dp"
             android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -33,7 +35,7 @@
             android:textColor="#000000"
             android:textSize="16sp"
             app:layout_constraintStart_toEndOf="@+id/gambar"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/gambar" />
 
         <TextView
             android:id="@+id/harga"
@@ -46,6 +48,17 @@
             android:textSize="14sp"
             app:layout_constraintStart_toEndOf="@+id/harga2"
             app:layout_constraintTop_toTopOf="@+id/harga2" />
+
+        <TextView
+            android:id="@+id/total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_light"
+            android:text="TextView"
+            android:textColor="#FF5722"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/gambar"
+            app:layout_constraintStart_toStartOf="@+id/harga2" />
 
         <TextView
             android:id="@+id/harga2"
@@ -63,36 +76,22 @@
             android:id="@+id/textJumlah"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
             android:text="0"
-            app:layout_constraintBottom_toBottomOf="@+id/btn_tambah1"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_kurang1"
             app:layout_constraintEnd_toStartOf="@+id/btn_kurang1"
-            app:layout_constraintStart_toEndOf="@+id/btn_tambah1"
-            app:layout_constraintTop_toTopOf="@+id/btn_tambah1" />
+            app:layout_constraintTop_toTopOf="@+id/btn_kurang1" />
 
         <Button
             android:id="@+id/btn_kurang1"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
+            android:background="@android:drawable/ic_menu_delete"
             android:backgroundTint="#F44336"
-            android:text="-"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/gambar"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/harga" />
-
-        <Button
-            android:id="@+id/btn_tambah1"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="60dp"
-            android:layout_marginBottom="10dp"
-            android:backgroundTint="#8BC34A"
-            android:text="+"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btn_kurang1"
             app:layout_constraintTop_toBottomOf="@+id/harga" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,7 +10,7 @@ public class PesananItem{
     @SerializedName("sum")
     private int sum;
 
-    @SerializedName("id_transaksi")
+    @SerializedName("id")
     private int idTransaksi;
 
     @SerializedName("status_transaksi")

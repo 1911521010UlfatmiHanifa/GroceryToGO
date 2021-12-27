@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "141952052250",
+    "project_id": "gtg1208-e5997",
+    "storage_bucket": "gtg1208-e5997.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:141952052250:android:dd93b66aa9392c308bb5a3",
+        "android_client_info": {
+          "package_name": "com.example.grocerytogo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "141952052250-6bps7o1o1g7fok6vrbpujbl4kv5fe9go.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQHM98fqMIqmjdXVVz_V2pWscLH6kvr6g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "141952052250-6bps7o1o1g7fok6vrbpujbl4kv5fe9go.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

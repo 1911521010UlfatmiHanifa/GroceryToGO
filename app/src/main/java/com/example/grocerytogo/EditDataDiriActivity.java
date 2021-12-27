@@ -40,6 +40,7 @@ public class EditDataDiriActivity extends AppCompatActivity{
     private AutoCompleteTextView jenkel;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     String tglLahir, pilihan;
+    String foto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,8 +97,11 @@ public class EditDataDiriActivity extends AppCompatActivity{
         gambar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent in = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(in,REQUEST_IMAGE_CAPTURE);
+//                Intent in = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                startActivityForResult(in,REQUEST_IMAGE_CAPTURE);
+                Intent intent = new Intent(EditDataDiriActivity.this, AvatarActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
 
@@ -118,15 +122,15 @@ public class EditDataDiriActivity extends AppCompatActivity{
         });
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
-            Bundle extras = data.getExtras();
-            Bitmap image = (Bitmap) extras.get("data");
-            gambar.setImageBitmap(image);
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
+//            Bundle extras = data.getExtras();
+//            Bitmap image = (Bitmap) extras.get("data");
+//            gambar.setImageBitmap(image);
+//        }
+//        super.onActivityResult(requestCode, resultCode, data);
+//    }
 
     private void editData(){
 
@@ -140,8 +144,9 @@ public class EditDataDiriActivity extends AppCompatActivity{
         String nope = ubahNo.getText().toString();
         String tgl = ubahTgl.getText().toString();
         String jk = jenkel.getText().toString();
+        foto = getIntent().getStringExtra("gambar");
 
-        Call<Pesan> call = gtgClient.editDataDiri(token, tgl, jk, nope, id);
+        Call<Pesan> call = gtgClient.editDataDiri(token, tgl, jk, nope, id, foto);
         call.enqueue(new Callback<Pesan>() {
             @Override
             public void onResponse(Call<Pesan> call, Response<Pesan> response) {
@@ -180,12 +185,16 @@ public class EditDataDiriActivity extends AppCompatActivity{
         call.enqueue(new Callback<UserClass>() {
             @Override
             public void onResponse(Call<UserClass> call, Response<UserClass> response) {
-//                Toast.makeText(getApplicationContext(), "B", Toast.LENGTH_SHORT).show();
                 UserClass userClass = response.body();
                 if(userClass != null){
                     List<UserItem> userItems = userClass.getUser();
                     for (UserItem item: userItems) {
-                        Picasso.get().load(api+item.getFoto()).into(gambar);
+                        foto = getIntent().getStringExtra("gambar");
+                        if(foto.equals(item.getFoto())){
+                            Picasso.get().load(api+item.getFoto()).into(gambar);
+                        }else if(foto.equals(foto)){
+                            Picasso.get().load(api+foto).into(gambar);
+                        }
                         ubahNo.setText(item.getNoHp());
                         jenkel.setText(item.getJenisKelamin());
                         ubahTgl.setText(item.getTanggalLahir());
