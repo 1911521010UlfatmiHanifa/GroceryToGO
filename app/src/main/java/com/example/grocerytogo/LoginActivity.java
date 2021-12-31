@@ -24,9 +24,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private TextView textUsername, textPassword;
+    private TextView textUsername, textPassword, userKosong, pwKosong;
     private ImageView back;
     private Button loginn;
+    String username, password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,8 @@ public class LoginActivity extends AppCompatActivity {
 
         back = findViewById(R.id.back);
         loginn = findViewById(R.id.btn_login);
+        userKosong = findViewById(R.id.textView22);
+        pwKosong = findViewById(R.id.textView21);
 
         String pesan = getIntent().getStringExtra("pesan");
         if(pesan != null) {
@@ -53,7 +56,22 @@ public class LoginActivity extends AppCompatActivity {
         loginn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                checkLogin();
+                textUsername = findViewById(R.id.nama_pengguna);
+                textPassword = findViewById(R.id.password);
+
+                username = textUsername.getText().toString();
+                password = textPassword.getText().toString();
+                if(password.length() < 8) {
+                    pwKosong.setVisibility(View.VISIBLE);
+                    pwKosong.setText("Masukkan Password Minimal 8 Karakter");
+                }
+                if(username.isEmpty()){
+                    userKosong.setVisibility(View.VISIBLE);
+                    userKosong.setText("Masukkan Username");
+                }
+                if(username.length() > 0 && password.length() >= 8) {
+                    checkLogin();
+                }
             }
         });
 
@@ -62,30 +80,26 @@ public class LoginActivity extends AppCompatActivity {
 
     private void checkLogin(){
 
-        textUsername = findViewById(R.id.nama_pengguna);
-        textPassword = findViewById(R.id.password);
-
-        String username = textUsername.getText().toString();
-        String password = textPassword.getText().toString();
-
         String api = getString(R.string.apiGTG);
         Koneksi koneksi = new Koneksi();
         GtgClient gtgClient = koneksi.setGtgClient(api);
 
+        pwKosong.setVisibility(View.GONE);
+        userKosong.setVisibility(View.GONE);
         Call<AuthClass> call = gtgClient.checkLogin(username, password);
         updateViewProgress(true);
         call.enqueue(new Callback<AuthClass>() {
             @Override
             public void onResponse(Call<AuthClass> call, Response<AuthClass> response) {
                 AuthClass authClass = response.body();
-                if (authClass != null){
+                if (authClass != null) {
                     AuthData authData = authClass.getAuthData();
                     String accesToken = authData.getToken();
                     Integer id = authData.getId();
 
 //                    Toast.makeText(getApplicationContext(), accesToken, Toast.LENGTH_SHORT).show();
 
-                    SharedPreferences preferences = getSharedPreferences("com.example.grocerytogo",MODE_PRIVATE);
+                    SharedPreferences preferences = getSharedPreferences("com.example.grocerytogo", MODE_PRIVATE);
                     SharedPreferences.Editor editor = preferences.edit();
                     editor.putString("TOKEN", accesToken);
                     editor.putString("id", id.toString());
@@ -94,8 +108,7 @@ public class LoginActivity extends AppCompatActivity {
                     Intent i = new Intent(LoginActivity.this, TemplateActivity.class);
                     startActivity(i);
                     finish();
-                }
-                else{
+                } else {
                     Toast.makeText(getApplicationContext(), "Username dan Password Tidak Cocok", Toast.LENGTH_SHORT).show();
                     updateViewProgress(false);
                     textUsername.setText("");

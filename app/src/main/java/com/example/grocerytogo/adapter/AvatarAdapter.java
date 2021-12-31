@@ -47,7 +47,7 @@ public class AvatarAdapter
     @Override
     public void onBindViewHolder(@NonNull AvatarAdapter.AvatarViewHolder viewHolder, int position) {
         Avatar avatar = listAvatar.get(position);
-        Picasso.get().load(avatar.url + avatar.gambar).into(viewHolder.avatar);
+        Picasso.get().load(avatar.url+avatar.gambar).into(viewHolder.avatar);
     }
 
     @Override
@@ -58,12 +58,10 @@ public class AvatarAdapter
     public class AvatarViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView avatar;
-        FrameLayout frameLayout;
 
         public AvatarViewHolder(@NonNull View itemView) {
             super(itemView);
             avatar = itemView.findViewById(R.id.logo_avatar);
-            frameLayout = itemView.findViewById(R.id.frame_avatar);
             itemView.setOnClickListener(this);
         }
 
@@ -71,11 +69,6 @@ public class AvatarAdapter
         public void onClick(View view) {
             if(listener != null){
                 listener.onClick(view, listAvatar.get(getAdapterPosition()));
-                if(frameLayout.getVisibility()==View.VISIBLE){
-                    frameLayout.setVisibility(View.GONE);
-                }else{
-                    frameLayout.setVisibility(View.VISIBLE);
-                }
             }
         }
     }

@@ -35,7 +35,6 @@ public class AvatarActivity extends AppCompatActivity implements AvatarAdapter.K
 
     private AvatarAdapter avatarAdapter;
     private RecyclerView DataAvatar;
-    private Button simpan;
     private ImageView back;
     String foto;
 
@@ -45,17 +44,7 @@ public class AvatarActivity extends AppCompatActivity implements AvatarAdapter.K
         setContentView(R.layout.activity_avatar);
 
         DataAvatar = findViewById(R.id.ls_avatar);
-        simpan = findViewById(R.id.btn_masuk2);
         back = findViewById(R.id.imageView4);
-
-        simpan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent a = new Intent(AvatarActivity.this, EditDataDiriActivity.class);
-                a.putExtra("gambar", foto);
-                startActivity(a);
-            }
-        });
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,6 +78,7 @@ public class AvatarActivity extends AppCompatActivity implements AvatarAdapter.K
                             item.getGambar(),
                             api
                         );
+//                        Toast.makeText(getApplicationContext(), api+item.getGambar(), Toast.LENGTH_SHORT).show();
                         avatars.add(avatar);
                     }
                     viewRecyclerView(avatars);
@@ -115,5 +105,10 @@ public class AvatarActivity extends AppCompatActivity implements AvatarAdapter.K
     @Override
     public void onClick(View view, Avatar avatar) {
         foto = avatar.gambar;
+//        Toast.makeText(getApplicationContext(), foto, Toast.LENGTH_SHORT).show();
+        Intent a = new Intent(AvatarActivity.this, EditDataDiriActivity.class);
+        a.putExtra("GR", foto);
+        startActivity(a);
     }
+
 }

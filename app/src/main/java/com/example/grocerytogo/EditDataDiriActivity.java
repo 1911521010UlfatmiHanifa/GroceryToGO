@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -38,9 +39,11 @@ public class EditDataDiriActivity extends AppCompatActivity{
     private Button simpan;
     private ImageView back, gambar;
     private AutoCompleteTextView jenkel;
+    private TextView nopeKosong, tglKosong, jkKosong;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     String tglLahir, pilihan;
-    String foto;
+    String foto, fotoLama;
+    String nope, tgl, jk;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +59,9 @@ public class EditDataDiriActivity extends AppCompatActivity{
         ubahNo = findViewById(R.id.ubah_nohp);
         ubahNo.requestFocus();
         ubahNama.setEnabled(false);
+        jkKosong = findViewById(R.id.textView30);
+        nopeKosong = findViewById(R.id.textView32);
+        tglKosong = findViewById(R.id.textView33);
 
         Calendar calender = Calendar.getInstance();
         final int tahun = calender.get(Calendar.YEAR);
@@ -109,7 +115,28 @@ public class EditDataDiriActivity extends AppCompatActivity{
         simpan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                editData();
+                nope = ubahNo.getText().toString();
+                tgl = ubahTgl.getText().toString();
+                jk = jenkel.getText().toString();
+
+                if(nope.isEmpty()){
+                    nopeKosong.setVisibility(View.VISIBLE);
+                    nopeKosong.setText("Masukkan Nomor HP");
+                }
+                if(tgl.isEmpty()){
+                    tglKosong.setVisibility(View.VISIBLE);
+                    tglKosong.setText("Masukkan Tanggal Lahir");
+                }
+                if(jk.isEmpty()){
+                    jkKosong.setVisibility(View.VISIBLE);
+                    jkKosong.setText("Masukkan Jenis Kelamin");
+                }
+                if(nope.length() > 0 && tgl.length() > 0 && jk.length() > 0) {
+                    nopeKosong.setVisibility(View.GONE);
+                    tglKosong.setVisibility(View.GONE);
+                    jkKosong.setVisibility(View.GONE);
+                    editData();
+                }
             }
         });
 
@@ -117,7 +144,9 @@ public class EditDataDiriActivity extends AppCompatActivity{
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed();
+                Intent i = new Intent(EditDataDiriActivity.this, LihatDataDiriActivity.class);
+                startActivity(i);
+                finish();
             }
         });
     }
@@ -141,12 +170,15 @@ public class EditDataDiriActivity extends AppCompatActivity{
         SharedPreferences preferences = getSharedPreferences("com.example.grocerytogo",MODE_PRIVATE);
         String token = preferences.getString("TOKEN","");
         Integer id = Integer.valueOf(preferences.getString("id", ""));
-        String nope = ubahNo.getText().toString();
-        String tgl = ubahTgl.getText().toString();
-        String jk = jenkel.getText().toString();
-        foto = getIntent().getStringExtra("gambar");
+        foto = getIntent().getStringExtra("GR");
+        String updateFoto;
+        if(foto == null){
+            updateFoto = fotoLama;
+        }else{
+            updateFoto = foto;
+        }
 
-        Call<Pesan> call = gtgClient.editDataDiri(token, tgl, jk, nope, id, foto);
+        Call<Pesan> call = gtgClient.editDataDiri(token, tgl, jk, nope, id, updateFoto);
         call.enqueue(new Callback<Pesan>() {
             @Override
             public void onResponse(Call<Pesan> call, Response<Pesan> response) {
@@ -189,17 +221,22 @@ public class EditDataDiriActivity extends AppCompatActivity{
                 if(userClass != null){
                     List<UserItem> userItems = userClass.getUser();
                     for (UserItem item: userItems) {
-                        foto = getIntent().getStringExtra("gambar");
-                        if(foto.equals(item.getFoto())){
+                        foto = getIntent().getStringExtra("GR");
+//                        Toast.makeText(getApplicationContext(), foto, Toast.LENGTH_SHORT).show();
+                        if(foto == null){
                             Picasso.get().load(api+item.getFoto()).into(gambar);
-                        }else if(foto.equals(foto)){
+                        }else if(foto==item.getFoto()){
+                            Picasso.get().load(api+item.getFoto()).into(gambar);
+                        }else{
                             Picasso.get().load(api+foto).into(gambar);
                         }
+                        fotoLama = item.getFoto();
                         ubahNo.setText(item.getNoHp());
                         jenkel.setText(item.getJenisKelamin());
                         ubahTgl.setText(item.getTanggalLahir());
                         ubahNama.setText(item.getUsername());
                     }
+
                 }
             }
 

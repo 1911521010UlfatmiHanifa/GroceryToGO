@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -108,7 +109,18 @@ public class LokasiActivity extends FragmentActivity implements OnMapReadyCallba
         lokasi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed();
+                SharedPreferences preferences = getSharedPreferences("com.example.grocerytogo", MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putFloat("LATITUDE", (float) Llatitude);
+                editor.putFloat("LONGITUDE", (float) Llongitude);
+                editor.apply();
+//                Toast.makeText(getApplicationContext(), (int) Llongitude, Toast.LENGTH_SHORT).show();
+//                Intent i = new Intent(getApplicationContext(), KeranjangSayaFragment.class);
+//                i.putExtra("latitude", Llatitude);
+//                i.putExtra("longitude", Llongitude);
+//                getSupportFragmentManager().beginTransaction().replace(R.id.frame, new KeranjangSayaFragment()).commit();
+//                getFragmentManager().beginTransaction().replace(R.id.frame, new KeranjangSayaFragment()).commit();
+//                getSupportFragmentManager().beginTransaction().replace(R.id.frame, new KeranjangSayaFragment()).commit();
             }
         });
 
@@ -161,12 +173,13 @@ public class LokasiActivity extends FragmentActivity implements OnMapReadyCallba
 
     private CardView lokasi;
     private boolean isPermissionGranted;
+    double Llatitude, Llongitude;
 
     @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.setMyLocationEnabled(true);
+//        mMap.setMyLocationEnabled(true);
         getCurrentLocation();
 
         // Add a marker in Sydney and move the camera
@@ -303,10 +316,10 @@ public class LokasiActivity extends FragmentActivity implements OnMapReadyCallba
                                     if (locationResult != null && locationResult.getLocations().size() >0){
 
                                         int index = locationResult.getLocations().size() - 1;
-                                        double latitude = locationResult.getLocations().get(index).getLatitude();
-                                        double longitude = locationResult.getLocations().get(index).getLongitude();
+                                        Llatitude = locationResult.getLocations().get(index).getLatitude();
+                                        Llongitude = locationResult.getLocations().get(index).getLongitude();
 
-                                        LatLng latLng = new LatLng(latitude,longitude);
+                                        LatLng latLng = new LatLng(Llatitude,Llongitude);
                                         CameraUpdate update = CameraUpdateFactory.newLatLngZoom(latLng,15);
                                         mMap.addMarker(new MarkerOptions().position(latLng).title("Lokasi Anda"));
                                         mMap.animateCamera(update);

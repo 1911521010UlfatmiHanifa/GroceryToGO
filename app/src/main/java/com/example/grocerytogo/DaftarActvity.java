@@ -26,8 +26,9 @@ public class DaftarActvity extends AppCompatActivity {
 
     private ImageView back;
     private Button daftar;
-    private TextView textUsername, textPassword, textNope;
+    private TextView textUsername, textPassword, textNope, userKosong, pwKosong, nopeKosong;
     private ProgressBar progressBar;
+    String username, password, no_hp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +38,9 @@ public class DaftarActvity extends AppCompatActivity {
         back = findViewById(R.id.image_backDaftar);
         daftar = findViewById(R.id.btn_daftar);
         progressBar = findViewById(R.id.progressBar7);
+        userKosong = findViewById(R.id.textView28);
+        nopeKosong = findViewById(R.id.textView29);
+        pwKosong = findViewById(R.id.textView31);
 
         daftar.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
@@ -54,20 +58,37 @@ public class DaftarActvity extends AppCompatActivity {
         daftar.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                registert();
+                textUsername = findViewById(R.id.daftar_user);
+                textPassword = findViewById(R.id.daftar_password);
+                textNope = findViewById(R.id.daftar_nohp);
+
+                username = textUsername.getText().toString();
+                password = textPassword.getText().toString();
+                no_hp = textNope.getText().toString();
+
+                if(username.isEmpty()){
+                    userKosong.setVisibility(View.VISIBLE);
+                    userKosong.setText("Masukkan Username");
+                }
+                if(password.length() < 8){
+                    pwKosong.setVisibility(View.VISIBLE);
+                    pwKosong.setText("Password Kurang Dari 8 Karakter");
+                }
+                if(no_hp.isEmpty()){
+                    nopeKosong.setVisibility(View.VISIBLE);
+                    nopeKosong.setText("Masukkan Nomor HP");
+                }
+                if(username.length() > 0 && password.length() >= 8 && no_hp.length() > 0){
+                    userKosong.setVisibility(View.GONE);
+                    pwKosong.setVisibility(View.GONE);
+                    nopeKosong.setVisibility(View.GONE);
+                    registert();
+                }
             }
         });
     }
 
     private void registert(){
-
-        textUsername = findViewById(R.id.daftar_user);
-        textPassword = findViewById(R.id.daftar_password);
-        textNope = findViewById(R.id.daftar_nohp);
-
-        String username = textUsername.getText().toString();
-        String password = textPassword.getText().toString();
-        String no_hp = textNope.getText().toString();
 
         String api = getString(R.string.apiGTG);
         Koneksi koneksi = new Koneksi();

@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +24,8 @@ public class UbahKataSandiActivity extends AppCompatActivity {
     private Button simpan;
     private ImageView back;
     private EditText pw_lama, pw_konfir, pw_baru;
+    private TextView lamaKosong, baruKosong, konfirKosong;
+    String pwlama, pwbaru, pwkonfir;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +37,36 @@ public class UbahKataSandiActivity extends AppCompatActivity {
         pw_lama = findViewById(R.id.pw_lama);
         pw_baru = findViewById(R.id.pw_baru);
         pw_konfir = findViewById(R.id.pw_konfir);
+        lamaKosong = findViewById(R.id.textView34);
+        baruKosong = findViewById(R.id.textView36);
+        konfirKosong = findViewById(R.id.textView37);
 
         //Button Simpan
         simpan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ubahKataSandi();
+                pwlama = pw_lama.getText().toString();
+                pwkonfir = pw_konfir.getText().toString();
+                pwbaru = pw_baru.getText().toString();
+
+                if(pwlama.length() < 8){
+                    lamaKosong.setVisibility(View.VISIBLE);
+                    lamaKosong.setText("Masukkan Kata Sandi Lama Minimal 8 Karakter");
+                }
+                if(pwbaru.length() < 8){
+                    baruKosong.setVisibility(View.VISIBLE);
+                    baruKosong.setText("Masukkan Kata Sandi Baru Minimal 8 Karakter");
+                }
+                if(pwkonfir.length() < 8){
+                    konfirKosong.setVisibility(View.VISIBLE);
+                    konfirKosong.setText("Masukkan Kata Sandi Konfirmasi Minimal 8 Karakter");
+                }
+                if(pwlama.length() >= 8 && pwbaru.length() >= 8 && pwkonfir.length() >= 8) {
+                    lamaKosong.setVisibility(View.GONE);
+                    baruKosong.setVisibility(View.GONE);
+                    konfirKosong.setVisibility(View.GONE);
+                    ubahKataSandi();
+                }
             }
         });
 
@@ -53,10 +80,6 @@ public class UbahKataSandiActivity extends AppCompatActivity {
     }
 
     private void ubahKataSandi(){
-
-        String pwlama = pw_lama.getText().toString();
-        String pwkonfir = pw_konfir.getText().toString();
-        String pwbaru = pw_baru.getText().toString();
 
         if(pwkonfir.equals(pwbaru)) {
             String api = getString(R.string.apiGTG);

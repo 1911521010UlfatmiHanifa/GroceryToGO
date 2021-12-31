@@ -11,9 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -86,9 +89,16 @@ public class KeranjangSayaFragment extends Fragment {
     }
 
     private Button tambah, pesan;
-    private TextView ubah_lokasi;
+    private TextView ubah_lokasi, textSub;
     private RecyclerView DataBarangKeranjangSaya;
     private BarangKeranjangSayaAdapter barangKeranjangSayaAdapter;
+    ArrayList<BarangKeranjangSaya> keranjangSayas;
+    Integer jenis_bayar;
+    ConstraintLayout alamat;
+    RadioGroup radioGroup;
+    RadioButton radioButton;
+    Integer biaya_kirim, subal;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -100,6 +110,26 @@ public class KeranjangSayaFragment extends Fragment {
         pesan = view.findViewById(R.id.btn_pesan);
         ubah_lokasi = view.findViewById(R.id.ubah_lokasi);
         DataBarangKeranjangSaya = view.findViewById(R.id.ListKeranjangSaya);
+        radioGroup = view.findViewById(R.id.rg);
+        jenis_bayar = radioGroup.getCheckedRadioButtonId();
+        radioButton = view.findViewById(jenis_bayar);
+        alamat = view.findViewById(R.id.constraintAlamat);
+        textSub = view.findViewById(R.id.textView45);
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch(checkedId){
+                    case R.id.langsung:
+                        alamat.setVisibility(GONE);
+                        break;
+                    case R.id.cod:
+                        alamat.setVisibility(View.VISIBLE);
+                        biaya_kirim = 0;
+                        break;
+                }
+            }
+        });
 
         getKeranjangSaya();
 
@@ -110,8 +140,7 @@ public class KeranjangSayaFragment extends Fragment {
 
         //Button Pesan
         pesan.setOnClickListener(view2 -> {
-            Intent in = new Intent(getActivity(), PesananSayaActivity.class);
-            startActivity(in);
+            transaksi();
         });
 
         //Text View Ubah Lokasi
@@ -123,6 +152,7 @@ public class KeranjangSayaFragment extends Fragment {
     }
 
     private void getKeranjangSaya(){
+        subal = 0;
         SharedPreferences preferences = getContext().getSharedPreferences("com.example.grocerytogo",MODE_PRIVATE);
         String token = preferences.getString("TOKEN","");
         Integer id = Integer.valueOf(preferences.getString("id", ""));
@@ -137,7 +167,7 @@ public class KeranjangSayaFragment extends Fragment {
             @Override
             public void onResponse(Call<ListKeranjang> call, Response<ListKeranjang> response) {
                 ListKeranjang listKeranjang = response.body();
-                ArrayList<BarangKeranjangSaya> keranjangSayas = new ArrayList<>();
+                keranjangSayas = new ArrayList<>();
                 if(listKeranjang != null){
                     List<KeranjangItem> keranjangItems = listKeranjang.getKeranjang();
                     for(KeranjangItem item : keranjangItems){
@@ -146,11 +176,14 @@ public class KeranjangSayaFragment extends Fragment {
                                 item.getHargaBarang(),
                                 api+item.getGambar(),
                                 item.getJumlah(),
-                                item.getIdBarang()
+                                item.getIdBarang(),
+                                subal += item.getHargaBarang()*item.getJumlah()
                         );
                         keranjangSayas.add(barangKeranjangSaya);
                     }
+//                    Toast.makeText(getContext(), subal.toString(), Toast.LENGTH_SHORT).show();
                     viewRecyclerView(keranjangSayas);
+                    textSub.setText("Rp. "+subal.toString());
                 }
             }
 
@@ -159,6 +192,45 @@ public class KeranjangSayaFragment extends Fragment {
 
             }
         });
+    }
+
+    private void transaksi(){
+
+        SharedPreferences preferences = getContext().getSharedPreferences("com.example.grocerytogo",MODE_PRIVATE);
+        String token = preferences.getString("TOKEN","");
+        Integer id = Integer.valueOf(preferences.getString("id", ""));
+        float lat = preferences.getFloat("LATITUDE", 0);
+        float slong = preferences.getFloat("LONGITUDE", 0);
+
+        String api = getString(R.string.apiGTG);
+        Koneksi koneksi = new Koneksi();
+        GtgClient gtgClient = koneksi.setGtgClient(api);
+
+        String alamat = null;
+
+        Call<Pesan> call = gtgClient.transaksi(token, alamat, biaya_kirim, lat, slong, id);
+        if(keranjangSayas.isEmpty()){
+            Toast.makeText(getContext(), "Pilih Barang Pesanan Dahulu", Toast.LENGTH_SHORT).show();
+        }else {
+            call.enqueue(new Callback<Pesan>() {
+                @Override
+                public void onResponse(Call<Pesan> call, Response<Pesan> response) {
+                    Pesan pesan = response.body();
+                    if(pesan != null) {
+                        Toast.makeText(getContext(), "Berhasil Memesan", Toast.LENGTH_SHORT).show();
+                        Intent in = new Intent(getActivity(), PesananSayaActivity.class);
+                        startActivity(in);
+                    }else{
+                        Toast.makeText(getContext(), "Pesanan Gagal", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Pesan> call, Throwable t) {
+
+                }
+            });
+        }
     }
 
     private void viewRecyclerView(ArrayList<BarangKeranjangSaya> listKeranjang){
