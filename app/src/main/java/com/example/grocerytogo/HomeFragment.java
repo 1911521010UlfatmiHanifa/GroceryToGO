@@ -25,14 +25,17 @@ import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.example.grocerytogo.adapter.BarangBerdasarkanKategoriAdapter;
 import com.example.grocerytogo.adapter.KategoriBarangAdapter;
 import com.example.grocerytogo.model.AuthClass;
 import com.example.grocerytogo.model.AuthData;
 import com.example.grocerytogo.model.BarangBerdasarKategori;
+import com.example.grocerytogo.model.BarangItem;
 import com.example.grocerytogo.model.KategoriBarang;
 import com.example.grocerytogo.model.KategoriItem;
+import com.example.grocerytogo.model.ListBarang;
 import com.example.grocerytogo.model.ListKategori;
 import com.example.grocerytogo.retrofit.GtgClient;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -102,8 +105,8 @@ public class HomeFragment extends Fragment implements KategoriBarangAdapter.Klik
     private EditText pencarian;
     private KategoriBarangAdapter kategoriBarangAdapter;
     private BarangBerdasarkanKategoriAdapter barangBerdasarkanKategoriAdapter;
-    ArrayList<BarangBerdasarKategori> listw = new ArrayList<>();
-    ArrayList<BarangBerdasarKategori> listFilter = new ArrayList<>();
+    ProgressBar progressBar;
+    ArrayList<BarangBerdasarKategori> barangBerdasarKategoris;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -117,26 +120,26 @@ public class HomeFragment extends Fragment implements KategoriBarangAdapter.Klik
         pesan = view.findViewById(R.id.pesan);
         DataKategoriBarang = view.findViewById(R.id.ListKategoriBarang);
         DataBarang = view.findViewById(R.id.ListBarang);
-        ProgressBar progressBar = view.findViewById(R.id.progressBar2);
+        progressBar = view.findViewById(R.id.progressBar2);
 
         //Image Notifikasi
         notifikasi.setOnClickListener(view2 -> {
-//            Intent in = new Intent(getActivity(), NotifikasiActivity.class);
-//            startActivity(in);
-            NotificationManager notificationManager = (NotificationManager) getContext().getSystemService(NOTIFICATION_SERVICE);
-
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-                NotificationChannel notificationChannel = new NotificationChannel("X123",
-                        "GTG CLIENT",
-                        NotificationManager.IMPORTANCE_DEFAULT);
-                notificationManager.createNotificationChannel(notificationChannel);
-            }
-            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getContext(), "X123")
-                    .setSmallIcon(R.drawable.ic_launcher_foreground)
-                    .setContentTitle("Coba Notifikasi")
-                    .setContentText("Holaa Bunda");
-            Notification notification = mBuilder.build();
-            notificationManager.notify(123, notification);
+            Intent in = new Intent(getActivity(), NotifikasiActivity.class);
+            startActivity(in);
+//            NotificationManager notificationManager = (NotificationManager) getContext().getSystemService(NOTIFICATION_SERVICE);
+//
+//            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+//                NotificationChannel notificationChannel = new NotificationChannel("X123",
+//                        "GTG CLIENT",
+//                        NotificationManager.IMPORTANCE_DEFAULT);
+//                notificationManager.createNotificationChannel(notificationChannel);
+//            }
+//            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getContext(), "X123")
+//                    .setSmallIcon(R.drawable.ic_launcher_foreground)
+//                    .setContentTitle("Coba Notifikasi")
+//                    .setContentText("Holaa Bunda");
+//            Notification notification = mBuilder.build();
+//            notificationManager.notify(123, notification);
 //            Toast.makeText(getContext(), "Hi", Toast.LENGTH_SHORT).show();
         });
 
@@ -194,91 +197,117 @@ public class HomeFragment extends Fragment implements KategoriBarangAdapter.Klik
         DataKategoriBarang.setLayoutManager(layout);
 
         //Set Adapter Barang dan Recycler View
-        barangBerdasarkanKategoriAdapter = new BarangBerdasarkanKategoriAdapter();
-//        barangBerdasarkanKategoriAdapter.setListBarang(getDataPencarian());
-        DataBarang.setAdapter(barangBerdasarkanKategoriAdapter);
-        barangBerdasarkanKategoriAdapter.setListener(this);
-        GridLayoutManager layout2 = new GridLayoutManager(getActivity(), 2,GridLayoutManager.VERTICAL, false);
-        DataBarang.setLayoutManager(layout2);
+        getBarang();
 
-//        //Pencarian
-//        pencarian.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable editable) {
+        //Pencarian
+        pencarian.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
 //                listFilter.clear();
-//                if(editable.toString().isEmpty()){
-//                    DataBarang.setAdapter(new BarangBerdasarkanKategoriAdapter(listw));
+                if(editable.toString().isEmpty()){
+//                    DataBarang.setAdapter(new BarangBerdasarkanKategoriAdapter());
 //                    barangBerdasarkanKategoriAdapter.notifyDataSetChanged();
-//                    DataBarang.setVisibility(View.GONE);
-//                    DataKategoriBarang.setVisibility(View.VISIBLE);
-//                    notFound.setVisibility(View.INVISIBLE);
-//                    pesan.setVisibility(View.INVISIBLE);
-//                }
-//                else{
-//                    Filter(editable.toString());
-//                    DataBarang.setVisibility(View.VISIBLE);
-//                    DataKategoriBarang.setVisibility(View.GONE);
-//                }
-//            }
-//        });
+                    DataBarang.setVisibility(View.GONE);
+                    DataKategoriBarang.setVisibility(View.VISIBLE);
+                    notFound.setVisibility(View.INVISIBLE);
+                    pesan.setVisibility(View.INVISIBLE);
+                }
+                else{
+                    Filter(editable.toString());
+                    DataBarang.setVisibility(View.VISIBLE);
+                    DataKategoriBarang.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.GONE);
+                }
+            }
+        });
 
         return view;
     }
 
-//    private void Filter(String ak) {
-//        for (BarangBerdasarKategori lis:listw){
-//            if(lis.namaProduk.toString().toLowerCase().contains(ak.toString().toLowerCase(Locale.ROOT))){
-//                listFilter.add(lis);
-//                notFound.setVisibility(View.INVISIBLE);
-//                pesan.setVisibility(View.INVISIBLE);
-//            }
-//            barangBerdasarkanKategoriAdapter.setListener(this);
-//        }
-//        if(listFilter.isEmpty()){
-//            notFound.setVisibility(View.VISIBLE);
-//            pesan.setVisibility(View.VISIBLE);
-//        }
-//        DataBarang.setAdapter(new BarangBerdasarkanKategoriAdapter(listFilter));
-//        barangBerdasarkanKategoriAdapter.notifyDataSetChanged();
-//        barangBerdasarkanKategoriAdapter.setListener(this);
-//    }
+    private void getBarang(){
+        SharedPreferences preferences = getContext().getSharedPreferences("com.example.grocerytogo",MODE_PRIVATE);
+        String token = preferences.getString("TOKEN","");
+        Integer id = Integer.valueOf(preferences.getString("id", ""));
+//        Toast.makeText(getApplicationContext(), token, Toast.LENGTH_SHORT).show();
 
-    //Inisialisasi AuthData
-//    public ArrayList<KategoriBarang> getDataKategoriBarang(){
-////        ArrayList<KategoriBarang> list = new ArrayList<>();
-////        list.add(new KategoriBarang(R.drawable.contoh1, "Buah-Buahan"));
-////        list.add(new KategoriBarang(R.drawable.contoh2, "Sarapan"));
-////        list.add(new KategoriBarang(R.drawable.contoh3, "Minuman"));
-////        list.add(new KategoriBarang(R.drawable.contoh4, "Daging"));
-////        list.add(new KategoriBarang(R.drawable.contoh5, "Makanan Ringan"));
-////        list.add(new KategoriBarang(R.drawable.contoh1, "Buah-Buahan"));
-////        list.add(new KategoriBarang(R.drawable.contoh2, "Sarapan"));
-////        list.add(new KategoriBarang(R.drawable.contoh3, "Minuman"));
-////        list.add(new KategoriBarang(R.drawable.contoh4, "Daging"));
-////        list.add(new KategoriBarang(R.drawable.contoh5, "Makanan Ringan"));
-//        return list;
-//    }
+        String api = getString(R.string.apiGTG);
+        Koneksi koneksi = new Koneksi();
+        GtgClient gtgClient = koneksi.setGtgClient(api);
 
-    public ArrayList<BarangBerdasarKategori> getDataPencarian(){
-//        listw.add(new BarangBerdasarKategori(1, "Daging", "kg", "Dagi", R.drawable.contoh4, 2, 30000, 1));
-//        listw.add(new BarangBerdasarKategori(2, "Ciki", "pcs", "Dagi", R.drawable.contoh5, 2, 30000, 1));
-//        listw.add(new BarangBerdasarKategori(3, "Buah", "kg", "Dagi", R.drawable.contoh1, 2, 30000, 1));
-//        listw.add(new BarangBerdasarKategori(4, "Jus", "botol", "Dagi", R.drawable.contoh3, 2, 30000, 1));
-//        listw.add(new BarangBerdasarKategori(1, "Daging", "kg", "Dagi", R.drawable.contoh4, 2, 30000, 1));
-//        listw.add(new BarangBerdasarKategori(2, "Ciki", "pcs", "Dagi", R.drawable.contoh5, 2, 30000, 1));
-//        listw.add(new BarangBerdasarKategori(3, "Buah", "kg", "Dagi", R.drawable.contoh1, 2, 30000, 1));
-//        listw.add(new BarangBerdasarKategori(4, "Jus", "botol", "Dagi", R.drawable.contoh3, 2, 30000, 1));
-        return listw;
+        Call<ListBarang> call = gtgClient.getBarang(token, id);
+        notifikasi.setEnabled(false);
+        pencarian.setEnabled(false);
+        DataBarang.setVisibility(View.GONE);
+        DataKategoriBarang.setVisibility(View.GONE);
+        call.enqueue(new Callback<ListBarang>() {
+            @Override
+            public void onResponse(Call<ListBarang> call, Response<ListBarang> response) {
+                ListBarang listBarang = response.body();
+                barangBerdasarKategoris = new ArrayList<>();
+                if (listBarang != null) {
+                    notifikasi.setEnabled(true);
+                    pencarian.setEnabled(true);
+                    DataKategoriBarang.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.VISIBLE);
+                    List<BarangItem> barangItems = listBarang.getBarang();
+                    for (BarangItem item: barangItems) {
+                        BarangBerdasarKategori barangBerdasarKategori = new BarangBerdasarKategori(
+                                item.getId(),
+                                item.getNamaBarang(),
+                                item.getSatuanBarang(),
+                                item.getKeterangan(),
+                                api+item.getGambar(),
+                                item.getIdKategori(),
+                                item.getHargaBarang(),
+                                item.getUkuranBarang()
+                        );
+                        barangBerdasarKategoris.add(barangBerdasarKategori);
+                    }
+                    viewRecyclerView(barangBerdasarKategoris);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ListBarang> call, Throwable t) {
+                Toast.makeText(getContext(), "Gagal Akses Server", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void viewRecyclerView(ArrayList<BarangBerdasarKategori> listBarangKategori){
+        barangBerdasarkanKategoriAdapter = new BarangBerdasarkanKategoriAdapter();
+        barangBerdasarkanKategoriAdapter.setListBarang(listBarangKategori);
+        barangBerdasarkanKategoriAdapter.setListener(this);
+        DataBarang.setAdapter(barangBerdasarkanKategoriAdapter);
+        StaggeredGridLayoutManager layout = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        DataBarang.setLayoutManager(layout);
+    }
+
+    private void Filter(String ak) {
+        ArrayList<BarangBerdasarKategori> listFilter = new ArrayList<>();
+        for (BarangBerdasarKategori lis: barangBerdasarKategoris){
+            if(lis.namaProduk.toLowerCase().contains(ak.toLowerCase(Locale.ROOT))){
+                listFilter.add(lis);
+                notFound.setVisibility(View.INVISIBLE);
+                pesan.setVisibility(View.INVISIBLE);
+            }
+        }
+        if(listFilter.isEmpty()){
+            notFound.setVisibility(View.VISIBLE);
+            pesan.setVisibility(View.VISIBLE);
+        }
+        barangBerdasarkanKategoriAdapter.setListFilter(listFilter);
+        barangBerdasarkanKategoriAdapter.setListener(this);
     }
 
     @Override
@@ -292,12 +321,7 @@ public class HomeFragment extends Fragment implements KategoriBarangAdapter.Klik
     @Override
     public void onClick(View view, BarangBerdasarKategori barangBerdasarKategori) {
         Intent a = new Intent(getActivity(), DetailBarangActivity.class);
-//        String namaBarang = barangBerdasarKategori.namaProduk;
-//        a.putExtra("nama", namaBarang);
-////        String gambarBarang = barangBerdasarKategori.gambar;
-////        a.putExtra("gambar", gambarBarang);
-//        int harga = barangBerdasarKategori.hargaProduk;
-//        a.putExtra("harga", harga);
+        a.putExtra("id", barangBerdasarKategori.idProduk);
         startActivity(a);
     }
 }

@@ -93,12 +93,13 @@ public class KeranjangSayaFragment extends Fragment {
     private RecyclerView DataBarangKeranjangSaya;
     private BarangKeranjangSayaAdapter barangKeranjangSayaAdapter;
     ArrayList<BarangKeranjangSaya> keranjangSayas;
-    Integer jenis_bayar;
+    Integer jenis_bayar, id;
     ConstraintLayout alamat;
     RadioGroup radioGroup;
     RadioButton radioButton;
     Integer biaya_kirim, subal;
-
+    String status_jemput, token;
+    float lat, slong;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -116,16 +117,26 @@ public class KeranjangSayaFragment extends Fragment {
         alamat = view.findViewById(R.id.constraintAlamat);
         textSub = view.findViewById(R.id.textView45);
 
+        SharedPreferences preferences = getContext().getSharedPreferences("com.example.grocerytogo",MODE_PRIVATE);
+        token = preferences.getString("TOKEN","");
+        id = Integer.valueOf(preferences.getString("id", ""));
+
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch(checkedId){
                     case R.id.langsung:
                         alamat.setVisibility(GONE);
+                        status_jemput = "Jemput Langsung";
+                        biaya_kirim = 0;
+                        lat = 0;
+                        slong = 0;
                         break;
                     case R.id.cod:
                         alamat.setVisibility(View.VISIBLE);
-                        biaya_kirim = 0;
+                        status_jemput = "COD";
+                        lat = preferences.getFloat("LATITUDE", 0);
+                        slong = preferences.getFloat("LONGITUDE", 0);
                         break;
                 }
             }
@@ -153,9 +164,7 @@ public class KeranjangSayaFragment extends Fragment {
 
     private void getKeranjangSaya(){
         subal = 0;
-        SharedPreferences preferences = getContext().getSharedPreferences("com.example.grocerytogo",MODE_PRIVATE);
-        String token = preferences.getString("TOKEN","");
-        Integer id = Integer.valueOf(preferences.getString("id", ""));
+
 //        Toast.makeText(getApplicationContext(), token, Toast.LENGTH_SHORT).show();
 
         String api = getString(R.string.apiGTG);
@@ -196,19 +205,13 @@ public class KeranjangSayaFragment extends Fragment {
 
     private void transaksi(){
 
-        SharedPreferences preferences = getContext().getSharedPreferences("com.example.grocerytogo",MODE_PRIVATE);
-        String token = preferences.getString("TOKEN","");
-        Integer id = Integer.valueOf(preferences.getString("id", ""));
-        float lat = preferences.getFloat("LATITUDE", 0);
-        float slong = preferences.getFloat("LONGITUDE", 0);
-
         String api = getString(R.string.apiGTG);
         Koneksi koneksi = new Koneksi();
         GtgClient gtgClient = koneksi.setGtgClient(api);
 
         String alamat = null;
 
-        Call<Pesan> call = gtgClient.transaksi(token, alamat, biaya_kirim, lat, slong, id);
+        Call<Pesan> call = gtgClient.transaksi(token, alamat, biaya_kirim, lat, slong, status_jemput, id);
         if(keranjangSayas.isEmpty()){
             Toast.makeText(getContext(), "Pilih Barang Pesanan Dahulu", Toast.LENGTH_SHORT).show();
         }else {

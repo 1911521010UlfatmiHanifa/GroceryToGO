@@ -16,6 +16,9 @@ public class PesananItem{
     @SerializedName("status_transaksi")
     private String statusTransaksi;
 
+    @SerializedName("status_jemput")
+    private String statusJemput;
+
     public String getWaktu(){
         return waktu;
     }
@@ -30,5 +33,9 @@ public class PesananItem{
 
     public String getStatusTransaksi(){
         return statusTransaksi;
+    }
+
+    public String getStatusJemput() {
+        return statusJemput;
     }
 }

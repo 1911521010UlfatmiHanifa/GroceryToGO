@@ -31,6 +31,9 @@ public class AuthData{
     @SerializedName("no_hp")
     private String no_hp;
 
+    @SerializedName("fcm_token")
+    private String FCMToken;
+
     public void setUpdatedAt(String updatedAt){
         this.updatedAt = updatedAt;
     }
@@ -93,6 +96,14 @@ public class AuthData{
 
     public String getToken(){
         return token;
+    }
+
+    public void setFCMToken(String FCMToken){
+        this.FCMToken = FCMToken;
+    }
+
+    public String getFCMToken(){
+        return FCMToken;
     }
 
     public void setNo_hp(String no_hp){

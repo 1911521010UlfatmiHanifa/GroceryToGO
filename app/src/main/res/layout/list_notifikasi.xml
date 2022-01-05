@@ -15,10 +15,10 @@
             android:id="@+id/textId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="18dp"
-            android:fontFamily="@font/poppins_bold"
+            android:layout_marginStart="10dp"
             android:text="Pesanan #345"
             android:textColor="#000000"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -26,7 +26,6 @@
             android:id="@+id/textWaktu"
             android:layout_width="281dp"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_light"
             android:text="Pesanan Telah Diterima."
             android:textColor="#E91E63"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -35,8 +34,8 @@
 
         <TextView
             android:id="@+id/textNamaKategori"
-            android:layout_width="58dp"
-            android:layout_height="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="18dp"
             android:text="15.57 WIB"
             android:textColor="#000000"

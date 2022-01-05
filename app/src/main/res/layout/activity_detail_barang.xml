@@ -14,10 +14,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:layout_marginTop="24dp"
-        android:fontFamily="@font/poppins_bold"
         android:text="Detail Barang"
         android:textColor="#000000"
         android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,10 +27,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="36dp"
-        android:fontFamily="@font/poppins_bold"
         android:text="Arla DANO Full Cream Milk Powder Instant"
         android:textColor="#000000"
         android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView9" />
 
@@ -39,10 +39,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
-        android:fontFamily="@font/poppins_bold"
         android:text="1 KG"
         android:textColor="#000000"
         android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/textView23"
         app:layout_constraintTop_toBottomOf="@+id/textView23" />
 
@@ -52,7 +52,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="24dp"
-        android:fontFamily="@font/poppins_light"
         android:text="Deskripsi Produk"
         android:textColor="#000000"
         android:textSize="14sp"
@@ -65,7 +64,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="24dp"
-        android:fontFamily="@font/poppins_light"
         android:text="Mengandung kalsium tinggi dan bagus untuk pertumbuhan tulang pada anak"
         android:textColor="#000000"
         android:textSize="14sp"
@@ -78,10 +76,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
         android:layout_marginEnd="20dp"
-        android:fontFamily="@font/poppins_bold"
         android:text="Rp 20.000"
         android:textColor="#5EC401"
         android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView23" />
 

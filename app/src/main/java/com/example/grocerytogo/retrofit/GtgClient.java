@@ -8,7 +8,9 @@ import com.example.grocerytogo.model.ListAvatar;
 import com.example.grocerytogo.model.ListBarang;
 import com.example.grocerytogo.model.ListKategori;
 import com.example.grocerytogo.model.ListKeranjang;
+import com.example.grocerytogo.model.ListNotifikasi;
 import com.example.grocerytogo.model.ListPesanan;
+import com.example.grocerytogo.model.ListUserCek;
 import com.example.grocerytogo.model.Pesan;
 import com.example.grocerytogo.model.ProdukPesanan;
 import com.example.grocerytogo.model.UserClass;
@@ -26,7 +28,9 @@ public interface GtgClient {
     @FormUrlEncoded
     @POST("/login")
     Call<AuthClass> checkLogin(@Field("username") String username,
-                               @Field("password") String password);
+                               @Field("password") String password,
+                               @Field("no_hp") String no_hp,
+                               @Field("fcm_token") String fcm_token);
 
     @FormUrlEncoded
     @POST("/register")
@@ -43,6 +47,10 @@ public interface GtgClient {
     @GET("api/barang/{id_kategori}/{id_user}")
     Call<ListBarang> getBarangKategori(@Header("token") String token,
                                        @Path("id_kategori") Integer id_kategori,
+                                       @Path("id_user") Integer id_user);
+
+    @GET("api/barang/{id_user}")
+    Call<ListBarang> getBarang(@Header("token") String token,
                                        @Path("id_user") Integer id_user);
 
     @GET("api/user/{id}")
@@ -114,6 +122,15 @@ public interface GtgClient {
                           @Nullable @Field("biaya_kirim") Integer biaya_kirim,
                           @Field("latitude") float latitude,
                           @Field("longitude") float longitude,
+                          @Field("status_jemput") String status_jemput,
                           @Field("id_user") Integer id_user);
+
+    @GET("cekLogin/{token}/{fcm_token}")
+    Call<ListUserCek> cekUser(@Path("token") String token,
+                              @Path("fcm_token") String fcm_token);
+
+    @GET("api/notifikasi/{id_user}")
+    Call<ListNotifikasi> getNotifikasi(@Header("token") String token,
+                                       @Path("id_user") Integer id_user);
 
 }

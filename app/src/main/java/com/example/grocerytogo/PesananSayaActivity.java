@@ -207,22 +207,5 @@ public class PesananSayaActivity extends AppCompatActivity implements PesananSay
         a.putExtra("id", nomorPesanan);
         a.putExtra("status", statusa);
         startActivity(a);
-
-//        switch (statusa){
-//            case "Diproses":
-//                Intent a = new Intent(PesananSayaActivity.this, SedangMemesanActivity.class);
-//                a.putExtra("id", nomorPesanan);
-//                break;
-//            case "Diterima":
-//                 Intent ab = new Intent(this, LihatDetailPesananActivity.class);
-//                 ab.putExtra("id", nomorPesanan);
-//                 startActivity(ab);
-//                 break;
-//            case "Dibatalkan":
-//                 Intent abc = new Intent(this, LihatDetailPesananActivity.class);
-//                 abc.putExtra("id", nomorPesanan);
-//                 startActivity(abc);
-//                 break;
-//        }
     }
 }

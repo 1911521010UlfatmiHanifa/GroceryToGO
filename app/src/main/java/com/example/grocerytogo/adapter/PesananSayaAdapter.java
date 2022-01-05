@@ -64,7 +64,7 @@ public class PesananSayaAdapter
     @Override
     public void onBindViewHolder(@NonNull PesananSayaViewHolder viewHolder, int position) {
         PesananSaya kategoriBarang = listPesananSaya.get(position);
-        viewHolder.textIdPesanan.setText(kategoriBarang.idPesanan.toString());
+        viewHolder.textIdPesanan.setText("Pesanan "+kategoriBarang.idPesanan.toString());
         viewHolder.textTanggalPesanan.setText(kategoriBarang.tanggalPesanan.toString());
         viewHolder.textStatusPesanan.setText(kategoriBarang.statusPesanan.toString());
         viewHolder.textHargaPesanan.setText(kategoriBarang.hargaPesanan.toString());

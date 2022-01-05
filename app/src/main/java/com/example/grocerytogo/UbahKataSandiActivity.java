@@ -80,38 +80,48 @@ public class UbahKataSandiActivity extends AppCompatActivity {
     }
 
     private void ubahKataSandi(){
+        SharedPreferences preferences = getSharedPreferences("com.example.grocerytogo", MODE_PRIVATE);
+        String token = preferences.getString("TOKEN", "");
+        Integer id = Integer.valueOf(preferences.getString("id", ""));
+        String pwOpor = preferences.getString("PASSWORD", "");
+//        Toast.makeText(getApplicationContext(), pwOpor, Toast.LENGTH_SHORT).show();
+        if(pwOpor.equals(pwlama)) {
+            if (pwkonfir.equals(pwbaru)) {
+                String api = getString(R.string.apiGTG);
+                Koneksi koneksi = new Koneksi();
+                GtgClient gtgClient = koneksi.setGtgClient(api);
 
-        if(pwkonfir.equals(pwbaru)) {
-            String api = getString(R.string.apiGTG);
-            Koneksi koneksi = new Koneksi();
-            GtgClient gtgClient = koneksi.setGtgClient(api);
-
-            SharedPreferences preferences = getSharedPreferences("com.example.grocerytogo",MODE_PRIVATE);
-            String token = preferences.getString("TOKEN","");
-            Integer id = Integer.valueOf(preferences.getString("id", ""));
-
-            Call<Pesan> call = gtgClient.ubahSandi(token, pwlama, pwbaru, id);
-            call.enqueue(new Callback<Pesan>() {
-                @Override
-                public void onResponse(Call<Pesan> call, Response<Pesan> response) {
-                    Pesan p = response.body();
-                    if (p != null) {
-                        Toast.makeText(getApplicationContext(), "Kata Sandi Berhasil Diubah", Toast.LENGTH_SHORT).show();
-                        pw_baru.setText("");
-                        pw_lama.setText("");
-                        pw_konfir.setText("");
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Kata Sandi Gagal Diubah", Toast.LENGTH_SHORT).show();
+                Call<Pesan> call = gtgClient.ubahSandi(token, pwlama, pwbaru, id);
+                call.enqueue(new Callback<Pesan>() {
+                    @Override
+                    public void onResponse(Call<Pesan> call, Response<Pesan> response) {
+                        Pesan p = response.body();
+                        if (p != null) {
+                            Toast.makeText(getApplicationContext(), "Kata Sandi Berhasil Diubah", Toast.LENGTH_SHORT).show();
+                            pw_baru.setText("");
+                            pw_lama.setText("");
+                            pw_konfir.setText("");
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Kata Sandi Gagal Diubah", Toast.LENGTH_SHORT).show();
+                        }
                     }
-                }
 
-                @Override
-                public void onFailure(Call<Pesan> call, Throwable t) {
-                    Toast.makeText(getApplicationContext(), "Gagal Akses", Toast.LENGTH_SHORT).show();
-                }
-            });
+                    @Override
+                    public void onFailure(Call<Pesan> call, Throwable t) {
+                        Toast.makeText(getApplicationContext(), "Gagal Ubah Kata Sandi", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } else {
+                Toast.makeText(getApplicationContext(), "Kata Sandi Baru dan Konfirmasi Tidak Cocok", Toast.LENGTH_SHORT).show();
+                pw_baru.setText("");
+                pw_lama.setText("");
+                pw_konfir.setText("");
+            }
         }else{
-            Toast.makeText(getApplicationContext(), "Kata Sandi Baru dan Konfirmasi Tidak Cocok", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Kata Sandi Lama Tidak Sesuai", Toast.LENGTH_SHORT).show();
+            pw_baru.setText("");
+            pw_lama.setText("");
+            pw_konfir.setText("");
         }
     }
 }

@@ -2,7 +2,9 @@ package com.example.grocerytogo.adapter;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -89,39 +91,43 @@ public class BarangKeranjangSayaAdapter
                     public void onResponse(Call<Pesan> call, Response<Pesan> response) {
                         Pesan pesan = response.body();
                         if(pesan != null) {
-                            Toast.makeText(context.getApplicationContext(), "Berhasil", Toast.LENGTH_SHORT).show();
-                            listBarangKeranjangSaya.remove(position);
-                            notifyItemRemoved(position);
-                            notifyItemRangeChanged(position, listBarangKeranjangSaya.size());
-                            notifyDataSetChanged();
+                            new AlertDialog.Builder(context)
+                                    .setTitle("Hapus Barang Dari Keranjang")
+                                    .setMessage("Apakah yakin menghapus barang ke keranjang?")
+                                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            // continue with delete
+                                            deleteItem(position);
+                                            Toast.makeText(context.getApplicationContext(), "Berhasil Menghapus Barang", Toast.LENGTH_SHORT).show();
+                                        }
+                                    })
+                                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.cancel();
+                                        }
+                                    })
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .show();
+//                            listBarangKeranjangSaya.remove(position);
+//                            notifyItemRemoved(position);
+//                            notifyItemRangeChanged(position, listBarangKeranjangSaya.size());
+//                            notifyDataSetChanged();
                         }else {
                             Toast.makeText(context.getApplicationContext(), "Logout Gagal", Toast.LENGTH_SHORT).show();
                         }
                     }
-
                     @Override
                     public void onFailure(Call<Pesan> call, Throwable t) {
                         Toast.makeText(context.getApplicationContext(), "Gagal Mengakses Server", Toast.LENGTH_SHORT).show();
                     }
                 });
-
-//                Integer a = Integer.parseInt(ViewHolder.textJumlah.getText().toString());
-//                a--;
-//                if(a <= 0) {
-//                    ViewHolder.tambah.setVisibility(View.GONE);
-//                    ViewHolder.kurang.setVisibility(View.GONE);
-//                    ViewHolder.textJumlah.setVisibility(View.GONE);
-//                    ViewHolder.card.setVisibility(View.GONE);
-//                    ViewHolder.imageGambar.setVisibility(View.GONE);
-//                    ViewHolder.textHarga.setVisibility(View.GONE);
-//                    ViewHolder.textNama.setVisibility(View.GONE);
-//                    ViewHolder.lay.setVisibility(View.GONE);
-//                }else{
-//                    ViewHolder.textJumlah.setText(String.valueOf(a));
-//                }
-
             }
         });
+    }
+
+    void deleteItem(int index) {
+        listBarangKeranjangSaya.remove(index);
+        notifyItemRemoved(index);
     }
 
     @Override

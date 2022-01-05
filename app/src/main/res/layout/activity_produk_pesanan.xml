@@ -22,10 +22,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:fontFamily="@font/poppins_bold"
         android:text="Daftar Produk"
         android:textColor="#121111"
         android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/imageView38"
         app:layout_constraintTop_toBottomOf="@+id/textView50" />
 
@@ -35,10 +35,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:layout_marginTop="24dp"
-        android:fontFamily="@font/poppins_bold"
         android:text="Detail Produk Pesanan"
         android:textColor="#121111"
         android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -22,6 +22,13 @@ public class DpesananItem{
     @SerializedName("status_transaksi")
     private String statusTransaksi;
 
+    @SerializedName("status_jemput")
+    private String statusJemput;
+
+    public String getStatusJemput() {
+        return statusJemput;
+    }
+
     @SerializedName("alamat")
     private String alamat;
 

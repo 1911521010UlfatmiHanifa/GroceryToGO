@@ -81,7 +81,7 @@ public class DetailBarangActivity extends AppCompatActivity {
         GtgClient gtgClient = koneksi.setGtgClient(api);
 
         Integer idbarang = getIntent().getIntExtra("id", 0);
-//        Toast.makeText(getApplicationContext(), idbarang.toString(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), idbarang.toString(), Toast.LENGTH_SHORT).show();
 
         Call<ListBarang> call = gtgClient.getDetailBarang(token, idbarang);
         call.enqueue(new Callback<ListBarang>() {

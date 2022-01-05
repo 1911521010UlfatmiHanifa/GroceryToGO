@@ -131,6 +131,7 @@ public class LokasiActivity extends FragmentActivity implements OnMapReadyCallba
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     findOnMap();
+
                 }
                 return false;
             }
@@ -172,32 +173,35 @@ public class LokasiActivity extends FragmentActivity implements OnMapReadyCallba
      */
 
     private CardView lokasi;
-    private boolean isPermissionGranted;
     double Llatitude, Llongitude;
 
     @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-//        mMap.setMyLocationEnabled(true);
         getCurrentLocation();
-
-        // Add a marker in Sydney and move the camera
-//        LatLng sydney = new LatLng(-34, 151);
-//        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-
     }
 
     public void findOnMap(){
         Geocoder geocoder = new Geocoder(this);
         try {
             List<Address> mylist = geocoder.getFromLocationName(pencarian.getText().toString(),1);
-            Address address = mylist.get(0);
-            String locality = address.getLocality();
-            double lat = address.getLatitude();
-            double lon = address.getLongitude();
-            goToLocation(lat,lon,15);
+            if(mylist.isEmpty()){
+                Toast.makeText(getApplicationContext(), "Tidak Ada", Toast.LENGTH_SHORT).show();
+            }else {
+                Address address = mylist.get(0);
+                String locality = address.getLocality();
+                double lat = address.getLatitude();
+                double lon = address.getLongitude();
+
+                LatLng latLng = new LatLng(lat, lon);
+                CameraUpdate update = CameraUpdateFactory.newLatLngZoom(latLng, 15);
+                mMap.addMarker(new MarkerOptions().position(latLng).title(pencarian.getText().toString()));
+                mMap.animateCamera(update);
+//            Toast.makeText(getApplicationContext(), (int) lat, Toast.LENGTH_SHORT).show();
+
+                goToLocation(lat, lon, 15);
+            }
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -337,19 +341,4 @@ public class LokasiActivity extends FragmentActivity implements OnMapReadyCallba
             }
         }
     }
-
-//    @Override
-//    public void onConnected(@Nullable Bundle bundle) {
-//
-//    }
-//
-//    @Override
-//    public void onConnectionSuspended(int i) {
-//
-//    }
-//
-//    @Override
-//    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-//
-//    }
 }

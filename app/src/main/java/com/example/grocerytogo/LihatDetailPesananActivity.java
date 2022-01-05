@@ -34,7 +34,7 @@ public class LihatDetailPesananActivity extends AppCompatActivity {
 
     private ImageView back;
     private Button produk, batalkanPesanan;
-    private TextView id, tanggal, waktu, alamat, subttotal, total, status, ogkir;
+    private TextView id, tanggal, waktu, alamat, subttotal, total, status, ogkir, tulAlamat;
     private ProgressBar progressBar;
 
     @Override
@@ -47,6 +47,7 @@ public class LihatDetailPesananActivity extends AppCompatActivity {
         id = findViewById(R.id.textId);
         tanggal = findViewById(R.id.textView38);
         waktu = findViewById(R.id.textWaktu);
+        tulAlamat = findViewById(R.id.textView39);
         alamat = findViewById(R.id.textView40);
         subttotal = findViewById(R.id.textView45);
         ogkir = findViewById(R.id.textView46);
@@ -157,6 +158,14 @@ public class LihatDetailPesananActivity extends AppCompatActivity {
                         total.setText("Rp. "+item.getTotal());
                         ogkir.setText("Rp. "+item.getBiayaKirim());
                         status.setText(item.getStatusTransaksi());
+//                        Toast.makeText(getApplicationContext(), item.getStatusJemput(), Toast.LENGTH_SHORT).show();
+                        if(item.getStatusJemput().equals("Jemput Langsung")){
+                            tulAlamat.setVisibility(View.GONE);
+                            alamat.setVisibility(View.GONE);
+                        }else if(item.getStatusJemput().equals("COD")){
+                            tulAlamat.setVisibility(View.VISIBLE);
+                            alamat.setVisibility(View.VISIBLE);
+                        }
                     }
                 }
             }

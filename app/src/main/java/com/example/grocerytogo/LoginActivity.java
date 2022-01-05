@@ -10,11 +10,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.grocerytogo.model.AuthClass;
 import com.example.grocerytogo.model.AuthData;
 import com.example.grocerytogo.retrofit.GtgClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,12 +31,21 @@ public class LoginActivity extends AppCompatActivity {
     private TextView textUsername, textPassword, userKosong, pwKosong;
     private ImageView back;
     private Button loginn;
-    String username, password;
+    String username, password, FCMToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if(task.isSuccessful()){
+                    FCMToken = task.getResult();
+                }
+            }
+        });
 
         back = findViewById(R.id.back);
         loginn = findViewById(R.id.btn_login);
@@ -67,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 if(username.isEmpty()){
                     userKosong.setVisibility(View.VISIBLE);
-                    userKosong.setText("Masukkan Username");
+                    userKosong.setText("Masukkan Username atau Nomor HP");
                 }
                 if(username.length() > 0 && password.length() >= 8) {
                     checkLogin();
@@ -86,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
 
         pwKosong.setVisibility(View.GONE);
         userKosong.setVisibility(View.GONE);
-        Call<AuthClass> call = gtgClient.checkLogin(username, password);
+        Call<AuthClass> call = gtgClient.checkLogin(username, password, username, FCMToken);
         updateViewProgress(true);
         call.enqueue(new Callback<AuthClass>() {
             @Override
@@ -97,12 +110,14 @@ public class LoginActivity extends AppCompatActivity {
                     String accesToken = authData.getToken();
                     Integer id = authData.getId();
 
-//                    Toast.makeText(getApplicationContext(), accesToken, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), FCMToken, Toast.LENGTH_SHORT).show();
 
                     SharedPreferences preferences = getSharedPreferences("com.example.grocerytogo", MODE_PRIVATE);
                     SharedPreferences.Editor editor = preferences.edit();
                     editor.putString("TOKEN", accesToken);
+                    editor.putString("FCM", FCMToken);
                     editor.putString("id", id.toString());
+                    editor.putString("PASSWORD", password);
                     editor.apply();
 
                     Intent i = new Intent(LoginActivity.this, TemplateActivity.class);

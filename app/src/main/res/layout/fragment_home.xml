@@ -29,7 +29,6 @@
             android:drawableStart="@drawable/search"
             android:drawablePadding="20px"
             android:ems="10"
-            android:fontFamily="@font/poppins_light"
             android:hint="Cari Barang"
             android:inputType="textPersonName"
             android:textColorHint="#615151"

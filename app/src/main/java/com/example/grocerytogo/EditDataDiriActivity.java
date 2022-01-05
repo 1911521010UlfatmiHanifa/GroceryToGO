@@ -26,6 +26,10 @@ import com.example.grocerytogo.model.UserItem;
 import com.example.grocerytogo.retrofit.GtgClient;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.List;
 
@@ -43,7 +47,8 @@ public class EditDataDiriActivity extends AppCompatActivity{
     static final int REQUEST_IMAGE_CAPTURE = 1;
     String tglLahir, pilihan;
     String foto, fotoLama;
-    String nope, tgl, jk;
+    String nope, tgl, jk, tahunSekarang;
+    int a;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +73,10 @@ public class EditDataDiriActivity extends AppCompatActivity{
         final int bulan = calender.get(Calendar.MONTH);
         final int tanggal = calender.get(Calendar.DAY_OF_MONTH);
 
+//        SimpleDateFormat df = new SimpleDateFormat("yyyy");
+//        tahunSekarang = df.format(calender.getTime());
+//        Toast.makeText(getApplicationContext(), (Integer.parseInt(tahunSekarang)-tahun), Toast.LENGTH_SHORT).show();
+
         ubahTgl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,6 +92,7 @@ public class EditDataDiriActivity extends AppCompatActivity{
                 datePickerDialog.show();
             }
         });
+//        Toast.makeText(getApplicationContext(), String.valueOf(umur), Toast.LENGTH_SHORT).show();
 
         getData();
 
@@ -135,7 +145,17 @@ public class EditDataDiriActivity extends AppCompatActivity{
                     nopeKosong.setVisibility(View.GONE);
                     tglKosong.setVisibility(View.GONE);
                     jkKosong.setVisibility(View.GONE);
-                    editData();
+                    Toast.makeText(getApplicationContext(), ubahTgl.getText().toString(), Toast.LENGTH_SHORT).show();
+                    long umur = 0;
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        LocalDate now = LocalDate.now();
+                        umur = Period.between(LocalDate.parse(ubahTgl.getText().toString()), now).getYears();
+                        if(umur >=17){
+                            editData();
+                        }else{
+                            Toast.makeText(getApplicationContext(), "Umur Belum Mencukupi", Toast.LENGTH_SHORT).show();
+                        }
+                    }
                 }
             }
         });
