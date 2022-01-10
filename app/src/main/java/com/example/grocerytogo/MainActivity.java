@@ -1,7 +1,12 @@
 package com.example.grocerytogo;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -25,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     TextView daftar, daftar2;
     Button login;
+    BroadcastReceiver broadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,33 +72,69 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        SharedPreferences preferences = getSharedPreferences("com.example.grocerytogo",MODE_PRIVATE);
-        String token = preferences.getString("TOKEN","");
-        String fcm = preferences.getString("FCM","");
+        broadcastReceiver = new CekKoneksi();
+        registerNetwork();
+
+//        CekKoneksi c = new CekKoneksi();
+//        c.getStatusKoneksi();
+//        Toast.makeText(getApplicationContext(), c.getStatusKoneksi(), Toast.LENGTH_SHORT).show();
+
+//        if(registerNetwork() != null) {
+            SharedPreferences preferences = getSharedPreferences("com.example.grocerytogo", MODE_PRIVATE);
+            String token = preferences.getString("TOKEN", "");
+            String fcm = preferences.getString("FCM", "");
 //        Toast.makeText(getApplicationContext(), token, Toast.LENGTH_SHORT).show();
 //        Toast.makeText(getApplicationContext(), fcm, Toast.LENGTH_SHORT).show();
-        if(token != "" && fcm != "") {
-            String api = getString(R.string.apiGTG);
-            Koneksi koneksi = new Koneksi();
-            GtgClient gtgClient = koneksi.setGtgClient(api);
+            if (token != "" && fcm != "") {
+                String api = getString(R.string.apiGTG);
+                Koneksi koneksi = new Koneksi();
+                GtgClient gtgClient = koneksi.setGtgClient(api);
 
-            Call<ListUserCek> call = gtgClient.cekUser(token, fcm);
-            call.enqueue(new Callback<ListUserCek>() {
-                @Override
-                public void onResponse(Call<ListUserCek> call, Response<ListUserCek> response) {
-                    ListUserCek listUserCek = response.body();
-                    List<UserCekItem> userCekItem = listUserCek.getUserCek();
-                    if (userCekItem.size() > 0) {
-                        Intent j = new Intent(MainActivity.this, TemplateActivity.class);
-                        startActivity(j);
+                Call<ListUserCek> call = gtgClient.cekUser(token, fcm);
+                call.enqueue(new Callback<ListUserCek>() {
+                    @Override
+                    public void onResponse(Call<ListUserCek> call, Response<ListUserCek> response) {
+                        ListUserCek listUserCek = response.body();
+                        List<UserCekItem> userCekItem = listUserCek.getUserCek();
+                        if (userCekItem.size() > 0) {
+                            Intent j = new Intent(MainActivity.this, TemplateActivity.class);
+                            startActivity(j);
+                        }
                     }
-                }
 
-                @Override
-                public void onFailure(Call<ListUserCek> call, Throwable t) {
+                    @Override
+                    public void onFailure(Call<ListUserCek> call, Throwable t) {
 
-                }
-            });
+                    }
+                });
+            }
+//        }else{
+//            Toast.makeText(getApplicationContext(), "No", Toast.LENGTH_SHORT).show();
+//        }
+    }
+
+    protected void registerNetwork(){
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N){
+            registerReceiver(broadcastReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
         }
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
+            registerReceiver(broadcastReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
+        }
+    }
+
+    protected void unregisterNetwork(){
+        try {
+            unregisterReceiver(broadcastReceiver);
+        }catch (IllegalArgumentException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterNetwork();
     }
 }

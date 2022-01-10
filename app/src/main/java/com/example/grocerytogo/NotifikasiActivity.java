@@ -95,7 +95,8 @@ public class NotifikasiActivity extends AppCompatActivity implements NotifikasiA
                             item.getTanggal()+" "+item.getWaktu(),
                             ab,
                             item.getIdTransaksi(),
-                            item.getStatus_transaksi()
+                            item.getStatus_transaksi(),
+                            item.getTitle()
                         );
                         notifikasis.add(notifikasi);
                     }

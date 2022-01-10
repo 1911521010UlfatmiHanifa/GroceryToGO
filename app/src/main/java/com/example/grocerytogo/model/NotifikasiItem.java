@@ -16,6 +16,9 @@ public class NotifikasiItem{
     @SerializedName("tanggal")
     private String tanggal;
 
+    @SerializedName("title")
+    private String title;
+
     @SerializedName("status_transaksi")
     private String status_transaksi;
 
@@ -44,5 +47,9 @@ public class NotifikasiItem{
 
     public String getStatus_transaksi() {
         return status_transaksi;
+    }
+
+    public String getTitle() {
+        return title;
     }
 }

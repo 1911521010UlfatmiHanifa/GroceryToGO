@@ -49,6 +49,7 @@ public class AvatarActivity extends AppCompatActivity implements AvatarAdapter.K
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                finish();
                 Intent a = new Intent(AvatarActivity.this, EditDataDiriActivity.class);
                 startActivity(a);
             }
@@ -109,6 +110,7 @@ public class AvatarActivity extends AppCompatActivity implements AvatarAdapter.K
         Intent a = new Intent(AvatarActivity.this, EditDataDiriActivity.class);
         a.putExtra("GR", foto);
         startActivity(a);
+        finish();
     }
 
 }

@@ -43,7 +43,7 @@ public class BarangBerdasarkanKategoriAdapter
         extends RecyclerView.Adapter<BarangBerdasarkanKategoriAdapter.BarangBersarkanKategoriViewHolder> {
 
     Context context;
-    Integer a;
+    public Integer a;
 
     ArrayList<BarangBerdasarKategori> listBarang = new ArrayList<>();
 

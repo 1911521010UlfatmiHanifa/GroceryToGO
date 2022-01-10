@@ -8,6 +8,31 @@
     tools:context=".BarangKategoriActivity">
 
     <ImageView
+        android:id="@+id/notFound3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/tidak_ditemukan"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textNamaKategori" />
+
+    <TextView
+        android:id="@+id/pesan3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="50dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Opps! Kami tidak menemukan produk yang diinginkan. "
+        android:textAlignment="center"
+        android:textColor="#FF0000"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/notFound3" />
+
+    <ImageView
         android:id="@+id/image_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

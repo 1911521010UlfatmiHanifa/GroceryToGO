@@ -4,8 +4,11 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,6 +17,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,9 +33,11 @@ import com.squareup.picasso.Picasso;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,16 +45,16 @@ import retrofit2.Response;
 
 public class EditDataDiriActivity extends AppCompatActivity{
 
-    private EditText ubahNama, ubahTgl, ubahNo;
-    private Button simpan;
-    private ImageView back, gambar;
-    private AutoCompleteTextView jenkel;
-    private TextView nopeKosong, tglKosong, jkKosong;
+    EditText ubahNama, ubahTgl, ubahNo;
+    Button simpan;
+    ImageView back, gambar;
+    AutoCompleteTextView jenkel;
+    TextView nopeKosong, tglKosong, jkKosong;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     String tglLahir, pilihan;
     String foto, fotoLama;
     String nope, tgl, jk, tahunSekarang;
-    int a;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +73,7 @@ public class EditDataDiriActivity extends AppCompatActivity{
         jkKosong = findViewById(R.id.textView30);
         nopeKosong = findViewById(R.id.textView32);
         tglKosong = findViewById(R.id.textView33);
+        progressBar = findViewById(R.id.progressBar11);
 
         Calendar calender = Calendar.getInstance();
         final int tahun = calender.get(Calendar.YEAR);
@@ -85,7 +92,11 @@ public class EditDataDiriActivity extends AppCompatActivity{
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         month = month + 1;
-                        tglLahir = year + "-" + month + "-" + dayOfMonth;
+                        if(month < 10 && dayOfMonth < 10){
+                            tglLahir = year + "-0" + month + "-0" + dayOfMonth;
+                        }else {
+                            tglLahir = year + "-" + month + "-" + dayOfMonth;
+                        }
                         ubahTgl.setText(tglLahir);
                     }
                 }, tahun, bulan, tanggal);
@@ -115,9 +126,77 @@ public class EditDataDiriActivity extends AppCompatActivity{
             public void onClick(View view) {
 //                Intent in = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 //                startActivityForResult(in,REQUEST_IMAGE_CAPTURE);
+                finish();
                 Intent intent = new Intent(EditDataDiriActivity.this, AvatarActivity.class);
                 startActivity(intent);
-                finish();
+            }
+        });
+
+
+
+        ubahNo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.length() > 3 && (s.subSequence(0,3).toString().equals("+62") || s.subSequence(0,2).toString().equals("62") || s.subSequence(0,1).toString().equals("0"))){
+                    nopeKosong.setVisibility(View.GONE);
+                }else{
+                    nopeKosong.setVisibility(View.VISIBLE);
+                    nopeKosong.setText("Masukkan Nomor HP Dengan Benar");
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        jenkel.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.length() == 0){
+                    jkKosong.setVisibility(View.VISIBLE);
+                    jkKosong.setText("Masukkan Jenis Kelamin");
+                }else{
+                    jkKosong.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        ubahTgl.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.length() == 0){
+                    tglKosong.setVisibility(View.VISIBLE);
+                    tglKosong.setText("Masukkan Tanggal lahir");
+                }else{
+                    tglKosong.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
 
@@ -145,17 +224,22 @@ public class EditDataDiriActivity extends AppCompatActivity{
                     nopeKosong.setVisibility(View.GONE);
                     tglKosong.setVisibility(View.GONE);
                     jkKosong.setVisibility(View.GONE);
-                    Toast.makeText(getApplicationContext(), ubahTgl.getText().toString(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), ubahTgl.getText().toString(), Toast.LENGTH_SHORT).show();
                     long umur = 0;
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         LocalDate now = LocalDate.now();
-                        umur = Period.between(LocalDate.parse(ubahTgl.getText().toString()), now).getYears();
-                        if(umur >=17){
-                            editData();
-                        }else{
-                            Toast.makeText(getApplicationContext(), "Umur Belum Mencukupi", Toast.LENGTH_SHORT).show();
-                        }
+                        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd").withLocale(Locale.FRANCE);
+                        LocalDate tg = LocalDate.parse(ubahTgl.getText().toString(), df);
+                        umur = Period.between(tg, now).getYears();
+//                        Toast.makeText(getApplicationContext(), String.valueOf(now), Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getApplicationContext(), String.valueOf(umur), Toast.LENGTH_SHORT).show();
                     }
+                    if(umur >= 17){
+                        editData();
+                    }else{
+                        Toast.makeText(getApplicationContext(), "Umur Belum Mencukupi", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
             }
         });
@@ -198,12 +282,16 @@ public class EditDataDiriActivity extends AppCompatActivity{
             updateFoto = foto;
         }
 
+        progressBar.setVisibility(View.VISIBLE);
+        simpan.setVisibility(View.INVISIBLE);
+
         Call<Pesan> call = gtgClient.editDataDiri(token, tgl, jk, nope, id, updateFoto);
         call.enqueue(new Callback<Pesan>() {
             @Override
             public void onResponse(Call<Pesan> call, Response<Pesan> response) {
                 Pesan p = response.body();
                 if(p != null) {
+                    progressBar.setVisibility(View.GONE);
                     String pesan = "Edit Data Diri Berhasil";
                     finish();
                     Intent i = new Intent(EditDataDiriActivity.this, LihatDataDiriActivity.class);
@@ -232,6 +320,9 @@ public class EditDataDiriActivity extends AppCompatActivity{
         Integer id = Integer.valueOf(preferences.getString("id", ""));
 //        Toast.makeText(getApplicationContext(), id.toString(), Toast.LENGTH_SHORT).show();
 
+        progressBar.setVisibility(View.VISIBLE);
+        simpan.setVisibility(View.INVISIBLE);
+
         Call<UserClass> call = gtgClient.getUser(token, id);
 
         call.enqueue(new Callback<UserClass>() {
@@ -239,6 +330,8 @@ public class EditDataDiriActivity extends AppCompatActivity{
             public void onResponse(Call<UserClass> call, Response<UserClass> response) {
                 UserClass userClass = response.body();
                 if(userClass != null){
+                    progressBar.setVisibility(View.GONE);
+                    simpan.setVisibility(View.VISIBLE);
                     List<UserItem> userItems = userClass.getUser();
                     for (UserItem item: userItems) {
                         foto = getIntent().getStringExtra("GR");

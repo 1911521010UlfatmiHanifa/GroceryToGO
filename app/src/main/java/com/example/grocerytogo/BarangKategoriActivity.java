@@ -38,9 +38,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class BarangKategoriActivity extends AppCompatActivity implements BarangBerdasarkanKategoriAdapter.KlikBarang{
 
-    private ImageView back;
+    private ImageView back, notFound;
     private RecyclerView DataBarang;
-    private TextView namaKategori;
+    private TextView namaKategori, pesan;
     private BarangBerdasarkanKategoriAdapter barangBerdasarkanKategoriAdapter;
     private ProgressBar progressBar;
 
@@ -53,6 +53,8 @@ public class BarangKategoriActivity extends AppCompatActivity implements BarangB
         namaKategori = findViewById(R.id.textNamaKategori);
         DataBarang = findViewById(R.id.ListBarangKategori);
         progressBar = findViewById(R.id.progressBar3);
+        notFound = findViewById(R.id.notFound3);
+        pesan = findViewById(R.id.pesan3);
 
         DataBarang.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.VISIBLE);
@@ -96,6 +98,13 @@ public class BarangKategoriActivity extends AppCompatActivity implements BarangB
                          barangBerdasarKategoris.add(barangBerdasarKategori);
                      }
                      viewRecyclerView(barangBerdasarKategoris);
+                     if(barangBerdasarKategoris.isEmpty()){
+                         notFound.setVisibility(View.VISIBLE);
+                         pesan.setVisibility(View.VISIBLE);
+                     }else{
+                         notFound.setVisibility(View.GONE);
+                         pesan.setVisibility(View.GONE);
+                     }
                  }
              }
 

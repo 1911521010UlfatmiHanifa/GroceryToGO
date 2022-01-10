@@ -38,6 +38,7 @@ import com.example.grocerytogo.model.KategoriItem;
 import com.example.grocerytogo.model.ListBarang;
 import com.example.grocerytogo.model.ListKategori;
 import com.example.grocerytogo.retrofit.GtgClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptionsExtension;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -99,12 +100,12 @@ public class HomeFragment extends Fragment implements KategoriBarangAdapter.Klik
         }
     }
 
-    private ImageView notifikasi, notFound;
-    private RecyclerView DataKategoriBarang, DataBarang;
-    private TextView pesan;
-    private EditText pencarian;
-    private KategoriBarangAdapter kategoriBarangAdapter;
-    private BarangBerdasarkanKategoriAdapter barangBerdasarkanKategoriAdapter;
+    ImageView notifikasi, notFound;
+    RecyclerView DataKategoriBarang, DataBarang;
+    TextView pesan;
+    EditText pencarian;
+    KategoriBarangAdapter kategoriBarangAdapter;
+    BarangBerdasarkanKategoriAdapter barangBerdasarkanKategoriAdapter;
     ProgressBar progressBar;
     ArrayList<BarangBerdasarKategori> barangBerdasarKategoris;
 
@@ -122,28 +123,11 @@ public class HomeFragment extends Fragment implements KategoriBarangAdapter.Klik
         DataBarang = view.findViewById(R.id.ListBarang);
         progressBar = view.findViewById(R.id.progressBar2);
 
-        //Image Notifikasi
         notifikasi.setOnClickListener(view2 -> {
             Intent in = new Intent(getActivity(), NotifikasiActivity.class);
             startActivity(in);
-//            NotificationManager notificationManager = (NotificationManager) getContext().getSystemService(NOTIFICATION_SERVICE);
-//
-//            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-//                NotificationChannel notificationChannel = new NotificationChannel("X123",
-//                        "GTG CLIENT",
-//                        NotificationManager.IMPORTANCE_DEFAULT);
-//                notificationManager.createNotificationChannel(notificationChannel);
-//            }
-//            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getContext(), "X123")
-//                    .setSmallIcon(R.drawable.ic_launcher_foreground)
-//                    .setContentTitle("Coba Notifikasi")
-//                    .setContentText("Holaa Bunda");
-//            Notification notification = mBuilder.build();
-//            notificationManager.notify(123, notification);
-//            Toast.makeText(getContext(), "Hi", Toast.LENGTH_SHORT).show();
         });
 
-        //Set Adapter Kategori dan Recycler View
         kategoriBarangAdapter = new KategoriBarangAdapter();
 
         SharedPreferences preferences = getContext().getSharedPreferences("com.example.grocerytogo",MODE_PRIVATE);
@@ -152,7 +136,6 @@ public class HomeFragment extends Fragment implements KategoriBarangAdapter.Klik
         String api = getString(R.string.apiGTG);
         Koneksi koneksi = new Koneksi();
         GtgClient gtgClient = koneksi.setGtgClient(api);
-        //        Toast.makeText(this,token,Toast.LENGTH_SHORT).show();
 
         Call<ListKategori> call = gtgClient.getKategori(token);
         notifikasi.setEnabled(false);
@@ -179,7 +162,6 @@ public class HomeFragment extends Fragment implements KategoriBarangAdapter.Klik
                                 api+item.getFoto()
                         );
                         kategoriBarangs.add(kategoriBarang);
-//                        Toast.makeText(getContext(), kategoriBarang.idKategori.toString(), Toast.LENGTH_SHORT).show();
                     }
                 }
                 kategoriBarangAdapter.setListKategori(kategoriBarangs);
@@ -196,10 +178,6 @@ public class HomeFragment extends Fragment implements KategoriBarangAdapter.Klik
         GridLayoutManager layout = new GridLayoutManager(getActivity(), 2,GridLayoutManager.VERTICAL, false);
         DataKategoriBarang.setLayoutManager(layout);
 
-        //Set Adapter Barang dan Recycler View
-        getBarang();
-
-        //Pencarian
         pencarian.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -213,10 +191,7 @@ public class HomeFragment extends Fragment implements KategoriBarangAdapter.Klik
 
             @Override
             public void afterTextChanged(Editable editable) {
-//                listFilter.clear();
                 if(editable.toString().isEmpty()){
-//                    DataBarang.setAdapter(new BarangBerdasarkanKategoriAdapter());
-//                    barangBerdasarkanKategoriAdapter.notifyDataSetChanged();
                     DataBarang.setVisibility(View.GONE);
                     DataKategoriBarang.setVisibility(View.VISIBLE);
                     notFound.setVisibility(View.INVISIBLE);
@@ -231,6 +206,8 @@ public class HomeFragment extends Fragment implements KategoriBarangAdapter.Klik
             }
         });
 
+        getBarang();
+
         return view;
     }
 
@@ -238,7 +215,6 @@ public class HomeFragment extends Fragment implements KategoriBarangAdapter.Klik
         SharedPreferences preferences = getContext().getSharedPreferences("com.example.grocerytogo",MODE_PRIVATE);
         String token = preferences.getString("TOKEN","");
         Integer id = Integer.valueOf(preferences.getString("id", ""));
-//        Toast.makeText(getApplicationContext(), token, Toast.LENGTH_SHORT).show();
 
         String api = getString(R.string.apiGTG);
         Koneksi koneksi = new Koneksi();
@@ -249,6 +225,7 @@ public class HomeFragment extends Fragment implements KategoriBarangAdapter.Klik
         pencarian.setEnabled(false);
         DataBarang.setVisibility(View.GONE);
         DataKategoriBarang.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
         call.enqueue(new Callback<ListBarang>() {
             @Override
             public void onResponse(Call<ListBarang> call, Response<ListBarang> response) {
@@ -257,8 +234,7 @@ public class HomeFragment extends Fragment implements KategoriBarangAdapter.Klik
                 if (listBarang != null) {
                     notifikasi.setEnabled(true);
                     pencarian.setEnabled(true);
-                    DataKategoriBarang.setVisibility(View.GONE);
-                    progressBar.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
                     List<BarangItem> barangItems = listBarang.getBarang();
                     for (BarangItem item: barangItems) {
                         BarangBerdasarKategori barangBerdasarKategori = new BarangBerdasarKategori(
@@ -272,6 +248,13 @@ public class HomeFragment extends Fragment implements KategoriBarangAdapter.Klik
                                 item.getUkuranBarang()
                         );
                         barangBerdasarKategoris.add(barangBerdasarKategori);
+                    }
+                    if(barangBerdasarKategoris.size() == 0){
+                        notFound.setVisibility(View.VISIBLE);
+                        pesan.setVisibility(View.VISIBLE);
+                    }else{
+                        notFound.setVisibility(View.GONE);
+                        pesan.setVisibility(View.GONE);
                     }
                     viewRecyclerView(barangBerdasarKategoris);
                 }

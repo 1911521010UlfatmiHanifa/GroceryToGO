@@ -25,6 +25,12 @@ public class DpesananItem{
     @SerializedName("status_jemput")
     private String statusJemput;
 
+    @SerializedName("latitude")
+    private double latitude;
+
+    @SerializedName("longitude")
+    private double longitude;
+
     public String getStatusJemput() {
         return statusJemput;
     }
@@ -58,5 +64,13 @@ public class DpesananItem{
 
     public String getAlamat(){
         return alamat;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
     }
 }

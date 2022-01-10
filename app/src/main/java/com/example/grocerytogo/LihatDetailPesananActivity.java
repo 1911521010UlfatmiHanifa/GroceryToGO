@@ -32,10 +32,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LihatDetailPesananActivity extends AppCompatActivity {
 
-    private ImageView back;
-    private Button produk, batalkanPesanan;
-    private TextView id, tanggal, waktu, alamat, subttotal, total, status, ogkir, tulAlamat;
-    private ProgressBar progressBar;
+    ImageView back;
+    Button produk, batalkanPesanan;
+    TextView id, tanggal, waktu, alamat, subttotal, total, status, ogkir, tulAlamat, lihatLokasi;
+    ProgressBar progressBar;
+    float lat, longs;
+    String st;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,11 +57,21 @@ public class LihatDetailPesananActivity extends AppCompatActivity {
         status = findViewById(R.id.textView48);
         batalkanPesanan = findViewById(R.id.btn_batal2);
         progressBar = findViewById(R.id.progressBar9);
+        lihatLokasi = findViewById(R.id.textView51);
+
+        lihatLokasi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent a = new Intent(LihatDetailPesananActivity.this, LihatLocActivity.class);
+                a.putExtra("Lat", lat);
+                a.putExtra("Long", longs);
+                startActivity(a);
+            }
+        });
 
         String IDPesanan = getIntent().getStringExtra("id");
         id.setText("Pesanan "+IDPesanan);
         String statusa = getIntent().getStringExtra("status");
-//        Toast.makeText(getApplicationContext(), statusa, Toast.LENGTH_SHORT).show();
         if(statusa.equals("Diproses")){
             batalkanPesanan.setVisibility(View.VISIBLE);
         }else{
@@ -72,7 +84,9 @@ public class LihatDetailPesananActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed();
+                Intent a = new Intent(LihatDetailPesananActivity.this, PesananSayaActivity.class);
+                finish();
+                startActivity(a);
             }
         });
 
@@ -125,7 +139,6 @@ public class LihatDetailPesananActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("com.example.grocerytogo",MODE_PRIVATE);
         String token = preferences.getString("TOKEN","");
         String id = getIntent().getStringExtra("id");
-//        Toast.makeText(getApplicationContext(), id.toString(), Toast.LENGTH_SHORT).show();
 
         Call<DataPesanan> call = gtgClient.getDetailPesanan(token, id);
         tanggal.setVisibility(View.GONE);
@@ -157,14 +170,19 @@ public class LihatDetailPesananActivity extends AppCompatActivity {
                         subttotal.setText("Rp."+item.getSubtotal());
                         total.setText("Rp. "+item.getTotal());
                         ogkir.setText("Rp. "+item.getBiayaKirim());
+                        st = item.getStatusTransaksi();
                         status.setText(item.getStatusTransaksi());
-//                        Toast.makeText(getApplicationContext(), item.getStatusJemput(), Toast.LENGTH_SHORT).show();
+                        lat = (float) item.getLatitude();
+                        longs = (float) item.getLongitude();
+                        Toast.makeText(getApplicationContext(), String.valueOf(item.getLatitude()), Toast.LENGTH_SHORT).show();
                         if(item.getStatusJemput().equals("Jemput Langsung")){
                             tulAlamat.setVisibility(View.GONE);
                             alamat.setVisibility(View.GONE);
+                            lihatLokasi.setVisibility(View.GONE);
                         }else if(item.getStatusJemput().equals("COD")){
                             tulAlamat.setVisibility(View.VISIBLE);
                             alamat.setVisibility(View.VISIBLE);
+                            lihatLokasi.setVisibility(View.VISIBLE);
                         }
                     }
                 }

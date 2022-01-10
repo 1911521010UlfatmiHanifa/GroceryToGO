@@ -3,6 +3,8 @@ package com.example.grocerytogo;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -28,9 +30,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private TextView textUsername, textPassword, userKosong, pwKosong;
-    private ImageView back;
-    private Button loginn;
+    TextView textUsername, textPassword, userKosong, pwKosong;
+    ImageView back;
+    Button loginn;
     String username, password, FCMToken;
 
     @Override
@@ -51,13 +53,14 @@ public class LoginActivity extends AppCompatActivity {
         loginn = findViewById(R.id.btn_login);
         userKosong = findViewById(R.id.textView22);
         pwKosong = findViewById(R.id.textView21);
+        textUsername = findViewById(R.id.nama_pengguna);
+        textPassword = findViewById(R.id.password);
 
         String pesan = getIntent().getStringExtra("pesan");
         if(pesan != null) {
             Toast.makeText(getApplicationContext(), pesan, Toast.LENGTH_SHORT).show();
         }
 
-        //Image Back
         back.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -65,15 +68,74 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        //Button Selanjutnya
+        textUsername.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.length()==0){
+                    userKosong.setVisibility(View.VISIBLE);
+                    userKosong.setText("Masukkan Username atau Nomor HP");
+                }else{
+                    userKosong.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        textPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.length() < 8) {
+                    pwKosong.setVisibility(View.VISIBLE);
+                    pwKosong.setText("Masukkan Password Minimal 8 Karakter");
+                }else{
+                    pwKosong.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        textPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         loginn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                textUsername = findViewById(R.id.nama_pengguna);
-                textPassword = findViewById(R.id.password);
 
                 username = textUsername.getText().toString();
                 password = textPassword.getText().toString();
+
                 if(password.length() < 8) {
                     pwKosong.setVisibility(View.VISIBLE);
                     pwKosong.setText("Masukkan Password Minimal 8 Karakter");
@@ -87,8 +149,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
-
-
     }
 
     private void checkLogin(){
@@ -109,8 +169,6 @@ public class LoginActivity extends AppCompatActivity {
                     AuthData authData = authClass.getAuthData();
                     String accesToken = authData.getToken();
                     Integer id = authData.getId();
-
-//                    Toast.makeText(getApplicationContext(), FCMToken, Toast.LENGTH_SHORT).show();
 
                     SharedPreferences preferences = getSharedPreferences("com.example.grocerytogo", MODE_PRIVATE);
                     SharedPreferences.Editor editor = preferences.edit();
@@ -133,7 +191,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<AuthClass> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Gagal Akses Server", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Gagal Mengakses Server", Toast.LENGTH_SHORT).show();
                 updateViewProgress(false);
                 textUsername.setText("");
                 textPassword.setText("");

@@ -26,7 +26,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.grocerytogo.databinding.ActivityLokasiBinding;
 import com.google.android.gms.common.ConnectionResult;
@@ -46,11 +48,14 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.maps.android.SphericalUtil;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -69,6 +74,10 @@ public class LokasiActivity extends FragmentActivity implements OnMapReadyCallba
     private FusedLocationProviderClient mLocationClient;
     private LocationRequest locationRequest;
     private EditText pencarian;
+    private LatLng latLng;
+    private Marker mark;
+    private String alamat;
+    private double distance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,34 +95,42 @@ public class LokasiActivity extends FragmentActivity implements OnMapReadyCallba
         locationRequest.setInterval(5000);
         locationRequest.setFastestInterval(2000);
 
-//        checkMyPermission();
-
-//        mLocfab = findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @SuppressLint("MissingPermission")
-//            @Override
-//            public void onClick(View view) {
-//                mLocationClient.getLastLocation().addOnCompleteListener(task -> {
-//                    if(task.isSuccessful()){
-//                        Location location = task.getResult();
-//                        LatLng LatLng = new LatLng(location.getLatitude(),location.getLongitude());
-//                        mMap.moveCamera(CameraUpdateFactory.newLatLng(LatLng));
-//                    }
-//                });
-//            }
-//        });ationClient = new FusedLocationProviderClient(this);
-//
-
         lokasi = findViewById(R.id.simpan);
 
         lokasi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Geocoder geocoder = new Geocoder(getApplicationContext());
+                try {
+                    List<Address> mylist = geocoder.getFromLocation(latLng.latitude, latLng.longitude,1);
+                    alamat = mylist.get(0).getAddressLine(0);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                LatLng sydney = new LatLng(-0.3030852, 100.36723);
+                distance = SphericalUtil.computeDistanceBetween(sydney, latLng);
+
                 SharedPreferences preferences = getSharedPreferences("com.example.grocerytogo", MODE_PRIVATE);
                 SharedPreferences.Editor editor = preferences.edit();
-                editor.putFloat("LATITUDE", (float) Llatitude);
-                editor.putFloat("LONGITUDE", (float) Llongitude);
+                editor.putFloat("LATITUDE", (float) latLng.latitude);
+                editor.putFloat("LONGITUDE", (float) latLng.longitude);
+                editor.putString("DISTANCE", String.valueOf(distance/1000));
+                editor.putString("ADDRESS", alamat);
                 editor.apply();
+
+                // in below line we are displaying a toast
+                // message with distance between two locations.
+                // in our distance we are dividing it by 1000 to
+                // make in km and formatting it to only 2 decimal places.
+                Toast.makeText(getApplicationContext(), "Distance between Sydney and Brisbane is \n " + String.format("%.2f", distance / 1000) + "km", Toast.LENGTH_SHORT).show();
+
+//                Fragment fragment = new KeranjangSayaFragment();
+//                FragmentManager fragmentManager= getSupportFragmentManager();
+//                fragmentManager.beginTransaction().replace(R.id.container,fragment).commit();
+//                Fragment fragment = new KeranjangSayaFragment();
+
+                onBackPressed();
 //                Toast.makeText(getApplicationContext(), (int) Llongitude, Toast.LENGTH_SHORT).show();
 //                Intent i = new Intent(getApplicationContext(), KeranjangSayaFragment.class);
 //                i.putExtra("latitude", Llatitude);
@@ -138,40 +155,6 @@ public class LokasiActivity extends FragmentActivity implements OnMapReadyCallba
         });
     }
 
-//    private void checkMyPermission() {
-//        Dexter.withContext(this).withPermission(Manifest.permission.ACCESS_FINE_LOCATION).
-//                withListener(new PermissionListener() {
-//                    @Override
-//                    public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
-//                        isPermissionGranted = true;
-//                    }
-//
-//                    @Override
-//                    public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
-//                        Intent i = new Intent();
-//                        i.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-//                        Uri uri = Uri.fromParts("package", getPackageName(), "");
-//                        i.setData(uri);
-//                        startActivity(i);
-//                    }
-//
-//                    @Override
-//                    public void onPermissionRationaleShouldBeShown(PermissionRequest permissionRequest, PermissionToken permissionToken) {
-//                        permissionToken.continuePermissionRequest();
-//                    }
-//                }).check();
-//    }
-
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
-
     private CardView lokasi;
     double Llatitude, Llongitude;
 
@@ -194,9 +177,12 @@ public class LokasiActivity extends FragmentActivity implements OnMapReadyCallba
                 double lat = address.getLatitude();
                 double lon = address.getLongitude();
 
-                LatLng latLng = new LatLng(lat, lon);
+                latLng = new LatLng(lat, lon);
+//                marker.position(latLng).title(pencarian.getText().toString());
+                mark.setPosition(latLng);
+                mark.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.logo_gtg));
                 CameraUpdate update = CameraUpdateFactory.newLatLngZoom(latLng, 15);
-                mMap.addMarker(new MarkerOptions().position(latLng).title(pencarian.getText().toString()));
+//                mMap.addMarker(new MarkerOptions().position(latLng).title(pencarian.getText().toString()));
                 mMap.animateCamera(update);
 //            Toast.makeText(getApplicationContext(), (int) lat, Toast.LENGTH_SHORT).show();
 
@@ -322,10 +308,20 @@ public class LokasiActivity extends FragmentActivity implements OnMapReadyCallba
                                         int index = locationResult.getLocations().size() - 1;
                                         Llatitude = locationResult.getLocations().get(index).getLatitude();
                                         Llongitude = locationResult.getLocations().get(index).getLongitude();
+                                        Geocoder geocoder = new Geocoder(getApplicationContext());
+                                        try {
+                                            List<Address> mylist = geocoder.getFromLocation(Llatitude, Llongitude,1);
+                                            alamat = mylist.get(0).getAddressLine(0);
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
 
-                                        LatLng latLng = new LatLng(Llatitude,Llongitude);
+                                        latLng = new LatLng(Llatitude,Llongitude);
+//                                        marker.position(latLng).title("Lokasi Anda");
                                         CameraUpdate update = CameraUpdateFactory.newLatLngZoom(latLng,15);
-                                        mMap.addMarker(new MarkerOptions().position(latLng).title("Lokasi Anda"));
+                                        mark = mMap.addMarker(new MarkerOptions().position(latLng).title("Lokasi Anda")
+                                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.logo_gtg)).anchor(0.5f, 1)
+                                                .draggable(true));
                                         mMap.animateCamera(update);
 //                                        AddressText.setText("Latitude: "+ latitude + "\n" + "Longitude: "+ longitude);
                                     }

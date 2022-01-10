@@ -41,7 +41,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 // * Use the {@link SettingFragment#newInstance} factory method to
 // * create an instance of this fragment.
 // */
-public class SettingFragment extends Fragment {
+public class
+SettingFragment extends Fragment {
 
 //    // TODO: Rename parameter arguments, choose names that match
 //    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

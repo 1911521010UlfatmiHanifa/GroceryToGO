@@ -99,4 +99,5 @@
         <item>Perempuan</item>
     </string-array>
     <string name="apiGTG">https://groceriestogo1208.herokuapp.com</string>
+    <string name="title_activity_lihat_loc">LihatLocActivity</string>
 </resources>

@@ -3,10 +3,13 @@ package com.example.grocerytogo;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +29,7 @@ public class UbahKataSandiActivity extends AppCompatActivity {
     private EditText pw_lama, pw_konfir, pw_baru;
     private TextView lamaKosong, baruKosong, konfirKosong;
     String pwlama, pwbaru, pwkonfir;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +44,73 @@ public class UbahKataSandiActivity extends AppCompatActivity {
         lamaKosong = findViewById(R.id.textView34);
         baruKosong = findViewById(R.id.textView36);
         konfirKosong = findViewById(R.id.textView37);
+        progressBar = findViewById(R.id.progressBar12);
+
+        pw_lama.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.length() < 8){
+                    lamaKosong.setVisibility(View.VISIBLE);
+                    lamaKosong.setText("Masukkan Kata Sandi Lama Minimal 8 Karakter");
+                }else{
+                    lamaKosong.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        pw_baru.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.length() < 8){
+                    baruKosong.setVisibility(View.VISIBLE);
+                    baruKosong.setText("Masukkan Kata Sandi Lama Minimal 8 Karakter");
+                }else{
+                    baruKosong.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        pw_konfir.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.toString().equals(pw_baru.getText().toString())){
+                    konfirKosong.setVisibility(View.GONE);
+                }else{
+                    konfirKosong.setVisibility(View.VISIBLE);
+                    konfirKosong.setText("Kata Sandi Tidak Cocok Dengan Password Baru");
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         //Button Simpan
         simpan.setOnClickListener(new View.OnClickListener() {
@@ -91,12 +162,15 @@ public class UbahKataSandiActivity extends AppCompatActivity {
                 Koneksi koneksi = new Koneksi();
                 GtgClient gtgClient = koneksi.setGtgClient(api);
 
+                progressBar.setVisibility(View.VISIBLE);
+
                 Call<Pesan> call = gtgClient.ubahSandi(token, pwlama, pwbaru, id);
                 call.enqueue(new Callback<Pesan>() {
                     @Override
                     public void onResponse(Call<Pesan> call, Response<Pesan> response) {
                         Pesan p = response.body();
                         if (p != null) {
+                            progressBar.setVisibility(View.GONE);
                             Toast.makeText(getApplicationContext(), "Kata Sandi Berhasil Diubah", Toast.LENGTH_SHORT).show();
                             pw_baru.setText("");
                             pw_lama.setText("");
