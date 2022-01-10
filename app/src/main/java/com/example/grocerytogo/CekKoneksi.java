@@ -24,13 +24,13 @@ public class CekKoneksi extends BroadcastReceiver {
 //                if(ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction())){
 //                    Toast.makeText(context, "Connectiivty Change", Toast.LENGTH_SHORT).show();
 //                }
-                Toast.makeText(context, "Terdapat Koneksi Internet", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context, "Terdapat Koneksi Internet", Toast.LENGTH_SHORT).show();
                 statusKoneksi = "Terdapat Koneksi Internet....";
             }else{
                 Toast.makeText(context, "Tidak Terdapat Koneksi Internet", Toast.LENGTH_SHORT).show();
                 statusKoneksi = "Tidak Terdapat Koneksi Internet....";
             }
-            Toast.makeText(context, statusKoneksi, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(context, statusKoneksi, Toast.LENGTH_SHORT).show();
         }catch(NullPointerException e){
             e.printStackTrace();
         }
