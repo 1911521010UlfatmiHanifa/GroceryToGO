@@ -107,6 +107,7 @@ public class BarangBerdasarkanKategoriAdapter
 
     @Override
     public void onBindViewHolder(@NonNull BarangBersarkanKategoriViewHolder viewHolder, int position) {
+        a=1;
         BarangBerdasarKategori barang = listBarang.get(position);
         viewHolder.namaBarang.setText(barang.namaProduk);
         viewHolder.hargaBarang.setText(barang.hargaProduk.toString());

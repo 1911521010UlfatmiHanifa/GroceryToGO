@@ -94,7 +94,12 @@ public class EditDataDiriActivity extends AppCompatActivity{
                         month = month + 1;
                         if(month < 10 && dayOfMonth < 10){
                             tglLahir = year + "-0" + month + "-0" + dayOfMonth;
-                        }else {
+                        } else if (month < 10) {
+                            tglLahir = year + "-0" + month + "-" + dayOfMonth;
+                        } else if ( dayOfMonth < 10) {
+                            tglLahir = year + "-" + month + "-0" + dayOfMonth;
+                        }
+                        else {
                             tglLahir = year + "-" + month + "-" + dayOfMonth;
                         }
                         ubahTgl.setText(tglLahir);
@@ -232,14 +237,13 @@ public class EditDataDiriActivity extends AppCompatActivity{
                         LocalDate tg = LocalDate.parse(ubahTgl.getText().toString(), df);
                         umur = Period.between(tg, now).getYears();
 //                        Toast.makeText(getApplicationContext(), String.valueOf(now), Toast.LENGTH_SHORT).show();
-//                        Toast.makeText(getApplicationContext(), String.valueOf(umur), Toast.LENGTH_SHORT).show();
                     }
                     if(umur >= 17){
                         editData();
                     }else{
                         Toast.makeText(getApplicationContext(), "Umur Belum Mencukupi", Toast.LENGTH_SHORT).show();
                     }
-
+                    Toast.makeText(getApplicationContext(), String.valueOf(umur), Toast.LENGTH_SHORT).show();
                 }
             }
         });
