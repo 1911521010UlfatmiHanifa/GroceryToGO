@@ -1,5 +1,8 @@
 package com.example.grocerytogo;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
 import com.example.grocerytogo.model.DataPesanan;
 import com.example.grocerytogo.model.DpesananItem;
@@ -113,11 +117,6 @@ public class LihatDetailPesananActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 batalkanPesanan();
-                                finish();
-                                String pesan = "Pesanan Berhasil Dibatalkan";
-                                Intent in = new Intent(LihatDetailPesananActivity.this, PesananSayaActivity.class);
-                                in.putExtra("pesan", pesan);
-                                startActivity(in);
                             }
                         })
                         .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
@@ -174,7 +173,7 @@ public class LihatDetailPesananActivity extends AppCompatActivity {
                         status.setText(item.getStatusTransaksi());
                         lat = (float) item.getLatitude();
                         longs = (float) item.getLongitude();
-                        Toast.makeText(getApplicationContext(), String.valueOf(item.getLatitude()), Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getApplicationContext(), item.getStatusJemput(), Toast.LENGTH_SHORT).show();
                         if(item.getStatusJemput().equals("Jemput Langsung")){
                             tulAlamat.setVisibility(View.GONE);
                             alamat.setVisibility(View.GONE);
@@ -191,6 +190,7 @@ public class LihatDetailPesananActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<DataPesanan> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "Gagal Akses Server", Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.GONE);
             }
         });
     }
@@ -206,23 +206,56 @@ public class LihatDetailPesananActivity extends AppCompatActivity {
         String id = getIntent().getStringExtra("id");
 
         Call<Pesan> call = gtgClient.batalkanPesanan(token, id);
+        progressBar.setVisibility(View.VISIBLE);
         call.enqueue(new Callback<Pesan>() {
             @Override
             public void onResponse(Call<Pesan> call, Response<Pesan> response) {
                 Pesan pesan = response.body();
                 if(pesan != null) {
-
+                    progressBar.setVisibility(View.GONE);
+                    batalkanPesanan.setVisibility(View.GONE);
+                    displayNotification("Notifikasi Transaksi", "Pesanan Berhasil Dibatalkan");
+                    finish();
+                    String pesans = "Pesanan Berhasil Dibatalkan";
                     Intent in = new Intent(LihatDetailPesananActivity.this, PesananSayaActivity.class);
+                    in.putExtra("pesan", pesans);
                     startActivity(in);
                 }else {
+                    progressBar.setVisibility(View.GONE);
                     Toast.makeText(LihatDetailPesananActivity.this, "Gagal Membatalkan Pesanan", Toast.LENGTH_SHORT).show();
+                    batalkanPesanan.setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
             public void onFailure(Call<Pesan> call, Throwable t) {
                 Toast.makeText(LihatDetailPesananActivity.this, "Gagal Mengakses Server", Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.GONE);
+                batalkanPesanan.setVisibility(View.VISIBLE);
             }
         });
+    }
+
+    private void displayNotification(String title, String message){
+        String CHANNEL_ID = "com.example.grocerytogo.CH01";
+        NotificationManager notificationManager
+                = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    CHANNEL_ID,
+                    "Channel Notifikasi Transaksi",
+                    NotificationManager.IMPORTANCE_DEFAULT
+            );
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        Notification notification = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
+                .setSmallIcon(R.drawable.notif)
+                .setContentTitle(title)
+                .setContentText(message)
+                .build();
+
+        notificationManager.notify(123,notification);
     }
 }

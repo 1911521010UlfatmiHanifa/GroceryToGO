@@ -162,9 +162,8 @@ public class UbahKataSandiActivity extends AppCompatActivity {
                 Koneksi koneksi = new Koneksi();
                 GtgClient gtgClient = koneksi.setGtgClient(api);
 
-                progressBar.setVisibility(View.VISIBLE);
-
                 Call<Pesan> call = gtgClient.ubahSandi(token, pwlama, pwbaru, id);
+                progressBar.setVisibility(View.VISIBLE);
                 call.enqueue(new Callback<Pesan>() {
                     @Override
                     public void onResponse(Call<Pesan> call, Response<Pesan> response) {
@@ -177,12 +176,14 @@ public class UbahKataSandiActivity extends AppCompatActivity {
                             pw_konfir.setText("");
                         } else {
                             Toast.makeText(getApplicationContext(), "Kata Sandi Gagal Diubah", Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
                         }
                     }
 
                     @Override
                     public void onFailure(Call<Pesan> call, Throwable t) {
                         Toast.makeText(getApplicationContext(), "Gagal Ubah Kata Sandi", Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
                     }
                 });
             } else {
@@ -190,12 +191,14 @@ public class UbahKataSandiActivity extends AppCompatActivity {
                 pw_baru.setText("");
                 pw_lama.setText("");
                 pw_konfir.setText("");
+                progressBar.setVisibility(View.GONE);
             }
         }else{
             Toast.makeText(getApplicationContext(), "Kata Sandi Lama Tidak Sesuai", Toast.LENGTH_SHORT).show();
             pw_baru.setText("");
             pw_lama.setText("");
             pw_konfir.setText("");
+            progressBar.setVisibility(View.GONE);
         }
     }
 }

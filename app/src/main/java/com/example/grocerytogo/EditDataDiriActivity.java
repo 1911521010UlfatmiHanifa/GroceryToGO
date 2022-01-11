@@ -230,20 +230,20 @@ public class EditDataDiriActivity extends AppCompatActivity{
                     tglKosong.setVisibility(View.GONE);
                     jkKosong.setVisibility(View.GONE);
 //                    Toast.makeText(getApplicationContext(), ubahTgl.getText().toString(), Toast.LENGTH_SHORT).show();
-                    long umur = 0;
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        LocalDate now = LocalDate.now();
-                        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd").withLocale(Locale.FRANCE);
-                        LocalDate tg = LocalDate.parse(ubahTgl.getText().toString(), df);
-                        umur = Period.between(tg, now).getYears();
-//                        Toast.makeText(getApplicationContext(), String.valueOf(now), Toast.LENGTH_SHORT).show();
-                    }
-                    if(umur >= 17){
+//                    long umur=1;
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                        LocalDate now = LocalDate.now();
+//                        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd").withLocale(Locale.FRANCE);
+//                        LocalDate tg = LocalDate.parse(ubahTgl.getText().toString(), df);
+//                        umur = Period.between(tg, now).getYears();
+////                        Toast.makeText(getApplicationContext(), String.valueOf(now), Toast.LENGTH_SHORT).show();
+//                    }
+//                    if(umur >= 17){
                         editData();
-                    }else{
-                        Toast.makeText(getApplicationContext(), "Umur Belum Mencukupi", Toast.LENGTH_SHORT).show();
-                    }
-                    Toast.makeText(getApplicationContext(), String.valueOf(umur), Toast.LENGTH_SHORT).show();
+//                    }else{
+//                        Toast.makeText(getApplicationContext(), "Umur Belum Mencukupi", Toast.LENGTH_SHORT).show();
+//                    }
+//                    Toast.makeText(getApplicationContext(), String.valueOf(umur), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -303,12 +303,14 @@ public class EditDataDiriActivity extends AppCompatActivity{
                     startActivity(i);
                 }else{
                     Toast.makeText(getApplicationContext(), "Edit data diri Gagal", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onFailure(Call<Pesan> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "Gagal Akses", Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.GONE);
             }
         });
     }
@@ -360,6 +362,7 @@ public class EditDataDiriActivity extends AppCompatActivity{
             @Override
             public void onFailure(Call<UserClass> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "Gagal Akses Server", Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.GONE);
             }
         });
 

@@ -75,42 +75,34 @@ public class MainActivity extends AppCompatActivity {
         broadcastReceiver = new CekKoneksi();
         registerNetwork();
 
-//        CekKoneksi c = new CekKoneksi();
-//        c.getStatusKoneksi();
-//        Toast.makeText(getApplicationContext(), c.getStatusKoneksi(), Toast.LENGTH_SHORT).show();
-
-//        if(registerNetwork() != null) {
-            SharedPreferences preferences = getSharedPreferences("com.example.grocerytogo", MODE_PRIVATE);
-            String token = preferences.getString("TOKEN", "");
-            String fcm = preferences.getString("FCM", "");
+        SharedPreferences preferences = getSharedPreferences("com.example.grocerytogo", MODE_PRIVATE);
+        String token = preferences.getString("TOKEN", "");
+        String fcm = preferences.getString("FCM", "");
 //        Toast.makeText(getApplicationContext(), token, Toast.LENGTH_SHORT).show();
 //        Toast.makeText(getApplicationContext(), fcm, Toast.LENGTH_SHORT).show();
-            if (token != "" && fcm != "") {
-                String api = getString(R.string.apiGTG);
-                Koneksi koneksi = new Koneksi();
-                GtgClient gtgClient = koneksi.setGtgClient(api);
+        if (token != "" && fcm != "") {
+            String api = getString(R.string.apiGTG);
+            Koneksi koneksi = new Koneksi();
+            GtgClient gtgClient = koneksi.setGtgClient(api);
 
-                Call<ListUserCek> call = gtgClient.cekUser(token, fcm);
-                call.enqueue(new Callback<ListUserCek>() {
-                    @Override
-                    public void onResponse(Call<ListUserCek> call, Response<ListUserCek> response) {
-                        ListUserCek listUserCek = response.body();
-                        List<UserCekItem> userCekItem = listUserCek.getUserCek();
-                        if (userCekItem.size() > 0) {
-                            Intent j = new Intent(MainActivity.this, TemplateActivity.class);
-                            startActivity(j);
-                        }
+            Call<ListUserCek> call = gtgClient.cekUser(token, fcm);
+            call.enqueue(new Callback<ListUserCek>() {
+                @Override
+                public void onResponse(Call<ListUserCek> call, Response<ListUserCek> response) {
+                    ListUserCek listUserCek = response.body();
+                    List<UserCekItem> userCekItem = listUserCek.getUserCek();
+                    if (userCekItem.size() > 0) {
+                        Intent j = new Intent(MainActivity.this, TemplateActivity.class);
+                        startActivity(j);
                     }
+                }
 
-                    @Override
-                    public void onFailure(Call<ListUserCek> call, Throwable t) {
+                @Override
+                public void onFailure(Call<ListUserCek> call, Throwable t) {
 
-                    }
-                });
-            }
-//        }else{
-//            Toast.makeText(getApplicationContext(), "No", Toast.LENGTH_SHORT).show();
-//        }
+                }
+            });
+        }
     }
 
     protected void registerNetwork(){

@@ -202,10 +202,10 @@ public class PesananSayaActivity extends AppCompatActivity implements PesananSay
     public void onClick(View view, PesananSaya pesananSaya) {
         String statusa = pesananSaya.statusPesanan;
         String nomorPesanan = pesananSaya.idPesanan.toString();
-        finish();
         Intent a = new Intent(PesananSayaActivity.this, LihatDetailPesananActivity.class);
         a.putExtra("id", nomorPesanan);
         a.putExtra("status", statusa);
         startActivity(a);
+        finish();
     }
 }

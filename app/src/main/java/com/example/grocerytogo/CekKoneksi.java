@@ -18,12 +18,12 @@ public class CekKoneksi extends BroadcastReceiver {
 
         try{
             if(isOnline(context)){
-//                if(Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())){
-//                    Toast.makeText(context, "Boot Complete", Toast.LENGTH_SHORT).show();
-//                }
-//                if(ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction())){
-//                    Toast.makeText(context, "Connectiivty Change", Toast.LENGTH_SHORT).show();
-//                }
+                if(Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())){
+                    Toast.makeText(context, "Boot Complete", Toast.LENGTH_SHORT).show();
+                }
+                if(ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction())){
+                    Toast.makeText(context, "Connectiivty Change", Toast.LENGTH_SHORT).show();
+                }
 //                Toast.makeText(context, "Terdapat Koneksi Internet", Toast.LENGTH_SHORT).show();
                 statusKoneksi = "Terdapat Koneksi Internet....";
             }else{

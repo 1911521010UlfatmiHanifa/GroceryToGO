@@ -116,28 +116,13 @@ public class LokasiActivity extends FragmentActivity implements OnMapReadyCallba
                 editor.putFloat("LATITUDE", (float) latLng.latitude);
                 editor.putFloat("LONGITUDE", (float) latLng.longitude);
                 editor.putString("DISTANCE", String.valueOf(distance/1000));
+//                editor.putFloat("DISTANCE", (float) distance/1000);
                 editor.putString("ADDRESS", alamat);
                 editor.apply();
 
-                // in below line we are displaying a toast
-                // message with distance between two locations.
-                // in our distance we are dividing it by 1000 to
-                // make in km and formatting it to only 2 decimal places.
-                Toast.makeText(getApplicationContext(), "Distance between Sydney and Brisbane is \n " + String.format("%.2f", distance / 1000) + "km", Toast.LENGTH_SHORT).show();
-
-//                Fragment fragment = new KeranjangSayaFragment();
-//                FragmentManager fragmentManager= getSupportFragmentManager();
-//                fragmentManager.beginTransaction().replace(R.id.container,fragment).commit();
-//                Fragment fragment = new KeranjangSayaFragment();
+                Toast.makeText(getApplicationContext(), "Jarak : " + String.format("%.2f", distance / 1000) + "km", Toast.LENGTH_SHORT).show();
 
                 onBackPressed();
-//                Toast.makeText(getApplicationContext(), (int) Llongitude, Toast.LENGTH_SHORT).show();
-//                Intent i = new Intent(getApplicationContext(), KeranjangSayaFragment.class);
-//                i.putExtra("latitude", Llatitude);
-//                i.putExtra("longitude", Llongitude);
-//                getSupportFragmentManager().beginTransaction().replace(R.id.frame, new KeranjangSayaFragment()).commit();
-//                getFragmentManager().beginTransaction().replace(R.id.frame, new KeranjangSayaFragment()).commit();
-//                getSupportFragmentManager().beginTransaction().replace(R.id.frame, new KeranjangSayaFragment()).commit();
             }
         });
 

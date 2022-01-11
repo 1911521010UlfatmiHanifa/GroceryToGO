@@ -23,7 +23,7 @@ public class DpesananItem{
     private String statusTransaksi;
 
     @SerializedName("status_jemput")
-    private String statusJemput;
+    private String status_jemput;
 
     @SerializedName("latitude")
     private double latitude;
@@ -32,7 +32,7 @@ public class DpesananItem{
     private double longitude;
 
     public String getStatusJemput() {
-        return statusJemput;
+        return status_jemput;
     }
 
     @SerializedName("alamat")

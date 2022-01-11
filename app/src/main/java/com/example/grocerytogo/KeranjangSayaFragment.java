@@ -1,15 +1,16 @@
 package com.example.grocerytogo;
 
 import static android.content.Context.MODE_PRIVATE;
+import static android.content.Context.NOTIFICATION_SERVICE;
 import static android.view.View.GONE;
 
-import android.content.Context;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.Geocoder;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,23 +22,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import com.example.grocerytogo.adapter.BarangBerdasarkanKategoriAdapter;
 import com.example.grocerytogo.adapter.BarangKeranjangSayaAdapter;
-import com.example.grocerytogo.model.BarangBerdasarKategori;
 import com.example.grocerytogo.model.BarangKeranjangSaya;
 import com.example.grocerytogo.model.KeranjangItem;
 import com.example.grocerytogo.model.ListKeranjang;
-import com.example.grocerytogo.model.ListPesanan;
 import com.example.grocerytogo.model.Pesan;
-import com.example.grocerytogo.model.PesananItem;
-import com.example.grocerytogo.model.PesananSaya;
 import com.example.grocerytogo.retrofit.GtgClient;
-import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,11 +87,12 @@ public class KeranjangSayaFragment extends Fragment {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch(checkedId){
                     case R.id.langsung:
-                        alamat.setVisibility(GONE);
+                        alamat.setVisibility(View.GONE);
                         status_jemput = "Jemput Langsung";
                         biaya_kirim = 0;
                         lat = 0;
                         slong = 0;
+                        alamat = null;
                         break;
                     case R.id.cod:
                         alamat.setVisibility(View.VISIBLE);
@@ -106,7 +102,8 @@ public class KeranjangSayaFragment extends Fragment {
                         address= preferences.getString("ADDRESS","");
                         Toast.makeText(getContext(), address, Toast.LENGTH_SHORT).show();
                         textalamat.setText((address));
-                        distance = Float.parseFloat(preferences.getString("DISTANCE", String.valueOf(0)));
+                        distance = Float.parseFloat(preferences.getString("DISTANCE", ""));
+//                        distance = preferences.getFloat("DISTANCE", 0);
 //                        distance = Float.valueOf(d);
                         Toast.makeText(getContext(), String.valueOf(distance), Toast.LENGTH_SHORT).show();
                         biaya_kirim = (int) (Math.ceil(distance)) * 6000;
@@ -154,6 +151,7 @@ public class KeranjangSayaFragment extends Fragment {
         progressBar.setVisibility(View.VISIBLE);
         pesan.setVisibility(View.INVISIBLE);
         tambah.setVisibility(View.INVISIBLE);
+        radioButton.setEnabled(false);
         Call<ListKeranjang> call = gtgClient.getKeranjang(token, id);
         call.enqueue(new Callback<ListKeranjang>() {
             @Override
@@ -164,6 +162,7 @@ public class KeranjangSayaFragment extends Fragment {
                     progressBar.setVisibility(GONE);
                     pesan.setVisibility(View.VISIBLE);
                     tambah.setVisibility(View.VISIBLE);
+                    radioButton.setEnabled(true);
                     List<KeranjangItem> keranjangItems = listKeranjang.getKeranjang();
                     for(KeranjangItem item : keranjangItems){
                         BarangKeranjangSaya barangKeranjangSaya = new BarangKeranjangSaya(
@@ -184,7 +183,8 @@ public class KeranjangSayaFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ListKeranjang> call, Throwable t) {
-
+                Toast.makeText(getContext(), "Gagal Akses Server", Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.GONE);
             }
         });
     }
@@ -206,17 +206,21 @@ public class KeranjangSayaFragment extends Fragment {
                     Pesan pesan = response.body();
                     if (pesan != null) {
                         progressBar.setVisibility(View.GONE);
+                        displayNotification("Transaksi", "Pesanan Berhasil Diproses");
                         Toast.makeText(getContext(), "Berhasil Memesan", Toast.LENGTH_SHORT).show();
                         Intent in = new Intent(getActivity(), PesananSayaActivity.class);
                         startActivity(in);
                     } else {
                         Toast.makeText(getContext(), "Pesanan Gagal", Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(GONE);
+
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Pesan> call, Throwable t) {
-
+                    Toast.makeText(getContext(), "Gagal Akses Server", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(GONE);
                 }
             });
         }
@@ -230,5 +234,28 @@ public class KeranjangSayaFragment extends Fragment {
         DataBarangKeranjangSaya.setAdapter(barangKeranjangSayaAdapter);
         LinearLayoutManager layout = new LinearLayoutManager(getActivity());
         DataBarangKeranjangSaya.setLayoutManager(layout);
+    }
+
+    private void displayNotification(String title, String message){
+        String CHANNEL_ID = "com.example.grocerytogo.CH01";
+        NotificationManager notificationManager
+                = (NotificationManager) getContext().getSystemService(NOTIFICATION_SERVICE);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    CHANNEL_ID,
+                    "Channel Notifikasi Transaksi",
+                    NotificationManager.IMPORTANCE_DEFAULT
+            );
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        Notification notification = new NotificationCompat.Builder(getContext(), CHANNEL_ID)
+                .setSmallIcon(R.drawable.notif)
+                .setContentTitle(title)
+                .setContentText(message)
+                .build();
+
+        notificationManager.notify(123,notification);
     }
 }
