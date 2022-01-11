@@ -45,6 +45,7 @@ public class UbahKataSandiActivity extends AppCompatActivity {
         baruKosong = findViewById(R.id.textView36);
         konfirKosong = findViewById(R.id.textView37);
         progressBar = findViewById(R.id.progressBar12);
+        pw_lama.setFocusable(true);
 
         pw_lama.addTextChangedListener(new TextWatcher() {
             @Override
@@ -162,6 +163,7 @@ public class UbahKataSandiActivity extends AppCompatActivity {
                 GtgClient gtgClient = koneksi.setGtgClient(api);
 
                 Call<Pesan> call = gtgClient.ubahSandi(token, pwlama, pwbaru, id);
+                simpan.setVisibility(View.GONE);
                 progressBar.setVisibility(View.VISIBLE);
                 call.enqueue(new Callback<Pesan>() {
                     @Override
@@ -169,6 +171,7 @@ public class UbahKataSandiActivity extends AppCompatActivity {
                         Pesan p = response.body();
                         if (p != null) {
                             progressBar.setVisibility(View.GONE);
+                            simpan.setVisibility(View.VISIBLE);
                             Toast.makeText(getApplicationContext(), "Kata Sandi Berhasil Diubah", Toast.LENGTH_SHORT).show();
                             pw_baru.setText("");
                             pw_lama.setText("");
@@ -176,6 +179,7 @@ public class UbahKataSandiActivity extends AppCompatActivity {
                         } else {
                             Toast.makeText(getApplicationContext(), "Kata Sandi Gagal Diubah", Toast.LENGTH_SHORT).show();
                             progressBar.setVisibility(View.GONE);
+                            simpan.setVisibility(View.VISIBLE);
                         }
                     }
 
@@ -183,6 +187,7 @@ public class UbahKataSandiActivity extends AppCompatActivity {
                     public void onFailure(Call<Pesan> call, Throwable t) {
                         Toast.makeText(getApplicationContext(), "Gagal Ubah Kata Sandi", Toast.LENGTH_SHORT).show();
                         progressBar.setVisibility(View.GONE);
+                        simpan.setVisibility(View.VISIBLE);
                     }
                 });
             } else {
@@ -191,6 +196,7 @@ public class UbahKataSandiActivity extends AppCompatActivity {
                 pw_lama.setText("");
                 pw_konfir.setText("");
                 progressBar.setVisibility(View.GONE);
+                simpan.setVisibility(View.VISIBLE);
             }
         }else{
             Toast.makeText(getApplicationContext(), "Kata Sandi Lama Tidak Sesuai", Toast.LENGTH_SHORT).show();
@@ -198,6 +204,7 @@ public class UbahKataSandiActivity extends AppCompatActivity {
             pw_lama.setText("");
             pw_konfir.setText("");
             progressBar.setVisibility(View.GONE);
+            simpan.setVisibility(View.VISIBLE);
         }
     }
 }

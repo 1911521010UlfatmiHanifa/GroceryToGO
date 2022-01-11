@@ -99,6 +99,7 @@ public class KeranjangSayaFragment extends Fragment {
                         lat = 0;
                         slong = 0;
                         address = null;
+                        distance = 0;
                         break;
                     case R.id.cod:
                         alamat.setVisibility(VISIBLE);
