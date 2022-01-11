@@ -123,6 +123,8 @@ public class LokasiActivity extends FragmentActivity implements OnMapReadyCallba
                 Toast.makeText(getApplicationContext(), "Jarak : " + String.format("%.2f", distance / 1000) + "km", Toast.LENGTH_SHORT).show();
 
                 onBackPressed();
+
+
             }
         });
 

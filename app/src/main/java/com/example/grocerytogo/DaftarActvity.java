@@ -183,6 +183,7 @@ public class DaftarActvity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Pesan> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "Gagal Mengakses Akses", Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.GONE);
             }
         });
     }

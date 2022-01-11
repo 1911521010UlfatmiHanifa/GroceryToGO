@@ -4,6 +4,9 @@ import static android.content.Context.MODE_PRIVATE;
 import static android.content.Context.NOTIFICATION_SERVICE;
 import static android.view.View.GONE;
 
+import static androidx.constraintlayout.widget.ConstraintSet.VISIBLE;
+
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -80,14 +83,16 @@ public class KeranjangSayaFragment extends Fragment {
         token = preferences.getString("TOKEN","");
         id = Integer.valueOf(preferences.getString("id", ""));
 
+        alamat.setVisibility(View.GONE);
         getKeranjangSaya();
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @SuppressLint("WrongConstant")
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch(checkedId){
                     case R.id.langsung:
-                        alamat.setVisibility(View.GONE);
+                        alamat.setVisibility(GONE);
                         status_jemput = "Jemput Langsung";
                         biaya_kirim = 0;
                         lat = 0;
@@ -95,17 +100,17 @@ public class KeranjangSayaFragment extends Fragment {
                         alamat = null;
                         break;
                     case R.id.cod:
-                        alamat.setVisibility(View.VISIBLE);
+                        alamat.setVisibility(VISIBLE);
                         status_jemput = "COD";
                         lat = preferences.getFloat("LATITUDE", 0);
                         slong = preferences.getFloat("LONGITUDE", 0);
                         address= preferences.getString("ADDRESS","");
-                        Toast.makeText(getContext(), address, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getContext(), address, Toast.LENGTH_SHORT).show();
                         textalamat.setText((address));
                         distance = Float.parseFloat(preferences.getString("DISTANCE", ""));
 //                        distance = preferences.getFloat("DISTANCE", 0);
 //                        distance = Float.valueOf(d);
-                        Toast.makeText(getContext(), String.valueOf(distance), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), distance+"km", Toast.LENGTH_SHORT).show();
                         biaya_kirim = (int) (Math.ceil(distance)) * 6000;
 //                        Toast.makeText(getContext(), String.valueOf(biaya_kirim), Toast.LENGTH_SHORT).show();
                         break;
