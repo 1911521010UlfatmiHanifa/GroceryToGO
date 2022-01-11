@@ -78,8 +78,6 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("com.example.grocerytogo", MODE_PRIVATE);
         String token = preferences.getString("TOKEN", "");
         String fcm = preferences.getString("FCM", "");
-//        Toast.makeText(getApplicationContext(), token, Toast.LENGTH_SHORT).show();
-//        Toast.makeText(getApplicationContext(), fcm, Toast.LENGTH_SHORT).show();
         if (token != "" && fcm != "") {
             String api = getString(R.string.apiGTG);
             Koneksi koneksi = new Koneksi();

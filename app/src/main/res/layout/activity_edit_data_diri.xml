@@ -159,8 +159,8 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
-        android:layout_width="158dp"
-        android:layout_height="155dp"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
         android:layout_marginTop="60dp"
         app:cardCornerRadius="75dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -170,8 +170,8 @@
 
         <ImageView
             android:id="@+id/imageView6"
-            android:layout_width="159dp"
-            android:layout_height="157dp" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
     </androidx.cardview.widget.CardView>
 

@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import com.example.grocerytogo.model.Pesan;
 import com.example.grocerytogo.model.UserClass;
@@ -45,16 +46,16 @@ import retrofit2.Response;
 
 public class EditDataDiriActivity extends AppCompatActivity{
 
-    EditText ubahNama, ubahTgl, ubahNo;
-    Button simpan;
-    ImageView back, gambar;
-    AutoCompleteTextView jenkel;
-    TextView nopeKosong, tglKosong, jkKosong;
-    static final int REQUEST_IMAGE_CAPTURE = 1;
-    String tglLahir, pilihan;
-    String foto, fotoLama;
-    String nope, tgl, jk, tahunSekarang;
-    ProgressBar progressBar;
+    private EditText ubahNama, ubahTgl, ubahNo;
+    private Button simpan;
+    private ImageView back, gambar;
+    private AutoCompleteTextView jenkel;
+    private TextView nopeKosong, tglKosong, jkKosong;
+    private String tglLahir, pilihan;
+    private String foto, fotoLama;
+    private String nope, tgl, jk, tahunSekarang;
+    private ProgressBar progressBar;
+    private CardView cardView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,15 +75,12 @@ public class EditDataDiriActivity extends AppCompatActivity{
         nopeKosong = findViewById(R.id.textView32);
         tglKosong = findViewById(R.id.textView33);
         progressBar = findViewById(R.id.progressBar11);
+        cardView = findViewById(R.id.cardView);
 
         Calendar calender = Calendar.getInstance();
         final int tahun = calender.get(Calendar.YEAR);
         final int bulan = calender.get(Calendar.MONTH);
         final int tanggal = calender.get(Calendar.DAY_OF_MONTH);
-
-//        SimpleDateFormat df = new SimpleDateFormat("yyyy");
-//        tahunSekarang = df.format(calender.getTime());
-//        Toast.makeText(getApplicationContext(), (Integer.parseInt(tahunSekarang)-tahun), Toast.LENGTH_SHORT).show();
 
         ubahTgl.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,7 +106,6 @@ public class EditDataDiriActivity extends AppCompatActivity{
                 datePickerDialog.show();
             }
         });
-//        Toast.makeText(getApplicationContext(), String.valueOf(umur), Toast.LENGTH_SHORT).show();
 
         getData();
 
@@ -129,15 +126,11 @@ public class EditDataDiriActivity extends AppCompatActivity{
         gambar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent in = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                startActivityForResult(in,REQUEST_IMAGE_CAPTURE);
                 finish();
                 Intent intent = new Intent(EditDataDiriActivity.this, AvatarActivity.class);
                 startActivity(intent);
             }
         });
-
-
 
         ubahNo.addTextChangedListener(new TextWatcher() {
             @Override
@@ -229,21 +222,7 @@ public class EditDataDiriActivity extends AppCompatActivity{
                     nopeKosong.setVisibility(View.GONE);
                     tglKosong.setVisibility(View.GONE);
                     jkKosong.setVisibility(View.GONE);
-//                    Toast.makeText(getApplicationContext(), ubahTgl.getText().toString(), Toast.LENGTH_SHORT).show();
-//                    long umur=1;
-//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                        LocalDate now = LocalDate.now();
-//                        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd").withLocale(Locale.FRANCE);
-//                        LocalDate tg = LocalDate.parse(ubahTgl.getText().toString(), df);
-//                        umur = Period.between(tg, now).getYears();
-////                        Toast.makeText(getApplicationContext(), String.valueOf(now), Toast.LENGTH_SHORT).show();
-//                    }
-//                    if(umur >= 17){
-                        editData();
-//                    }else{
-//                        Toast.makeText(getApplicationContext(), "Umur Belum Mencukupi", Toast.LENGTH_SHORT).show();
-//                    }
-//                    Toast.makeText(getApplicationContext(), String.valueOf(umur), Toast.LENGTH_SHORT).show();
+                    editData();
                 }
             }
         });
@@ -252,25 +231,14 @@ public class EditDataDiriActivity extends AppCompatActivity{
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                finish();
                 Intent i = new Intent(EditDataDiriActivity.this, LihatDataDiriActivity.class);
                 startActivity(i);
-                finish();
             }
         });
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
-//            Bundle extras = data.getExtras();
-//            Bitmap image = (Bitmap) extras.get("data");
-//            gambar.setImageBitmap(image);
-//        }
-//        super.onActivityResult(requestCode, resultCode, data);
-//    }
-
     private void editData(){
-
         String api = getString(R.string.apiGTG);
         Koneksi koneksi = new Koneksi();
         GtgClient gtgClient = koneksi.setGtgClient(api);
@@ -296,6 +264,7 @@ public class EditDataDiriActivity extends AppCompatActivity{
                 Pesan p = response.body();
                 if(p != null) {
                     progressBar.setVisibility(View.GONE);
+
                     String pesan = "Edit Data Diri Berhasil";
                     finish();
                     Intent i = new Intent(EditDataDiriActivity.this, LihatDataDiriActivity.class);
@@ -311,6 +280,12 @@ public class EditDataDiriActivity extends AppCompatActivity{
             public void onFailure(Call<Pesan> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "Gagal Akses", Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(View.GONE);
+                ubahTgl.setEnabled(false);
+                ubahNo.setEnabled(false);
+                ubahNama.setEnabled(false);
+                jenkel.setEnabled(false);
+                gambar.setEnabled(false);
+                cardView.setEnabled(false);
             }
         });
     }
@@ -324,12 +299,17 @@ public class EditDataDiriActivity extends AppCompatActivity{
         SharedPreferences preferences = getSharedPreferences("com.example.grocerytogo",MODE_PRIVATE);
         String token = preferences.getString("TOKEN","");
         Integer id = Integer.valueOf(preferences.getString("id", ""));
-//        Toast.makeText(getApplicationContext(), id.toString(), Toast.LENGTH_SHORT).show();
+
+        Call<UserClass> call = gtgClient.getUser(token, id);
 
         progressBar.setVisibility(View.VISIBLE);
         simpan.setVisibility(View.INVISIBLE);
-
-        Call<UserClass> call = gtgClient.getUser(token, id);
+        ubahTgl.setVisibility(View.GONE);
+        ubahNo.setVisibility(View.GONE);
+        ubahNama.setVisibility(View.GONE);
+        jenkel.setVisibility(View.GONE);
+        gambar.setVisibility(View.GONE);
+        cardView.setVisibility(View.GONE);
 
         call.enqueue(new Callback<UserClass>() {
             @Override
@@ -338,10 +318,16 @@ public class EditDataDiriActivity extends AppCompatActivity{
                 if(userClass != null){
                     progressBar.setVisibility(View.GONE);
                     simpan.setVisibility(View.VISIBLE);
+                    ubahTgl.setVisibility(View.VISIBLE);
+                    ubahNo.setVisibility(View.VISIBLE);
+                    ubahNama.setVisibility(View.VISIBLE);
+                    jenkel.setVisibility(View.VISIBLE);
+                    gambar.setVisibility(View.VISIBLE);
+                    cardView.setVisibility(View.VISIBLE);
+
                     List<UserItem> userItems = userClass.getUser();
                     for (UserItem item: userItems) {
                         foto = getIntent().getStringExtra("GR");
-//                        Toast.makeText(getApplicationContext(), foto, Toast.LENGTH_SHORT).show();
                         if(foto == null){
                             Picasso.get().load(api+item.getFoto()).into(gambar);
                         }else if(foto==item.getFoto()){
@@ -363,6 +349,12 @@ public class EditDataDiriActivity extends AppCompatActivity{
             public void onFailure(Call<UserClass> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "Gagal Akses Server", Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(View.GONE);
+                ubahTgl.setVisibility(View.GONE);
+                ubahNo.setVisibility(View.GONE);
+                ubahNama.setVisibility(View.GONE);
+                jenkel.setVisibility(View.GONE);
+                gambar.setVisibility(View.GONE);
+                cardView.setVisibility(View.GONE);
             }
         });
 

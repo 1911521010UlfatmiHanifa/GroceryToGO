@@ -107,7 +107,6 @@ public class PesananSayaActivity extends AppCompatActivity implements PesananSay
         SharedPreferences preferences = getSharedPreferences("com.example.grocerytogo",MODE_PRIVATE);
         String token = preferences.getString("TOKEN","");
         Integer id = Integer.valueOf(preferences.getString("id", ""));
-//        Toast.makeText(getApplicationContext(), token, Toast.LENGTH_SHORT).show();
 
         String api = getString(R.string.apiGTG);
         Koneksi koneksi = new Koneksi();
@@ -155,7 +154,6 @@ public class PesananSayaActivity extends AppCompatActivity implements PesananSay
         SharedPreferences preferences = getSharedPreferences("com.example.grocerytogo",MODE_PRIVATE);
         String token = preferences.getString("TOKEN","");
         Integer id = Integer.valueOf(preferences.getString("id", ""));
-//        Toast.makeText(getApplicationContext(), token, Toast.LENGTH_SHORT).show();
 
         String api = getString(R.string.apiGTG);
         Koneksi koneksi = new Koneksi();

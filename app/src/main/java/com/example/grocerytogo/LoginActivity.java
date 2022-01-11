@@ -30,10 +30,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity {
 
-    TextView textUsername, textPassword, userKosong, pwKosong;
-    ImageView back;
-    Button loginn;
-    String username, password, FCMToken;
+    private TextView textUsername, textPassword, userKosong, pwKosong;
+    private ImageView back;
+    private Button loginn;
+    private String username, password, FCMToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

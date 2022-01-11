@@ -100,14 +100,14 @@ public class HomeFragment extends Fragment implements KategoriBarangAdapter.Klik
         }
     }
 
-    ImageView notifikasi, notFound;
-    RecyclerView DataKategoriBarang, DataBarang;
-    TextView pesan;
-    EditText pencarian;
-    KategoriBarangAdapter kategoriBarangAdapter;
-    BarangBerdasarkanKategoriAdapter barangBerdasarkanKategoriAdapter;
-    ProgressBar progressBar;
-    ArrayList<BarangBerdasarKategori> barangBerdasarKategoris;
+    private ImageView notifikasi, notFound;
+    private RecyclerView DataKategoriBarang, DataBarang;
+    private TextView pesan;
+    private EditText pencarian;
+    private KategoriBarangAdapter kategoriBarangAdapter;
+    private BarangBerdasarkanKategoriAdapter barangBerdasarkanKategoriAdapter;
+    private ProgressBar progressBar;
+    private ArrayList<BarangBerdasarKategori> barangBerdasarKategoris;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -170,6 +170,10 @@ public class HomeFragment extends Fragment implements KategoriBarangAdapter.Klik
             @Override
             public void onFailure(Call<ListKategori> call, Throwable t) {
                 Toast.makeText(getContext(), "Gagal Mengakses Server", Toast.LENGTH_SHORT).show();
+                notifikasi.setEnabled(true);
+                pencarian.setEnabled(true);
+                DataKategoriBarang.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
             }
 
         });
@@ -263,6 +267,9 @@ public class HomeFragment extends Fragment implements KategoriBarangAdapter.Klik
             @Override
             public void onFailure(Call<ListBarang> call, Throwable t) {
                 Toast.makeText(getContext(), "Gagal Akses Server", Toast.LENGTH_SHORT).show();
+                notifikasi.setEnabled(true);
+                pencarian.setEnabled(true);
+                progressBar.setVisibility(View.GONE);
             }
         });
     }

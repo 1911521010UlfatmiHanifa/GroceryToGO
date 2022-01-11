@@ -46,18 +46,18 @@ import retrofit2.Response;
 
 public class KeranjangSayaFragment extends Fragment {
 
-    Button tambah, pesan;
-    TextView ubah_lokasi, textSub, textalamat, textBiaya, textTotal;
-    RecyclerView DataBarangKeranjangSaya;
-    BarangKeranjangSayaAdapter barangKeranjangSayaAdapter;
-    ArrayList<BarangKeranjangSaya> keranjangSayas;
-    Integer jenis_bayar, id, subal, total, biaya_kirim;
-    ConstraintLayout alamat;
-    RadioGroup radioGroup;
-    RadioButton radioButton;
-    String status_jemput, token, address;
-    float lat, slong, distance;
-    ProgressBar progressBar;
+    private Button tambah, pesan;
+    private TextView ubah_lokasi, textSub, textalamat, textBiaya, textTotal;
+    private RecyclerView DataBarangKeranjangSaya;
+    private BarangKeranjangSayaAdapter barangKeranjangSayaAdapter;
+    private ArrayList<BarangKeranjangSaya> keranjangSayas;
+    private Integer jenis_bayar, id, subal, total, biaya_kirim;
+    private ConstraintLayout alamat;
+    private RadioGroup radioGroup;
+    private RadioButton radioButton;
+    private String status_jemput, token, address;
+    private float lat, slong, distance;
+    private ProgressBar progressBar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -84,6 +84,7 @@ public class KeranjangSayaFragment extends Fragment {
         id = Integer.valueOf(preferences.getString("id", ""));
 
         alamat.setVisibility(View.GONE);
+
         getKeranjangSaya();
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -97,7 +98,7 @@ public class KeranjangSayaFragment extends Fragment {
                         biaya_kirim = 0;
                         lat = 0;
                         slong = 0;
-                        alamat = null;
+                        address = null;
                         break;
                     case R.id.cod:
                         alamat.setVisibility(VISIBLE);
@@ -105,14 +106,10 @@ public class KeranjangSayaFragment extends Fragment {
                         lat = preferences.getFloat("LATITUDE", 0);
                         slong = preferences.getFloat("LONGITUDE", 0);
                         address= preferences.getString("ADDRESS","");
-//                        Toast.makeText(getContext(), address, Toast.LENGTH_SHORT).show();
                         textalamat.setText((address));
                         distance = Float.parseFloat(preferences.getString("DISTANCE", ""));
-//                        distance = preferences.getFloat("DISTANCE", 0);
-//                        distance = Float.valueOf(d);
                         Toast.makeText(getContext(), distance+"km", Toast.LENGTH_SHORT).show();
                         biaya_kirim = (int) (Math.ceil(distance)) * 6000;
-//                        Toast.makeText(getContext(), String.valueOf(biaya_kirim), Toast.LENGTH_SHORT).show();
                         break;
                 }
                 total = subal + biaya_kirim;
@@ -148,8 +145,6 @@ public class KeranjangSayaFragment extends Fragment {
     private void getKeranjangSaya(){
         subal = 0; total = 0;
 
-//        Toast.makeText(getApplicationContext(), token, Toast.LENGTH_SHORT).show();
-
         String api = getString(R.string.apiGTG);
         Koneksi koneksi = new Koneksi();
         GtgClient gtgClient = koneksi.setGtgClient(api);
@@ -180,9 +175,7 @@ public class KeranjangSayaFragment extends Fragment {
                         );
                         keranjangSayas.add(barangKeranjangSaya);
                     }
-//                    Toast.makeText(getContext(), subal.toString(), Toast.LENGTH_SHORT).show();
                     viewRecyclerView(keranjangSayas);
-//                    textSub.setText("Rp. "+ subal.toString());
                 }
             }
 

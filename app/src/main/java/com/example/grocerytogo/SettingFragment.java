@@ -180,14 +180,12 @@ SettingFragment extends Fragment {
         SharedPreferences preferences = getContext().getSharedPreferences("com.example.grocerytogo",MODE_PRIVATE);
         String token = preferences.getString("TOKEN","");
         Integer id = Integer.valueOf(preferences.getString("id", ""));
-//        Toast.makeText(getApplicationContext(), id.toString(), Toast.LENGTH_SHORT).show();
 
         Call<UserClass> call = gtgClient.getUser(token, id);
 
         call.enqueue(new Callback<UserClass>() {
             @Override
             public void onResponse(Call<UserClass> call, Response<UserClass> response) {
-//                Toast.makeText(getApplicationContext(), "B", Toast.LENGTH_SHORT).show();
                 UserClass userClass = response.body();
                 if(userClass != null){
                     lihatDataDiri.setVisibility(View.VISIBLE);

@@ -70,8 +70,6 @@ public class LokasiActivity extends FragmentActivity implements OnMapReadyCallba
 
     private GoogleMap mMap;
     private ActivityLokasiBinding binding;
-    private FloatingActionButton fab;
-    private FusedLocationProviderClient mLocationClient;
     private LocationRequest locationRequest;
     private EditText pencarian;
     private LatLng latLng;
@@ -116,7 +114,6 @@ public class LokasiActivity extends FragmentActivity implements OnMapReadyCallba
                 editor.putFloat("LATITUDE", (float) latLng.latitude);
                 editor.putFloat("LONGITUDE", (float) latLng.longitude);
                 editor.putString("DISTANCE", String.valueOf(distance/1000));
-//                editor.putFloat("DISTANCE", (float) distance/1000);
                 editor.putString("ADDRESS", alamat);
                 editor.apply();
 
@@ -165,13 +162,10 @@ public class LokasiActivity extends FragmentActivity implements OnMapReadyCallba
                 double lon = address.getLongitude();
 
                 latLng = new LatLng(lat, lon);
-//                marker.position(latLng).title(pencarian.getText().toString());
                 mark.setPosition(latLng);
                 mark.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.logo_gtg));
                 CameraUpdate update = CameraUpdateFactory.newLatLngZoom(latLng, 15);
-//                mMap.addMarker(new MarkerOptions().position(latLng).title(pencarian.getText().toString()));
                 mMap.animateCamera(update);
-//            Toast.makeText(getApplicationContext(), (int) lat, Toast.LENGTH_SHORT).show();
 
                 goToLocation(lat, lon, 15);
             }
@@ -266,7 +260,6 @@ public class LokasiActivity extends FragmentActivity implements OnMapReadyCallba
 
         if (requestCode == 2) {
             if (resultCode == Activity.RESULT_OK) {
-
                 getCurrentLocation();
             }
         }
@@ -275,7 +268,6 @@ public class LokasiActivity extends FragmentActivity implements OnMapReadyCallba
     @SuppressLint("MissingPermission")
     private void getCurrentLocation() {
 
-//        Toast.makeText(ArahActivity.this, getKunciAPI(), Toast.LENGTH_SHORT).show();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
@@ -304,13 +296,11 @@ public class LokasiActivity extends FragmentActivity implements OnMapReadyCallba
                                         }
 
                                         latLng = new LatLng(Llatitude,Llongitude);
-//                                        marker.position(latLng).title("Lokasi Anda");
                                         CameraUpdate update = CameraUpdateFactory.newLatLngZoom(latLng,15);
                                         mark = mMap.addMarker(new MarkerOptions().position(latLng).title("Lokasi Anda")
                                                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.logo_gtg)).anchor(0.5f, 1)
                                                 .draggable(true));
                                         mMap.animateCamera(update);
-//                                        AddressText.setText("Latitude: "+ latitude + "\n" + "Longitude: "+ longitude);
                                     }
                                 }
                             }, Looper.getMainLooper());

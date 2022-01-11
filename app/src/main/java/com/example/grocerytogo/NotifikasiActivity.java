@@ -49,7 +49,6 @@ public class NotifikasiActivity extends AppCompatActivity implements NotifikasiA
 
         //Set Adapter dan Recycler View
         notifikasiAdapter = new NotifikasiAdapter();
-//        notifikasiAdapter.setListNotifikasi(getDataNotifikasi());
         DataNotifikasi.setAdapter(notifikasiAdapter);
         LinearLayoutManager layout = new LinearLayoutManager(this);
         DataNotifikasi.setLayoutManager(layout);
@@ -69,7 +68,6 @@ public class NotifikasiActivity extends AppCompatActivity implements NotifikasiA
         SharedPreferences preferences = getSharedPreferences("com.example.grocerytogo",MODE_PRIVATE);
         String token = preferences.getString("TOKEN","");
         Integer id = Integer.valueOf(preferences.getString("id", ""));
-//        Toast.makeText(getApplicationContext(), token, Toast.LENGTH_SHORT).show();
 
         String api = getString(R.string.apiGTG);
         Koneksi koneksi = new Koneksi();
@@ -116,8 +114,6 @@ public class NotifikasiActivity extends AppCompatActivity implements NotifikasiA
         notifikasiAdapter.setListNotifikasi(listNotifikasi);
         notifikasiAdapter.setListener((NotifikasiAdapter.KlikNotifikasi) this);
         DataNotifikasi.setAdapter(notifikasiAdapter);
-//        StaggeredGridLayoutManager layout = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-//        GridLayoutManager layout = new GridLayoutManager(this, 2,GridLayoutManager.VERTICAL, false);
         LinearLayoutManager layout = new LinearLayoutManager(this);
         DataNotifikasi.setLayoutManager(layout);
     }

@@ -36,7 +36,7 @@ public class AvatarActivity extends AppCompatActivity implements AvatarAdapter.K
     private AvatarAdapter avatarAdapter;
     private RecyclerView DataAvatar;
     private ImageView back;
-    String foto;
+    private String foto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +79,6 @@ public class AvatarActivity extends AppCompatActivity implements AvatarAdapter.K
                             item.getGambar(),
                             api
                         );
-//                        Toast.makeText(getApplicationContext(), api+item.getGambar(), Toast.LENGTH_SHORT).show();
                         avatars.add(avatar);
                     }
                     viewRecyclerView(avatars);
@@ -88,7 +87,7 @@ public class AvatarActivity extends AppCompatActivity implements AvatarAdapter.K
 
             @Override
             public void onFailure(Call<ListAvatar> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Gagal mengakses data!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Gagal Mengakses Server", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -98,7 +97,6 @@ public class AvatarActivity extends AppCompatActivity implements AvatarAdapter.K
         avatarAdapter.setListAvatar(listAvatar);
         avatarAdapter.setListener(this);
         DataAvatar.setAdapter(avatarAdapter);
-//        StaggeredGridLayoutManager layout = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         GridLayoutManager layout = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
         DataAvatar.setLayoutManager(layout);
     }
@@ -106,11 +104,10 @@ public class AvatarActivity extends AppCompatActivity implements AvatarAdapter.K
     @Override
     public void onClick(View view, Avatar avatar) {
         foto = avatar.gambar;
-//        Toast.makeText(getApplicationContext(), foto, Toast.LENGTH_SHORT).show();
+        finish();
         Intent a = new Intent(AvatarActivity.this, EditDataDiriActivity.class);
         a.putExtra("GR", foto);
         startActivity(a);
-        finish();
     }
 
 }

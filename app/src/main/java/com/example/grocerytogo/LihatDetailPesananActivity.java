@@ -36,12 +36,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LihatDetailPesananActivity extends AppCompatActivity {
 
-    ImageView back;
-    Button produk, batalkanPesanan;
-    TextView id, tanggal, waktu, alamat, subttotal, total, status, ogkir, tulAlamat, lihatLokasi;
-    ProgressBar progressBar;
-    float lat, longs;
-    String st;
+    private ImageView back;
+    private Button produk, batalkanPesanan;
+    private TextView id, tanggal, waktu, alamat, subttotal, total, status, ogkir, tulAlamat, lihatLokasi;
+    private ProgressBar progressBar;
+    private float lat, longs;
+    private String st;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,7 +173,6 @@ public class LihatDetailPesananActivity extends AppCompatActivity {
                         status.setText(item.getStatusTransaksi());
                         lat = (float) item.getLatitude();
                         longs = (float) item.getLongitude();
-//                        Toast.makeText(getApplicationContext(), item.getStatusJemput(), Toast.LENGTH_SHORT).show();
                         if(item.getStatusJemput().equals("Jemput Langsung")){
                             tulAlamat.setVisibility(View.GONE);
                             alamat.setVisibility(View.GONE);
@@ -191,6 +190,13 @@ public class LihatDetailPesananActivity extends AppCompatActivity {
             public void onFailure(Call<DataPesanan> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "Gagal Akses Server", Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(View.GONE);
+                tanggal.setVisibility(View.VISIBLE);
+                waktu.setVisibility(View.VISIBLE);
+                alamat.setVisibility(View.VISIBLE);
+                subttotal.setVisibility(View.VISIBLE);
+                ogkir.setVisibility(View.VISIBLE);
+                total.setVisibility(View.VISIBLE);
+                status.setVisibility(View.VISIBLE);
             }
         });
     }

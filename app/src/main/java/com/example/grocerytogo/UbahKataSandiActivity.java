@@ -155,7 +155,6 @@ public class UbahKataSandiActivity extends AppCompatActivity {
         String token = preferences.getString("TOKEN", "");
         Integer id = Integer.valueOf(preferences.getString("id", ""));
         String pwOpor = preferences.getString("PASSWORD", "");
-//        Toast.makeText(getApplicationContext(), pwOpor, Toast.LENGTH_SHORT).show();
         if(pwOpor.equals(pwlama)) {
             if (pwkonfir.equals(pwbaru)) {
                 String api = getString(R.string.apiGTG);

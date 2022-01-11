@@ -26,11 +26,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class DaftarActvity extends AppCompatActivity {
 
-    ImageView back;
-    Button daftar;
-    TextView textUsername, textPassword, textNope, userKosong, pwKosong, nopeKosong;
-    ProgressBar progressBar;
-    String username, password, no_hp;
+    private ImageView back;
+    private Button daftar;
+    private TextView textUsername, textPassword, textNope, userKosong, pwKosong, nopeKosong;
+    private ProgressBar progressBar;
+    private String username, password, no_hp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +119,7 @@ public class DaftarActvity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+                finish();
                 Intent i = new Intent(DaftarActvity.this, MainActivity.class);
                 startActivity(i);
             }
@@ -155,24 +156,25 @@ public class DaftarActvity extends AppCompatActivity {
     }
 
     private void registert(){
-
         String api = getString(R.string.apiGTG);
         Koneksi koneksi = new Koneksi();
         GtgClient gtgClient = koneksi.setGtgClient(api);
 
+        Call<Pesan> call = gtgClient.register(username, password, no_hp);
+
         daftar.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
-        Call<Pesan> call = gtgClient.register(username, password, no_hp);
+
         call.enqueue(new Callback<Pesan>() {
             @Override
             public void onResponse(Call<Pesan> call, Response<Pesan> response) {
                 Pesan p = response.body();
                 if(p != null) {
                     String pesan = "Pendaftaran Berhasil Silahkan Login";
+                    finish();
                     Intent i = new Intent(DaftarActvity.this, LoginActivity.class);
                     i.putExtra("pesan", pesan);
                     startActivity(i);
-                    finish();
                 }else{
                     Toast.makeText(getApplicationContext(), "Pendaftaran Gagal", Toast.LENGTH_SHORT).show();
                     daftar.setVisibility(View.VISIBLE);
@@ -184,6 +186,7 @@ public class DaftarActvity extends AppCompatActivity {
             public void onFailure(Call<Pesan> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "Gagal Mengakses Akses", Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(View.GONE);
+                daftar.setVisibility(View.VISIBLE);
             }
         });
     }

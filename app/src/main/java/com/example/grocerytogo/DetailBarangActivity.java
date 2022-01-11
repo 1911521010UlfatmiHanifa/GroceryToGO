@@ -27,9 +27,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class DetailBarangActivity extends AppCompatActivity {
 
-    ImageView back, gambar, log, log2;
-    TextView dnamaBar, harga, namaBar,satuan, ket, des;
-    ProgressBar progressBar;
+    private ImageView back, gambar, log, log2;
+    private TextView dnamaBar, harga, namaBar,satuan, ket, des;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +62,6 @@ public class DetailBarangActivity extends AppCompatActivity {
 
         getDetailBarang();
 
-        //Image Back
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,14 +73,12 @@ public class DetailBarangActivity extends AppCompatActivity {
     private void getDetailBarang(){
         SharedPreferences preferences = getSharedPreferences("com.example.grocerytogo",MODE_PRIVATE);
         String token = preferences.getString("TOKEN","");
-//        Toast.makeText(getApplicationContext(), token, Toast.LENGTH_SHORT).show();
 
         String api = getString(R.string.apiGTG);
         Koneksi koneksi = new Koneksi();
         GtgClient gtgClient = koneksi.setGtgClient(api);
 
         Integer idbarang = getIntent().getIntExtra("id", 0);
-//        Toast.makeText(getApplicationContext(), idbarang.toString(), Toast.LENGTH_SHORT).show();
 
         Call<ListBarang> call = gtgClient.getDetailBarang(token, idbarang);
         call.enqueue(new Callback<ListBarang>() {
@@ -119,6 +116,16 @@ public class DetailBarangActivity extends AppCompatActivity {
             public void onFailure(Call<ListBarang> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "Gagal Akses Server", Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(View.GONE);
+                back.setVisibility(View.GONE);
+                dnamaBar.setVisibility(View.GONE);
+                namaBar.setVisibility(View.GONE);
+                satuan.setVisibility(View.GONE);
+                harga.setVisibility(View.GONE);
+                ket.setVisibility(View.GONE);
+                gambar.setVisibility(View.GONE);
+                log.setVisibility(View.GONE);
+                log2.setVisibility(View.GONE);
+                des.setVisibility(View.GONE);
             }
         });
 

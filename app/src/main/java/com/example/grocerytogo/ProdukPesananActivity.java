@@ -60,7 +60,7 @@ public class ProdukPesananActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("com.example.grocerytogo",MODE_PRIVATE);
         String token = preferences.getString("TOKEN","");
         String IDPesanan = getIntent().getStringExtra("id_transaksi");
-//        Toast.makeText(getApplicationContext(), IDPesanan, Toast.LENGTH_SHORT).show();
+
         String api = getString(R.string.apiGTG);
         Koneksi koneksi = new Koneksi();
         GtgClient gtgClient = koneksi.setGtgClient(api);

@@ -56,25 +56,22 @@ public class BarangKategoriActivity extends AppCompatActivity implements BarangB
         notFound = findViewById(R.id.notFound3);
         pesan = findViewById(R.id.pesan3);
 
-        DataBarang.setVisibility(View.INVISIBLE);
-        progressBar.setVisibility(View.VISIBLE);
-
         namaKategori.setText(getIntent().getStringExtra("nama"));
+        Integer idKategori = getIntent().getIntExtra("id", 0);
 
-        //API BARANG
         SharedPreferences preferences = getSharedPreferences("com.example.grocerytogo",MODE_PRIVATE);
         String token = preferences.getString("TOKEN","");
         Integer id = Integer.valueOf(preferences.getString("id", ""));
-//        Toast.makeText(getApplicationContext(), token, Toast.LENGTH_SHORT).show();
 
         String api = getString(R.string.apiGTG);
         Koneksi koneksi = new Koneksi();
         GtgClient gtgClient = koneksi.setGtgClient(api);
 
-        Integer idKategori = getIntent().getIntExtra("id", 0);
-//        Toast.makeText(getApplicationContext(), idKategori.toString(), Toast.LENGTH_SHORT).show();
-
         Call<ListBarang> call = gtgClient.getBarangKategori(token, idKategori, id);
+
+        DataBarang.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
+
         call.enqueue(new Callback<ListBarang>() {
              @Override
              public void onResponse(Call<ListBarang> call, Response<ListBarang> response) {
@@ -116,7 +113,6 @@ public class BarangKategoriActivity extends AppCompatActivity implements BarangB
             }
         });
 
-        //Image Back
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -131,12 +127,12 @@ public class BarangKategoriActivity extends AppCompatActivity implements BarangB
         barangBerdasarkanKategoriAdapter.setListener(this);
         DataBarang.setAdapter(barangBerdasarkanKategoriAdapter);
         StaggeredGridLayoutManager layout = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-//        GridLayoutManager layout = new GridLayoutManager(this, 2,GridLayoutManager.VERTICAL, false);
         DataBarang.setLayoutManager(layout);
     }
 
     @Override
     public void onClick(View view, BarangBerdasarKategori barangBerdasarKategori) {
+        finish();
         Intent a = new Intent(BarangKategoriActivity.this, DetailBarangActivity.class);
         Integer id = barangBerdasarKategori.idProduk;
         a.putExtra("id", id);

@@ -123,6 +123,7 @@ public class LihatDataDiriActivity extends AppCompatActivity {
         editData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                finish();
                 Intent in = new Intent(LihatDataDiriActivity.this, EditDataDiriActivity.class);
                 startActivity(in);
             }
@@ -146,14 +147,12 @@ public class LihatDataDiriActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("com.example.grocerytogo",MODE_PRIVATE);
         String token = preferences.getString("TOKEN","");
         Integer id = Integer.valueOf(preferences.getString("id", ""));
-//        Toast.makeText(getApplicationContext(), id.toString(), Toast.LENGTH_SHORT).show();
 
         Call<UserClass> call = gtgClient.getUser(token, id);
 
         call.enqueue(new Callback<UserClass>() {
             @Override
             public void onResponse(Call<UserClass> call, Response<UserClass> response) {
-//                Toast.makeText(getApplicationContext(), "B", Toast.LENGTH_SHORT).show();
                 UserClass userClass = response.body();
                 if(userClass != null){
                     progressBar.setVisibility(View.GONE);
@@ -173,6 +172,9 @@ public class LihatDataDiriActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<UserClass> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "Gagal Akses Server", Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.GONE);
+                sc.setVisibility(View.VISIBLE);
+                cl.setVisibility(View.VISIBLE);
             }
         });
 
